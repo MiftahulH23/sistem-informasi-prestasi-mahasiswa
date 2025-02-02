@@ -145,7 +145,7 @@ const menuMahasiswa = [
     },
     {
         name: "Prestasi",
-        url: "/about",
+        url: "/prestasi",
         icon: Medal,
     },
     {
