@@ -19,7 +19,7 @@ class SocialiteController extends Controller
     public function callback()
     {
         $socialUser = Socialite::driver('google')->user();
-
+        // dd($socialUser);
         $registeredUser = User::where('google_id', $socialUser->id)->first();
 
         if ($registeredUser){
@@ -27,6 +27,7 @@ class SocialiteController extends Controller
                 'name' => $socialUser->name,
                 'email' => $socialUser->email,
                 'password' => Hash::make('123'),
+                'avatar' => $socialUser->avatar,
                 'google_id' => $socialUser->id,
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
@@ -38,6 +39,7 @@ class SocialiteController extends Controller
                 'name' => $socialUser->name,
                 'email' => $socialUser->email,
                 'password' => Hash::make('123'),
+                'avatar' => $socialUser->avatar,
                 'google_id' => $socialUser->id,
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
