@@ -6,6 +6,8 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { LoginForm } from "@/components/login-form"
+import FormLogin from "@/Components/FormLogin";
+
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -26,6 +28,7 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
             <LoginForm />
+            {/* <FormLogin /> */}
         </GuestLayout>
     );
 }
