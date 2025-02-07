@@ -22,7 +22,7 @@ class SocialiteController extends Controller
         // dd($socialUser);
         $registeredUser = User::where('google_id', $socialUser->id)->first();
 
-        if ($registeredUser){
+        if ($registeredUser) {
             $registeredUser->update([
                 'name' => $socialUser->name,
                 'email' => $socialUser->email,
@@ -51,6 +51,16 @@ class SocialiteController extends Controller
 
         // $user->token;
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+    }
+
 
     // public function isStudent($email)
     // {

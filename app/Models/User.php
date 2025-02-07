@@ -24,7 +24,9 @@ class User extends Authenticatable
         'avatar',
         'google_id',
         'google_token',
-        'google_refresh_token'];
+        'google_refresh_token',
+        'remember_token'
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
