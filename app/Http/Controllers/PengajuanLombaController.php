@@ -64,6 +64,7 @@ class PengajuanLombaController extends Controller
             'tingkat_lomba' => $request->tingkat_lomba,
             'model_pelaksanaan' => $request->model_pelaksanaan,
             'dosen_pembimbing' => $request->dosen_pembimbing,
+            'status' => 'Diajukan',
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_selesai' => $request->tanggal_selesai,
             'jenis_kepesertaan' => $request->jenis_kepesertaan,

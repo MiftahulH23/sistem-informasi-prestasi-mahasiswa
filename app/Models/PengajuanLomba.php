@@ -23,6 +23,7 @@ class PengajuanLomba extends Model
         'jumlah_peserta',
         'anggota_kelompok',
         'surat_tugas',
+        'status',
     ];
 
     protected $casts = [

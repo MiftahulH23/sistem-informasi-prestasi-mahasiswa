@@ -44,7 +44,7 @@ const menuMahasiswa = [
         icon: Medal,
     },
     {
-        name: "Data Lomba",
+        name: "Data Pengajuan Lomba",
         url: "#",
         icon: Notebook,
     },
@@ -91,7 +91,7 @@ export function AppSidebar({ ...props }) {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton size="lg" asChild className="hover:bg-transparent">
                             <a href="/dashboard">
                                 <div className="w-8 h-8 overflow-hidden">
                                     <img src={LogoKemahasiswaan} alt="Logo Kemahasiswaan" />
