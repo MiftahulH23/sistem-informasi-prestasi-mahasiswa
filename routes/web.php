@@ -20,8 +20,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'create'])->name('pengajuan-lomba');
-Route::post('/pengajuan-lomba/store', [PengajuanLombaController::class, 'store'])->name('pengajuan-lomba.store');
+Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'create'])->middleware(['auth', 'verified'])->name('pengajuan-lomba');
+Route::post('/pengajuan-lomba/store', [PengajuanLombaController::class, 'store'])->middleware(['auth', 'verified'])->name('pengajuan-lomba.store');
+Route::get('/data-pengajuan-lomba', [PengajuanLombaController::class, 'index'])->middleware(['auth', 'verified'])->name('data-pengajuan-lomba');
 
 Route::get('/prestasi', function () {
     return Inertia::render('Prestasi');

@@ -45,7 +45,7 @@ const menuMahasiswa = [
     },
     {
         name: "Data Pengajuan Lomba",
-        url: "#",
+        url: "data-pengajuan-lomba",
         icon: Notebook,
     },
     {

@@ -11,11 +11,11 @@ class PengajuanLombaController extends Controller
 {
     public function index()
     {
-        // $pengajuanLomba = PengajuanLomba::where('user_id', Auth::id())->get();
+        $pengajuanLomba = PengajuanLomba::where('user_id', Auth::id())->get();
 
-        // return Inertia::render('Mahasiswa/PengajuanLomba', [
-        //     'pengajuanLomba' => $pengajuanLomba,
-        // ]);
+        return Inertia::render('Mahasiswa/DataPengajuanLomba', [
+            'pengajuanLomba' => $pengajuanLomba,
+        ]);
     }
 
     public function create()
