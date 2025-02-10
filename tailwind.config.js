@@ -79,5 +79,12 @@ export default {
     	}
     },
 
-    plugins: [forms, require("tailwindcss-animate")],
+	plugins: [
+		require("@tailwindcss/forms"), // Plugin Tailwind Forms
+		require("tailwindcss-animate"), // Plugin untuk animasi
+		require("daisyui"), // Plugin DaisyUI
+	  ],
+	daisyui: {
+        themes: ["light"], // Ubah menjadi tema 'light'
+    },
 };

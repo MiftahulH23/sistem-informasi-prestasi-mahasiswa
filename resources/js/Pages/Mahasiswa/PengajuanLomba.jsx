@@ -64,6 +64,7 @@ const PengajuanLomba = ({ auth }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        e.target.reset()
 
         const formData = new FormData();
 
@@ -121,7 +122,7 @@ const PengajuanLomba = ({ auth }) => {
                         name="_token"
                         value="{{ csrf_token() }}"
                     />
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    <div className="flex flex-col md:grid md:grid-cols-2 gap-x-8 gap-y-4">
                         {/* Kategori Lomba */}
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="kategori_lomba">
@@ -373,8 +374,8 @@ const PengajuanLomba = ({ auth }) => {
                             />
                         </div>
                     </div>
-                    <div className="flex justify-end">
-                        <button type="submit" disabled={processing}>
+                    <div className="flex justify-end mt-5 py-3">
+                        <button type="submit" disabled={processing} className="bg-blue-600 py-2 px-4 text-white rounded-md">
                             Submit
                         </button>
                     </div>

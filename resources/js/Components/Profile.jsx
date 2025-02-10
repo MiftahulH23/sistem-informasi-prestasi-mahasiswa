@@ -27,8 +27,6 @@ export default function Profile() {
         .slice(0, 2)
         .map((item) => item.charAt(0))
         .join("");
-    console.log(inisial);
-    console.log(user.avatar);
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

@@ -16,7 +16,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import NavLink from "./NavLink";
+import { Link } from "@inertiajs/react"
+import { cn } from "@/lib/utils";
 
 export function NavProjects({
   projects
@@ -25,23 +26,19 @@ export function NavProjects({
 
   return (
     (<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
+        {projects.map((item) => {
+          const split = item.url.split("/")[0]
+          const active = route().current(split)
+          return (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <NavLink href={item.url} active={route().current(item.name.toLowerCase())}>
+              <Link href={item.url} className={cn("", active ? "bg-background" : "bg-transparent hover:bg-background")}>
                 <item.icon />
                 <span>{item.name}</span>
-              </NavLink>
+              </Link>
             </SidebarMenuButton>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
               <DropdownMenuContent
                 className="w-48"
                 side={isMobile ? "bottom" : "right"}
@@ -62,7 +59,7 @@ export function NavProjects({
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
-        ))}
+        )})}
       </SidebarMenu>
     </SidebarGroup>)
   );

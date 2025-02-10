@@ -25,21 +25,22 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import LogoKemahasiswaan from "@/Assets/images/LogoKemahasiswaan.jpg"
 
 const menuMahasiswa = [
     {
         name: "Dashboard",
-        url: "/dashboard",
+        url: "dashboard",
         icon: LayoutDashboard,
     },
     {
         name: "Pengajuan Lomba",
-        url: "/pengajuan-lomba",
+        url: "pengajuan-lomba",
         icon: FilePlus,
     },
     {
         name: "Prestasi",
-        url: "/prestasi",
+        url: "prestasi",
         icon: Medal,
     },
     {
@@ -91,16 +92,17 @@ export function AppSidebar({ ...props }) {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <a href="#">
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                    <Command className="size-4" />
+                            <a href="/dashboard">
+                                <div className="w-8 h-8 overflow-hidden">
+                                    <img src={LogoKemahasiswaan} alt="Logo Kemahasiswaan" />
+
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-semibold">
-                                        SIPEMA
+                                        Sistem Informasi Prestasi
                                     </span>
                                     <span className="truncate text-xs">
-                                        lorem
+                                        Kemahaiswaan PCR
                                     </span>
                                 </div>
                             </a>
@@ -108,7 +110,7 @@ export function AppSidebar({ ...props }) {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent>
+            <SidebarContent className="mt-10">
                 {/* <NavMain items={data.navMain} /> */}
                 <NavProjects projects={menu[role]} />
             </SidebarContent>
