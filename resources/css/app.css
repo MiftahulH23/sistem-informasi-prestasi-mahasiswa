@@ -79,4 +79,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1, h2, h3, h4 {
+    @apply text-[#182357] font-bold text-2xl;
+  }
+  p {
+    @apply text-[#606172] text-base;
+  }
+  select {
+    @apply flex h-10 w-full rounded-md border border-[#606172] bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm;
+  }
 }

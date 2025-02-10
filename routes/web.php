@@ -1,20 +1,27 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PengajuanLombaController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 
-Route::get('/', [RegisteredUserController::class, 'create']);
+Route::get('/', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('register');
+
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'create'])->name('pengajuan-lomba');
+Route::post('/pengajuan-lomba/store', [PengajuanLombaController::class, 'store'])->name('pengajuan-lomba.store');
 
 Route::get('/prestasi', function () {
     return Inertia::render('Prestasi');
@@ -30,4 +37,4 @@ Route::get('/auth/redirect', [SocialiteController::class, 'redirect']);
 Route::get('/auth/google/callback', [SocialiteController::class, 'callback']);
 Route::post('/logout', [SocialiteController::class, 'logout'])->name('logout');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

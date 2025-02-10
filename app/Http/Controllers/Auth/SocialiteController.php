@@ -8,7 +8,8 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cookie;
+
 class SocialiteController extends Controller
 {
     public function redirect()
@@ -19,53 +20,48 @@ class SocialiteController extends Controller
     public function callback()
     {
         $socialUser = Socialite::driver('google')->user();
-        // dd($socialUser);
-        $registeredUser = User::where('google_id', $socialUser->id)->first();
+        $registeredUser = User::where('google_id', $socialUser->id)->orWhere('email', $socialUser->email)->first();
 
         if ($registeredUser) {
             $registeredUser->update([
                 'name' => $socialUser->name,
                 'email' => $socialUser->email,
                 'password' => Hash::make('123'),
-                'avatar' => $socialUser->avatar,
                 'google_id' => $socialUser->id,
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
             ]);
-            Auth::login($registeredUser);
-            return redirect('/dashboard');
+            Auth::login($registeredUser, true);
         } else {
             $user = User::create([
                 'name' => $socialUser->name,
                 'email' => $socialUser->email,
-                'password' => Hash::make('123'),
+                'password' => Hash::make('123'), // Password default
                 'avatar' => $socialUser->avatar,
                 'google_id' => $socialUser->id,
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
             ]);
 
-            Auth::login($user);
-            return redirect('/dashboard');
+            Auth::login($user, true);
         }
 
-        // $user->token;
+        // Simpan informasi login di cookie agar tetap login selama 2 jam
+        Cookie::queue('user_session', Auth::user()->id, 120);
+
+        return redirect()->intended('/dashboard'); 
     }
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        // Hapus cookie login
+        Cookie::queue(Cookie::forget('user_session'));
+
         return redirect('/');
     }
-
-
-    // public function isStudent($email)
-    // {
-    //     $response = Http::get('https://api.example.com/student', [
-    //         'email' => $email,
-    //     ]);
-    // }
 }
