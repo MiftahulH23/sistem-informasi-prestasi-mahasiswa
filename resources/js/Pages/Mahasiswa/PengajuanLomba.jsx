@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { Label } from "@/Components/ui/label";
 import { Input } from "@/Components/ui/input";
-import AlertSucces from "@/Components/AlertSucces";
+import Swal from "sweetalert2";
 
 const PengajuanLomba = ({ auth }) => {
     const { flash } = usePage().props;
@@ -25,15 +25,6 @@ const PengajuanLomba = ({ auth }) => {
     const [jenisKepesertaan, setJenisKepesertaan] = useState("");
     const [anggotaKelompok, setAnggotaKelompok] = useState([]);
 
-    useEffect(() => {
-        if (flash) {
-            setFlashMessage(flash); // Set pesan sukses
-            const timer = setTimeout(() => {
-                setFlashMessage(""); // Hapus setelah 3 detik
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [flash]);
 
     const handleKepesertaanChange = (e) => {
         const value = e.target.value;
@@ -118,6 +109,7 @@ const PengajuanLomba = ({ auth }) => {
                 reset(); // Reset form ke nilai awal
                 setJenisKepesertaan(""); // Reset jenis kepesertaan
                 setAnggotaKelompok([]); // Reset anggota kelompok
+                Swal.fire("Berhasil!", "Pengajuan berhasil ditambah.", "success");
             },
         });
     };
@@ -127,7 +119,6 @@ const PengajuanLomba = ({ auth }) => {
             <div className="flex flex-col gap-7">
                 <Head title="Pengajuan Lomba" />
                 <h1 className="text-2xl font-bold">Pengajuan Lomba</h1>
-                {flashMessage && <AlertSucces className="text-green-600">{flashMessage}</AlertSucces>}
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <input
                         type="hidden"
