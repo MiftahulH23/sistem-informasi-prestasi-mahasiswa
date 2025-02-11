@@ -65,16 +65,24 @@ class KategoriLombaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, KategoriLomba $kategoriLomba)
     {
-        //
+        $request->validate([
+            'kategori_lomba' => 'required|string|max:255|unique:kategori_lomba,kategori_lomba,' . $kategoriLomba->id,
+        ]);
+
+        $kategoriLomba->update([
+            'kategori_lomba' => $request->kategori_lomba,
+        ]);
+
+        return redirect()->route('kategori-lomba')->with('success', 'Kategori berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Hapus kategori
+    public function destroy(KategoriLomba $kategoriLomba)
     {
-        //
+        $kategoriLomba->delete();
+
+        return redirect()->route('kategori-lomba')->with('success', 'Kategori berhasil dihapus.');
     }
 }

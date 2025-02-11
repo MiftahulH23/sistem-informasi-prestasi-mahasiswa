@@ -28,6 +28,8 @@ Route::get('/data-pengajuan-lomba', [PengajuanLombaController::class, 'index'])-
 // Kategori Lomba Controller
 Route::get('/kategori-lomba',[KategoriLombaController::class, 'index'])->middleware(['auth', 'verified'])->name('kategori-lomba');
 Route::post('/kategori-lomba/store', [KategoriLombaController::class, 'store'])->name('kategori-lomba.store');
+Route::put('/kategori-lomba/{kategoriLomba}', [KategoriLombaController::class, 'update'])->name('kategori-lomba.update');
+Route::delete('/kategori-lomba/{kategoriLomba}', [KategoriLombaController::class, 'destroy'])->name('kategori-lomba.destroy');
 
 Route::get('/prestasi', function () {
     return Inertia::render('Prestasi');
