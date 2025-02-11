@@ -11,18 +11,23 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\KategoriLombaController;
 
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('register');
 
-
+// Dashboard Controller
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-
+// Pengajuan Lomba Controller
 Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'create'])->middleware(['auth', 'verified'])->name('pengajuan-lomba');
 Route::post('/pengajuan-lomba/store', [PengajuanLombaController::class, 'store'])->middleware(['auth', 'verified'])->name('pengajuan-lomba.store');
 Route::get('/data-pengajuan-lomba', [PengajuanLombaController::class, 'index'])->middleware(['auth', 'verified'])->name('data-pengajuan-lomba');
+
+// Kategori Lomba Controller
+Route::get('/kategori-lomba',[KategoriLombaController::class, 'index'])->middleware(['auth', 'verified'])->name('kategori-lomba');
+Route::post('/kategori-lomba/store', [KategoriLombaController::class, 'store'])->name('kategori-lomba.store');
 
 Route::get('/prestasi', function () {
     return Inertia::render('Prestasi');

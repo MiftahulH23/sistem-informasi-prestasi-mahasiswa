@@ -72,8 +72,7 @@ class PengajuanLombaController extends Controller
             'anggota_kelompok' => $anggota_kelompok, // Sudah termasuk user yang login jika kelompok
             'surat_tugas' => $surat_tugas_path,
         ]);
-
-        return redirect()->back()->with('message', 'Pengajuan berhasil.');
+        return redirect()->back()->with('success', 'Pengajuan Lomba berhasil ditambahkan!');
     }
 
 }

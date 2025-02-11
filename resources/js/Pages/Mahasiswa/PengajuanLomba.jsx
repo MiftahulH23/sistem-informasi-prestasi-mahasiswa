@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { Label } from "@/Components/ui/label";
 import { Input } from "@/Components/ui/input";
+import AlertSucces from "@/Components/AlertSucces";
 
 const PengajuanLomba = ({ auth }) => {
+    const { flash } = usePage().props;
     const { data, setData, post, processing, reset, errors } = useForm({
         kategori_lomba: "",
         judul_lomba: "",
@@ -19,9 +21,19 @@ const PengajuanLomba = ({ auth }) => {
         anggota_kelompok: [],
         surat_tugas: null,
     });
-
+    const [flashMessage, setFlashMessage] = useState(flash || "");
     const [jenisKepesertaan, setJenisKepesertaan] = useState("");
     const [anggotaKelompok, setAnggotaKelompok] = useState([]);
+
+    useEffect(() => {
+        if (flash) {
+            setFlashMessage(flash); // Set pesan sukses
+            const timer = setTimeout(() => {
+                setFlashMessage(""); // Hapus setelah 3 detik
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [flash]);
 
     const handleKepesertaanChange = (e) => {
         const value = e.target.value;
@@ -64,7 +76,7 @@ const PengajuanLomba = ({ auth }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        e.target.reset()
+        e.target.reset();
 
         const formData = new FormData();
 
@@ -106,7 +118,6 @@ const PengajuanLomba = ({ auth }) => {
                 reset(); // Reset form ke nilai awal
                 setJenisKepesertaan(""); // Reset jenis kepesertaan
                 setAnggotaKelompok([]); // Reset anggota kelompok
-                
             },
         });
     };
@@ -116,6 +127,7 @@ const PengajuanLomba = ({ auth }) => {
             <div className="flex flex-col gap-7">
                 <Head title="Pengajuan Lomba" />
                 <h1 className="text-2xl font-bold">Pengajuan Lomba</h1>
+                {flashMessage && <AlertSucces className="text-green-600">{flashMessage}</AlertSucces>}
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <input
                         type="hidden"
@@ -375,7 +387,11 @@ const PengajuanLomba = ({ auth }) => {
                         </div>
                     </div>
                     <div className="flex justify-end mt-5 py-3">
-                        <button type="submit" disabled={processing} className="bg-blue-600 py-2 px-4 text-white rounded-md">
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="bg-blue-600 py-2 px-4 text-white rounded-md"
+                        >
                             Submit
                         </button>
                     </div>

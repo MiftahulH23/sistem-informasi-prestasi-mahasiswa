@@ -1,15 +1,6 @@
 import * as React from "react";
 import {
-    BookOpen,
-    Bot,
-    Command,
-    Frame,
-    LifeBuoy,
-    Map,
-    PieChart,
-    Send,
-    Settings2,
-    SquareTerminal,
+    Group,
     LayoutDashboard,
     Medal,
     Notebook,
@@ -58,13 +49,23 @@ const menuMahasiswa = [
 const menuKemahasiswaan = [
     {
         name: "Dashboard",
-        url: "/dashboard",
+        url: "dashboard",
         icon: LayoutDashboard,
     },
     {
         name: "Prestasi",
         url: "#",
         icon: Medal,
+    },
+    {
+        name: "Pengajuan Lomba",
+        url: "#",
+        icon: Medal,
+    },
+    {
+        name: "Kategori Lomba",
+        url: "kategori-lomba",
+        icon: Group,
     },
 ];
 const menuEksekutif = [
@@ -80,7 +81,7 @@ const menuEksekutif = [
     },
 ];
 export function AppSidebar({ ...props }) {
-  const role = "mahasiswa";
+  const role = "kemahasiswaan";
   const menu = {
     mahasiswa: menuMahasiswa,
     kemahasiswaan: menuKemahasiswaan,
