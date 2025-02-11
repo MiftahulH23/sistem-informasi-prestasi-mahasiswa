@@ -57,57 +57,6 @@ export default function Profile() {
                     </span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <Bolt
-                            size={16}
-                            strokeWidth={2}
-                            className="opacity-60"
-                            aria-hidden="true"
-                        />
-                        <span>Option 1</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Layers2
-                            size={16}
-                            strokeWidth={2}
-                            className="opacity-60"
-                            aria-hidden="true"
-                        />
-                        <span>Option 2</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <BookOpen
-                            size={16}
-                            strokeWidth={2}
-                            className="opacity-60"
-                            aria-hidden="true"
-                        />
-                        <span>Option 3</span>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                        <Pin
-                            size={16}
-                            strokeWidth={2}
-                            className="opacity-60"
-                            aria-hidden="true"
-                        />
-                        <span>Option 4</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <UserPen
-                            size={16}
-                            strokeWidth={2}
-                            className="opacity-60"
-                            aria-hidden="true"
-                        />
-                        <span>Option 5</span>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem>
                     <LogOut
                         size={16}
