@@ -116,6 +116,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
                         value={data.kategori_lomba}
                         onChange={(e) => setData("kategori_lomba", e.target.value)}
                         placeholder="Masukkan kategori"
+                        required
                     />
                 </div>
                 <button

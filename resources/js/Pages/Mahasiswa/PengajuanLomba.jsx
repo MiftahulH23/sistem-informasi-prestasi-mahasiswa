@@ -25,7 +25,6 @@ const PengajuanLomba = ({ auth }) => {
     const [jenisKepesertaan, setJenisKepesertaan] = useState("");
     const [anggotaKelompok, setAnggotaKelompok] = useState([]);
 
-
     const handleKepesertaanChange = (e) => {
         const value = e.target.value;
         const formattedValue = value === "individu" ? "Individu" : "Kelompok"; // Sesuaikan dengan backend
@@ -109,7 +108,11 @@ const PengajuanLomba = ({ auth }) => {
                 reset(); // Reset form ke nilai awal
                 setJenisKepesertaan(""); // Reset jenis kepesertaan
                 setAnggotaKelompok([]); // Reset anggota kelompok
-                Swal.fire("Berhasil!", "Pengajuan berhasil ditambah.", "success");
+                Swal.fire(
+                    "Berhasil!",
+                    "Pengajuan berhasil ditambah.",
+                    "success"
+                );
             },
         });
     };
@@ -137,6 +140,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("kategori_lomba", e.target.value)
                                 }
+                                required
                             >
                                 <option value="">Pilih Kategori</option>
                                 <option value="bakornas">Bakornas</option>
@@ -154,6 +158,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("judul_lomba", e.target.value)
                                 }
+                                required
                             />
                         </div>
 
@@ -167,6 +172,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("jenis_lomba", e.target.value)
                                 }
+                                required
                             >
                                 <option value="">Pilih Jenis Lomba</option>
                                 <option value="akademik">Akademik</option>
@@ -186,6 +192,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tingkat_lomba", e.target.value)
                                 }
+                                required
                             >
                                 <option value="">Pilih Tingkat Lomba</option>
                                 <option value="internasional">
@@ -211,6 +218,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("model_pelaksanaan", e.target.value)
                                 }
+                                required
                             >
                                 <option value="">Pilih Model Pelaksanan</option>
                                 <option value="offline">Offline</option>
@@ -230,6 +238,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("dosen_pembimbing", e.target.value)
                                 }
+                                required
                             >
                                 <option value="">Input Dosen Pembimbing</option>
                                 <option value="SPA">SPA</option>
@@ -248,6 +257,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tanggal_mulai", e.target.value)
                                 }
+                                required
                             />
                         </div>
 
@@ -264,6 +274,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tanggal_selesai", e.target.value)
                                 }
+                                required
                             />
                         </div>
 
@@ -278,6 +289,7 @@ const PengajuanLomba = ({ auth }) => {
                                 className="h-10 px-3 border rounded-md"
                                 value={jenisKepesertaan}
                                 onChange={handleKepesertaanChange}
+                                required
                             >
                                 <option value="">
                                     Pilih Jenis Kepesertaan
@@ -325,6 +337,7 @@ const PengajuanLomba = ({ auth }) => {
                                                     e.target.value
                                                 )
                                             }
+                                            required
                                             placeholder={`Anggota ${index + 1}`}
                                         />
                                         <button
@@ -374,6 +387,8 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("surat_tugas", e.target.files[0])
                                 }
+                                required
+
                             />
                         </div>
                     </div>
@@ -383,7 +398,7 @@ const PengajuanLomba = ({ auth }) => {
                             disabled={processing}
                             className="bg-blue-600 py-2 px-4 text-white rounded-md"
                         >
-                            Submit
+                            {processing ? "Menyimpan..." : "Tambah"}
                         </button>
                     </div>
                 </form>
