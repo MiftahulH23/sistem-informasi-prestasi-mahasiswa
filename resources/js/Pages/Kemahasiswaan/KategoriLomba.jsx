@@ -103,10 +103,6 @@ const KategoriLomba = ({ kategoriLomba }) => {
         <AuthenticatedLayout>
             <Head title="Kategori Lomba" />
             <h1 className="text-xl font-bold mb-4">Kategori Lomba</h1>
-
-            {/* Pesan Sukses */}
-            {flashMessage && <AlertSucces>{flashMessage}</AlertSucces>}
-
             {/* Form Tambah */}
             <form onSubmit={handleSubmit} className="flex justify-start items-center gap-5">
                 <div className="flex gap-2 items-center">
@@ -130,11 +126,10 @@ const KategoriLomba = ({ kategoriLomba }) => {
 
             {/* Tampilkan error validasi */}
             {errors.kategori_lomba && <p className="text-red-500">{errors.kategori_lomba}</p>}
-
-            {/* Tabel Kategori Lomba */}
+            
             <table className="table mt-4 w-full">
                 <thead>
-                    <tr className="bg-white text-center">
+                    <tr className="bg-white text-center rounded-lg">
                         <th className="px-4 py-2">No</th>
                         <th className="px-4 py-2">Kategori Lomba</th>
                         <th className="px-4 py-2">Aksi</th>
