@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { Label } from "@/Components/ui/label";
 import { Input } from "@/Components/ui/input";
-import AlertSucces from "@/Components/AlertSucces";
 import { Trash2, SquarePen, X } from "lucide-react";
 import Modal from "@/Components/Modal";
 import { router } from "@inertiajs/react";
@@ -17,8 +16,6 @@ const KategoriLomba = ({ kategoriLomba }) => {
         kategori_lomba: "",
     });
 
-    // State untuk flash message
-    const [flashMessage, setFlashMessage] = useState(flash?.success || "");
 
     // State untuk modal edit
     const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -60,8 +57,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
             if (result.isConfirmed) {
                 router.delete(route("kategori-lomba.destroy", id), {
                     onSuccess: () => {
-                        setFlashMessage("Kategori berhasil dihapus.");
-                        Swal.fire("Terhapus!", "Kategori telah dihapus.", "success");
+                        Swal.fire("Berhasil!", "Kategori telah dihapus.", "success");
                     },
                 });
             }
@@ -84,20 +80,10 @@ const KategoriLomba = ({ kategoriLomba }) => {
         put(route("kategori-lomba.update", selectedKategori.id), {
             onSuccess: () => {
                 setEditModalOpen(false);
-                Swal.fire("Berhasil Update!", "Kategori telah diperbaru.", "success");
+                Swal.fire("Berhasil!", "Kategori telah diperbaru.", "success");
             },
         });
     };
-
-    // Hilangkan flash message setelah 3 detik
-    useEffect(() => {
-        if (flashMessage) {
-            const timer = setTimeout(() => {
-                setFlashMessage("");
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [flashMessage]);
 
     return (
         <AuthenticatedLayout>

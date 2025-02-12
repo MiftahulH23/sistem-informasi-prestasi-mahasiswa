@@ -1,17 +1,14 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengajuanLombaController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Auth\Middleware\Authenticate;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\KategoriLombaController;
+use App\Http\Controllers\JudulLombaController;
 
 
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('register');
@@ -30,6 +27,12 @@ Route::get('/kategori-lomba',[KategoriLombaController::class, 'index'])->middlew
 Route::post('/kategori-lomba/store', [KategoriLombaController::class, 'store'])->name('kategori-lomba.store');
 Route::put('/kategori-lomba/{kategoriLomba}', [KategoriLombaController::class, 'update'])->name('kategori-lomba.update');
 Route::delete('/kategori-lomba/{kategoriLomba}', [KategoriLombaController::class, 'destroy'])->name('kategori-lomba.destroy');
+
+// Judul Lomba
+Route::get('/judul-lomba', [JudulLombaController::class, 'index'])->middleware(['auth', 'verified'])->name('judul-lomba');
+Route::post('/judul-lomba/store', [JudulLombaController::class, 'store'])->name('judul-lomba.store');
+Route::put('/judul-lomba/{judulLomba}', [JudulLombaController::class, 'update'])->name('judul-lomba.update');
+Route::delete('/judul-lomba/{judulLomba}', [JudulLombaController::class, 'destroy'])->name('judul-lomba.destroy');
 
 Route::get('/prestasi', function () {
     return Inertia::render('Prestasi');

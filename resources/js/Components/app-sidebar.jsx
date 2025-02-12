@@ -6,6 +6,7 @@ import {
     Notebook,
     FilePlus,
     BookMarked,
+    LayoutList
 } from "lucide-react";
 import { NavProjects } from "@/components/nav-projects";
 import {
@@ -66,6 +67,11 @@ const menuKemahasiswaan = [
         name: "Kategori Lomba",
         url: "kategori-lomba",
         icon: Group,
+    },
+    {
+        name: "Judul Lomba",
+        url: "judul-lomba",
+        icon: LayoutList,
     },
 ];
 const menuEksekutif = [
