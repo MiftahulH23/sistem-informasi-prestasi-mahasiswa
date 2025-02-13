@@ -59,8 +59,8 @@ const menuKemahasiswaan = [
         icon: Medal,
     },
     {
-        name: "Pengajuan Lomba",
-        url: "#",
+        name: "Udpate Pengajuan Lomba",
+        url: "update-pengajuan-lomba",
         icon: Medal,
     },
     {
@@ -87,7 +87,7 @@ const menuEksekutif = [
     },
 ];
 export function AppSidebar({ ...props }) {
-  const role = "mahasiswa";
+  const role = "kemahasiswaan";
   const menu = {
     mahasiswa: menuMahasiswa,
     kemahasiswaan: menuKemahasiswaan,

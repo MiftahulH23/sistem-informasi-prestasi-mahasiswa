@@ -22,6 +22,29 @@ class PengajuanLombaController extends Controller
         ]);
         
     }
+    public function indexKemahasiswaan()
+    {
+        $pengajuanLomba = PengajuanLomba::with('kategori') // Ambil data kategori juga
+            ->where('user_id', Auth::id())
+            ->get();
+            // dd($pengajuanLomba->toArray());
+        return Inertia::render('Kemahasiswaan/DataPengajuanLomba', [
+            'pengajuanLomba' => $pengajuanLomba,
+        ]);
+        
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Diterima,Ditolak',
+        ]);
+
+        $pengajuanLomba = PengajuanLomba::findOrFail($id);
+        $pengajuanLomba->update(['status' => $request->status]);
+
+        return back()->with('success', 'Status berhasil diperbarui.');
+    }
 
 
     public function create()

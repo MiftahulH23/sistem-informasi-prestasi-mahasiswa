@@ -21,6 +21,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'create'])->middleware(['auth', 'verified'])->name('pengajuan-lomba');
 Route::post('/pengajuan-lomba/store', [PengajuanLombaController::class, 'store'])->middleware(['auth', 'verified'])->name('pengajuan-lomba.store');
 Route::get('/data-pengajuan-lomba', [PengajuanLombaController::class, 'index'])->middleware(['auth', 'verified'])->name('data-pengajuan-lomba');
+Route::get('/update-pengajuan-lomba', [PengajuanLombaController::class, 'indexKemahasiswaan'])->middleware(['auth', 'verified'])->name('update-pengajuan-lomba');
+Route::put('/pengajuan-lomba/{id}/update-status', [PengajuanLombaController::class, 'updateStatus'])->name('pengajuan-lomba.update-status');
 
 // Kategori Lomba Controller
 Route::get('/kategori-lomba',[KategoriLombaController::class, 'index'])->middleware(['auth', 'verified'])->name('kategori-lomba');
