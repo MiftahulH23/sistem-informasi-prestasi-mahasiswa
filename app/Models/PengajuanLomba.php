@@ -11,7 +11,7 @@ class PengajuanLomba extends Model
     protected $table = 'pengajuan_lomba';
     protected $fillable = [
         'user_id',
-        'kategori_lomba',
+        'kategori_lomba_id',
         'judul_lomba',
         'jenis_lomba',
         'tingkat_lomba',
@@ -34,4 +34,10 @@ class PengajuanLomba extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriLomba::class, 'kategori_lomba_id');
+    }
+
+
 }

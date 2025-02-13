@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('pengajuan_lomba', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('kategori_lomba');
+            $table->integer('kategori_lomba_id');
             $table->string('judul_lomba');
             $table->string('jenis_lomba');
             $table->string('tingkat_lomba');

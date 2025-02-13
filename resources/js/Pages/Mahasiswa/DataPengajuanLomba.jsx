@@ -14,7 +14,7 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
                             <th className="px-4 py-2">Kategori Lomba</th>
                             <th className="px-4 py-2">Judul Lomba</th>
                             <th className="px-4 py-2">Jenis Lomba</th>
-                            <th className="px-4 py-2">Tingkat Lomba</th>
+                            <th className="px-4 py-2">Anggota</th>
                             <th className="px-4 py-2">Dosen Pembimbing</th>
                             <th className="px-4 py-2">Status</th>
                             <th className="px-4 py-2">Aksi</th>
@@ -25,9 +25,7 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
                             pengajuanLomba.map((lomba, index) => (
                                 <tr key={lomba.id} className="text-center">
                                     <td className="px-4 py-2">{index + 1}</td>
-                                    <td className="px-4 py-2">
-                                        {lomba.kategori_lomba}
-                                    </td>
+                                    <td className="px-4 py-2">{lomba.kategori?.kategori_lomba || "-"}</td>
                                     <td className="px-4 py-2">
                                         {lomba.judul_lomba}
                                     </td>
@@ -35,7 +33,9 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
                                         {lomba.jenis_lomba}
                                     </td>
                                     <td className="px-4 py-2">
-                                        {lomba.anggota_kelompok.length > 0
+                                        {Array.isArray(
+                                            lomba.anggota_kelompok
+                                        ) && lomba.anggota_kelompok.length > 0
                                             ? lomba.anggota_kelompok.join(", ")
                                             : "-"}
                                     </td>

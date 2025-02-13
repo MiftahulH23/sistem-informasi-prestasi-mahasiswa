@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { Label } from "@/Components/ui/label";
@@ -6,9 +6,10 @@ import { Input } from "@/Components/ui/input";
 import Swal from "sweetalert2";
 
 const PengajuanLomba = ({ auth }) => {
+    const { kategoriLomba, judulLomba } = usePage().props;
     const { flash } = usePage().props;
     const { data, setData, post, processing, reset, errors } = useForm({
-        kategori_lomba: "",
+        kategori_lomba_id: "",
         judul_lomba: "",
         jenis_lomba: "",
         tingkat_lomba: "",
@@ -22,8 +23,33 @@ const PengajuanLomba = ({ auth }) => {
         surat_tugas: null,
     });
     const [flashMessage, setFlashMessage] = useState(flash || "");
+    const [selectedKategori, setSelectedKategori] = useState("");
+    const [filteredJudul, setFilteredJudul] = useState([]);
     const [jenisKepesertaan, setJenisKepesertaan] = useState("");
     const [anggotaKelompok, setAnggotaKelompok] = useState([]);
+
+    useEffect(() => {
+        if (selectedKategori && selectedKategori !== "umum") {
+            const filtered = judulLomba.filter(
+                (judul) =>
+                    Number(judul.kategori_lomba_id) === Number(selectedKategori)
+            );
+            setFilteredJudul(filtered);
+            setData("judul_lomba", "");
+        } else {
+            setFilteredJudul([]);
+            setData("judul_lomba", "");
+        }
+    }, [selectedKategori, judulLomba]);
+
+    const handleKategoriChange = (event) => {
+        const selectedValue = event.target.value;
+        setSelectedKategori(selectedValue);
+        setData("kategori_lomba_id", selectedValue);
+        if (selectedValue === "umum") {
+            setData("judul_lomba", "");
+        }
+    };
 
     const handleKepesertaanChange = (e) => {
         const value = e.target.value;
@@ -116,7 +142,6 @@ const PengajuanLomba = ({ auth }) => {
             },
         });
     };
-
     return (
         <AuthenticatedLayout>
             <div className="flex flex-col gap-7">
@@ -135,31 +160,68 @@ const PengajuanLomba = ({ auth }) => {
                                 Kategori Lomba
                             </Label>
                             <select
-                                id="kategori_lomba"
-                                name="kategori_lomba"
-                                onChange={(e) =>
-                                    setData("kategori_lomba", e.target.value)
-                                }
+                                id="kategori_lomba_id"
+                                name="kategori_lomba_id"
+                                onChange={handleKategoriChange}
                                 required
+                                value={selectedKategori}
                             >
                                 <option value="">Pilih Kategori</option>
-                                <option value="bakornas">Bakornas</option>
-                                <option value="puspresnas">Puspresnas</option>
+                                {kategoriLomba.map((kategori) => (
+                                    <option
+                                        key={kategori.id}
+                                        value={kategori.id}
+                                    >
+                                        {kategori.kategori_lomba}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 
                         {/* Judul Lomba */}
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="judul_lomba">Judul Lomba</Label>
-                            <Input
-                                id="judul_lomba"
-                                name="judul_lomba"
-                                className="h-10"
-                                onChange={(e) =>
-                                    setData("judul_lomba", e.target.value)
-                                }
-                                required
-                            />
+                            {kategoriLomba.find(
+                                (k) => k.id === parseInt(selectedKategori)
+                            )?.kategori_lomba === "Umum" ? (
+                                <Input
+                                    id="judul_lomba"
+                                    name="judul_lomba"
+                                    className="h-10"
+                                    onChange={(e) =>
+                                        setData({
+                                            ...data,
+                                            judul_lomba: e.target.value,
+                                        })
+                                    }
+                                    required
+                                    placeholder="Masukkan Judul Lomba"
+                                    value={data.judul_lomba}
+                                />
+                            ) : (
+                                <select
+                                    id="judul_lomba"
+                                    name="judul_lomba"
+                                    onChange={(e) =>
+                                        setData({
+                                            ...data,
+                                            judul_lomba: e.target.value,
+                                        })
+                                    }
+                                    required
+                                    value={data.judul_lomba}
+                                >
+                                    <option value="">Pilih Judul</option>
+                                    {filteredJudul.map((judul) => (
+                                        <option
+                                            key={judul.id}
+                                            value={judul.judul_lomba}
+                                        >
+                                            {judul.judul_lomba}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
                         </div>
 
                         {/* Jenis Lomba */}
@@ -388,7 +450,6 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("surat_tugas", e.target.files[0])
                                 }
                                 required
-
                             />
                         </div>
                     </div>

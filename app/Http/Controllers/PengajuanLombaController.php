@@ -7,26 +7,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
+use App\Models\KategoriLomba;
+use App\Models\JudulLomba;
 class PengajuanLombaController extends Controller
 {
     public function index()
     {
-        $pengajuanLomba = PengajuanLomba::where('user_id', Auth::id())->get();
-
+        $pengajuanLomba = PengajuanLomba::with('kategori') // Ambil data kategori juga
+            ->where('user_id', Auth::id())
+            ->get();
+            // dd($pengajuanLomba->toArray());
         return Inertia::render('Mahasiswa/DataPengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
         ]);
+        
     }
+
 
     public function create()
     {
-        return Inertia::render('Mahasiswa/PengajuanLomba');
+        return Inertia::render('Mahasiswa/PengajuanLomba', [
+            'kategoriLomba' => KategoriLomba::all(),
+            'judulLomba' => JudulLomba::with('kategori')->get()
+        ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_lomba' => 'required|string',
+            'kategori_lomba_id' => 'required|integer',
             'judul_lomba' => 'required|string',
             'jenis_lomba' => 'required|string',
             'tingkat_lomba' => 'required|string',
@@ -58,7 +67,7 @@ class PengajuanLombaController extends Controller
         // Simpan data ke database
         $pengajuan = PengajuanLomba::create([
             'user_id' => $user->id, // ID user yang login tetap sebagai pemilik pengajuan
-            'kategori_lomba' => $request->kategori_lomba,
+            'kategori_lomba_id' => $request->kategori_lomba_id,
             'judul_lomba' => $request->judul_lomba,
             'jenis_lomba' => $request->jenis_lomba,
             'tingkat_lomba' => $request->tingkat_lomba,
