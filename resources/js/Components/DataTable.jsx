@@ -322,7 +322,7 @@ export function DataTable({
                   return (
                     <TableHead
                       key={header.id}
-                      className="text-center [&:has(>#nomor)]:w-12 font-bold text-black"
+                      className="text-center [&:has(>#nomor)]:w-12 font-bold tex"
                     >
                       {header.isPlaceholder ? null : header.column.getCanSort() &&
                         controls.sorting ? (

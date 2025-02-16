@@ -1,73 +1,105 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-
+import { DataTable } from "@/Components/DataTable";
+import { id as idLocale } from "date-fns/locale"
+import { format, getDate } from "date-fns"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/Components/ui/tooltip"
 const DataPengajuanLomba = ({ pengajuanLomba }) => {
+    const columns = [
+        {
+            accessorKey: "judul_lomba",
+            header: "Judul Lomba",
+        },
+        {
+            accessorKey: "kategori.kategori_lomba",
+            header: "Kategori Lomba",
+        },
+        {
+            accessorKey: "tingkat_lomba",
+            header: "Tingkat Lomba",
+        },
+        {
+            accessorKey: "dosen_pembimbing",
+            header: "Pembimbing",
+        },
+        {
+            accessorKey: "jumlah_peserta",
+            header: "Jumlah Peserta"
+        },
+        {
+            accessorKey: "tanggal_mulai",
+            header: "Tanggal Mulai",
+            cell: ({ row: { original: data } }) => {
+                const dateOpt = {
+                  locale: idLocale,
+                  weekStartsOn: 1,
+                }
+          
+                const date = getDate(data.tanggal_mulai, dateOpt)
+                const month = format(data.tanggal_mulai, "LLL", dateOpt)
+                const fullDate = format(data.tanggal_mulai, "PPPP", dateOpt)
+          
+                return (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="m-auto bg-card flex size-9 cursor-default flex-col items-center justify-center rounded-md border text-center">
+                        <span className="text-xs font-semibold leading-snug">
+                          {date}
+                        </span>
+                        <span className="text-muted-foreground text-xs leading-none">
+                          {month}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      className="shadow-md"
+                    >{`${fullDate}`}</TooltipContent>
+                  </Tooltip>
+                )
+              },
+        },
+        {
+            accessorKey: "tanggal_selesai",
+            header: "Tanggal Selesai",
+            cell: ({ row: { original: data } }) => {
+                const dateOpt = {
+                  locale: idLocale,
+                  weekStartsOn: 1,
+                }
+          
+                const date = getDate(data.tanggal_selesai, dateOpt)
+                const month = format(data.tanggal_selesai, "LLL", dateOpt)
+                const fullDate = format(data.tanggal_selesai, "PPPP", dateOpt)
+          
+                return (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="m-auto bg-card flex size-9 cursor-default flex-col items-center justify-center rounded-md border text-center">
+                        <span className="text-xs font-semibold leading-snug">
+                          {date}
+                        </span>
+                        <span className="text-muted-foreground text-xs leading-none">
+                          {month}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      className="shadow-md"
+                    >{`${fullDate}`}</TooltipContent>
+                  </Tooltip>
+                )
+              },
+        },
+        {
+            accessorKey: "status",
+            header: "Status",
+        },
+    ];
     return (
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
             <div className="overflow-x-auto p-4">
-                <table className="table">
-                    {/* Head */}
-                    <thead>
-                        <tr className=" text-center">
-                            <th className="px-4 py-2">No</th>
-                            <th className="px-4 py-2">Kategori Lomba</th>
-                            <th className="px-4 py-2">Judul Lomba</th>
-                            <th className="px-4 py-2">Jenis Lomba</th>
-                            <th className="px-4 py-2">Anggota</th>
-                            <th className="px-4 py-2">Dosen Pembimbing</th>
-                            <th className="px-4 py-2">Status</th>
-                            <th className="px-4 py-2">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {pengajuanLomba.length > 0 ? (
-                            pengajuanLomba.map((lomba, index) => (
-                                <tr key={lomba.id} className="text-center">
-                                    <td className="px-4 py-2">{index + 1}</td>
-                                    <td className="px-4 py-2">{lomba.kategori?.kategori_lomba || "-"}</td>
-                                    <td className="px-4 py-2">
-                                        {lomba.judul_lomba}
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        {lomba.jenis_lomba}
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        {Array.isArray(
-                                            lomba.anggota_kelompok
-                                        ) && lomba.anggota_kelompok.length > 0
-                                            ? lomba.anggota_kelompok.join(", ")
-                                            : "-"}
-                                    </td>
-
-                                    <td className="px-4 py-2">
-                                        {lomba.dosen_pembimbing}
-                                    </td>
-                                    <td
-                                        className={`px-4 py-2 text-center 
-    ${lomba.status === "Diajukan" ? "text-blue-500" : ""}
-    ${lomba.status === "Diterima" ? "text-green-500" : ""}
-    ${lomba.status === "Ditolak" ? "text-red-500" : ""}`}
-                                    >
-                                        {lomba.status}
-                                    </td>
-
-                                    <td className="px-4 py-2">
-                                        <button className="bg-blue-500 text-white px-2 py-1 rounded">
-                                            Lihat Detail
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="8" className="text-center py-4">
-                                    Tidak ada data pengajuan lomba.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                <DataTable columns={columns} data={pengajuanLomba} />
             </div>
         </AuthenticatedLayout>
     );

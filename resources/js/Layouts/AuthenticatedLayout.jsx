@@ -5,6 +5,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { TooltipProvider } from "@/Components/ui/tooltip";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -20,8 +21,7 @@ export default function AuthenticatedLayout({children }) {
                     </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4 pt-0 bg-background">
-                    {children}
-                    
+                    <TooltipProvider>{children}</TooltipProvider>
                 </div>
             </SidebarInset>
         </SidebarProvider>
