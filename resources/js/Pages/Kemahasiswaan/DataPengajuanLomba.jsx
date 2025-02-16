@@ -3,7 +3,7 @@ import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import TableComponent from "@/Components/TableComponent";
-import { DataTable } from "@/Components/DataTable";
+import { customFilterFn, DataTable } from "@/Components/DataTable";
 
 const DataPengajuanLomba = ({ pengajuanLomba }) => {
     const [reviewed, setReviewed] = useState(
@@ -24,18 +24,20 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
             header: (row, index) => {
                 return <div id="nomor">No</div>;
             },
-            cell: (info) => info.getValue(),
+            cell: (info) => info.row.index + 1,
         },
         {
             accessorKey: "judul_lomba",
             header: "Judul Lomba",
         },
         {
+            accessorFn: (row) => row.kategori.kategori_lomba,
             cell: ({ row }) => {
                 const kategori = row.original.kategori.kategori_lomba;
                 return kategori;
             },
             header: "Kategori Lomba",
+            filterFn: customFilterFn
         },
         {
             accessorKey: "tanggal_mulai",
@@ -48,6 +50,7 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
         {
             accessorKey: "status",
             header: "Status",
+            filterFn: customFilterFn
         },
         {
             id: "Aksi",
@@ -102,11 +105,28 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
             },
         },
     ];
+
+    const filter = [
+        {
+            title: "status",
+            data: pengajuanLomba
+                ? [...new Set(pengajuanLomba.map(lomba => lomba.status || "Tidak diketahui"))]
+                : []
+        },
+        {
+            title: "kategori",
+            data: pengajuanLomba
+                ? [...new Set(pengajuanLomba.map(lomba => lomba.kategori?.kategori_lomba || "Tidak ada kategori"))]
+                : []
+        }
+    ];
+    
+
     return (
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
             <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={pengajuanLomba} />
+                <DataTable columns={columns} data={pengajuanLomba} filtering={filter} />
             </div>
         </AuthenticatedLayout>
     );
