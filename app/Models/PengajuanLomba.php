@@ -4,14 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class PengajuanLomba extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $table = 'pengajuan_lomba';
+    protected $primaryKey = 'pengajuanlomba_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'user_id',
-        'kategori_lomba_id',
+        'kategorilomba_id',
         'judul_lomba',
         'jenis_lomba',
         'tingkat_lomba',
@@ -25,6 +32,13 @@ class PengajuanLomba extends Model
         'surat_tugas',
         'status',
     ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->pengajuanlomba_id = (string) Str::uuid(); // Generate UUID otomatis
+        });
+    }
 
     protected $casts = [
         'anggota_kelompok' => 'array',
@@ -36,7 +50,7 @@ class PengajuanLomba extends Model
     }
     public function kategori()
     {
-        return $this->belongsTo(KategoriLomba::class, 'kategori_lomba_id');
+        return $this->belongsTo(KategoriLomba::class, 'kategorilomba_id');
     }
 
 

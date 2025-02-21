@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\KategoriLomba;
+use Illuminate\Validation\Rule;
 class KategoriLombaController extends Controller
 {
     /**
@@ -34,7 +35,7 @@ class KategoriLombaController extends Controller
     {
         // Validasi input
         $request->validate([
-            'kategori_lomba' => 'required|string|max:255|unique:kategori_lomba,kategori_lomba',
+            'kategori_lomba' => 'required|string|max:255|',
         ]);
 
         // Simpan ke database
@@ -68,7 +69,12 @@ class KategoriLombaController extends Controller
     public function update(Request $request, KategoriLomba $kategoriLomba)
     {
         $request->validate([
-            'kategori_lomba' => 'required|string|max:255|unique:kategori_lomba,kategori_lomba,' . $kategoriLomba->id,
+            'kategori_lomba' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('kategori_lomba', 'kategori_lomba')->ignore($kategoriLomba->kategorilomba_id, 'kategorilomba_id')
+            ],
         ]);
 
         $kategoriLomba->update([
@@ -77,6 +83,7 @@ class KategoriLombaController extends Controller
 
         return redirect()->route('kategori-lomba')->with('success', 'Kategori berhasil diperbarui.');
     }
+
 
     // Hapus kategori
     public function destroy(KategoriLomba $kategoriLomba)

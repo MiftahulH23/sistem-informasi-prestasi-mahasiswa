@@ -9,7 +9,7 @@ const PengajuanLomba = ({ auth }) => {
     const { kategoriLomba, judulLomba } = usePage().props;
     const { flash } = usePage().props;
     const { data, setData, post, processing, reset, errors } = useForm({
-        kategori_lomba_id: "",
+        kategorilomba_id: "",
         judul_lomba: "",
         jenis_lomba: "",
         tingkat_lomba: "",
@@ -29,10 +29,14 @@ const PengajuanLomba = ({ auth }) => {
     const [anggotaKelompok, setAnggotaKelompok] = useState([]);
 
     useEffect(() => {
-        if (selectedKategori && selectedKategori !== "umum") {
+        const kategoriTerpilih = kategoriLomba.find(
+            (k) => String(k.kategorilomba_id) === String(selectedKategori)
+        );
+
+        if (kategoriTerpilih && kategoriTerpilih.kategori_lomba !== "Umum") {
             const filtered = judulLomba.filter(
                 (judul) =>
-                    Number(judul.kategori_lomba_id) === Number(selectedKategori)
+                    String(judul.kategorilomba_id) === String(selectedKategori)
             );
             setFilteredJudul(filtered);
             setData("judul_lomba", "");
@@ -45,8 +49,8 @@ const PengajuanLomba = ({ auth }) => {
     const handleKategoriChange = (event) => {
         const selectedValue = event.target.value;
         setSelectedKategori(selectedValue);
-        setData("kategori_lomba_id", selectedValue);
-        if (selectedValue === "umum") {
+        setData("kategorilomba_id", selectedValue);
+        if (selectedValue === "Umum") {
             setData("judul_lomba", "");
         }
     };
@@ -91,6 +95,7 @@ const PengajuanLomba = ({ auth }) => {
     };
 
     const handleSubmit = (e) => {
+        console.log("Data sebelum submit:", data); 
         e.preventDefault();
         e.target.reset();
 
@@ -160,8 +165,8 @@ const PengajuanLomba = ({ auth }) => {
                                 Kategori Lomba
                             </Label>
                             <select
-                                id="kategori_lomba_id"
-                                name="kategori_lomba_id"
+                                id="kategorilomba_id"
+                                name="kategorilomba_id"
                                 onChange={handleKategoriChange}
                                 required
                                 value={selectedKategori}
@@ -169,8 +174,8 @@ const PengajuanLomba = ({ auth }) => {
                                 <option value="">Pilih Kategori</option>
                                 {kategoriLomba.map((kategori) => (
                                     <option
-                                        key={kategori.id}
-                                        value={kategori.id}
+                                        key={kategori.kategorilomba_id}
+                                        value={kategori.kategorilomba_id}
                                     >
                                         {kategori.kategori_lomba}
                                     </option>
@@ -182,7 +187,9 @@ const PengajuanLomba = ({ auth }) => {
                         <div className="flex flex-col gap-2">
                             <Label htmlFor="judul_lomba">Judul Lomba</Label>
                             {kategoriLomba.find(
-                                (k) => k.id === parseInt(selectedKategori)
+                                (k) =>
+                                    String(k.kategorilomba_id) ===
+                                    String(selectedKategori)
                             )?.kategori_lomba === "Umum" ? (
                                 <Input
                                     id="judul_lomba"
@@ -214,7 +221,7 @@ const PengajuanLomba = ({ auth }) => {
                                     <option value="">Pilih Judul</option>
                                     {filteredJudul.map((judul) => (
                                         <option
-                                            key={judul.id}
+                                            key={judul.judullomba_id}
                                             value={judul.judul_lomba}
                                         >
                                             {judul.judul_lomba}

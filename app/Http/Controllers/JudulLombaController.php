@@ -32,7 +32,7 @@ class JudulLombaController extends Controller
     public function store(Request $request) {
         $request->validate([
             'judul_lomba' => 'required|string',
-            'kategori_lomba_id' => 'required|exists:kategori_lomba,id',
+            'kategorilomba_id' => 'required|exists:kategori_lomba,kategorilomba_id',
         ]);
         JudulLomba::create($request->all());
         return redirect()->route('judul-lomba');
@@ -61,21 +61,21 @@ class JudulLombaController extends Controller
     {
         $request->validate([
             'judul_lomba' => 'required|string|max:255',
-            'kategori_lomba_id' => 'required|exists:kategori_lomba,id'
+            'kategorilomba_id' => 'required|exists:kategori_lomba,kategorilomba_id',
         ]);
 
-        $judulLomba->update($request->all());
+        $judulLomba->update([
+            'judul_lomba' => $request->judul_lomba,
+            'kategorilomba_id' => $request->kategorilomba_id,
+        ]);
 
-        return redirect()->route('judul-lomba')->with('success', 'Judul lomba berhasil diperbarui.');
+        return back()->with('success', 'Judul Lomba berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(JudulLomba $judulLomba)
     {
         $judulLomba->delete();
 
-        return redirect()->route('judul-lomba')->with('success', 'Judul lomba berhasil dihapus.');
+        return back()->with('success', 'Judul Lomba berhasil dihapus.');
     }
 }

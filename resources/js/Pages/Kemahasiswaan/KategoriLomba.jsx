@@ -77,7 +77,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
     // Handle simpan edit kategori
     const handleEditSubmit = (e) => {
         e.preventDefault();
-        put(route("kategori-lomba.update", selectedKategori.id), {
+        put(route("kategori-lomba.update", selectedKategori.kategorilomba_id), {
             onSuccess: () => {
                 setEditModalOpen(false);
                 Swal.fire("Berhasil!", "Kategori telah diperbaru.", "success");
@@ -134,7 +134,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
                                     />
                                     <Trash2
                                         className="cursor-pointer text-red-500 size-5"
-                                        onClick={() => handleDelete(kategori.id)}
+                                        onClick={() => handleDelete(kategori.kategorilomba_id)}
                                     />
                                 </td>
                             </tr>

@@ -341,15 +341,15 @@ export function DataTable({
         <div className="space-y-3">
             <Controls table={table} filtering={filtering} />
             <div className="rounded-md border overflow-y-hidden overflow-x-auto w-full">
-                <Table className="w-max">
-                    <TableHeader className="bg-white">
+                <Table className="w-full">
+                    <TableHeader className="bg-[#4F94C8]">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
                                         <TableHead
                                             key={header.id}
-                                            className="text-center [&:has(>#nomor)]:w-12 font-bold min-w-20"
+                                            className="text-center [&:has(>#nomor)]:w-12 font-bold min-w-20 text-white"
                                         >
                                             {header.isPlaceholder ? null : header.column.getCanSort() &&
                                               controls.sorting ? (
@@ -422,7 +422,7 @@ export function DataTable({
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
-                                    className="odd:bg-gray-50"
+                                    className="odd:bg-[#F8FAFC] even:bg-[#E3F2FD]"
                                     key={row.id}
                                     data-state={
                                         row.getIsSelected() && "selected"
@@ -431,7 +431,7 @@ export function DataTable({
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            className="text-center"
+                                            className="text-center text-[#374151]"
                                         >
                                             {flexRender(
                                                 cell.column.columnDef.cell,

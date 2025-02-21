@@ -56,7 +56,7 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
             id: "Aksi",
             header: "Aksi",
             cell: ({ row }) => {
-                const id = row.original.id;
+                const id = row.original.pengajuanlomba_id;
                 return reviewed[id] ? (
                     <span className="text-gray-500">Sudah Direview</span>
                 ) : (

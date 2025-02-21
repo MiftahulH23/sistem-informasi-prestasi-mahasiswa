@@ -29,11 +29,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/data-pengajuan-lomba', [PengajuanLombaController::class, 'index'])->name('data-pengajuan-lomba');
     Route::get('/update-pengajuan-lomba', [PengajuanLombaController::class, 'indexKemahasiswaan'])->name('update-pengajuan-lomba');
     Route::put('/pengajuan-lomba/{id}/update-status', [PengajuanLombaController::class, 'updateStatus'])->name('pengajuan-lomba.update-status');
+    Route::get('/data-pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
 });
 
 // Kategori Lomba
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/kategori-lomba',[KategoriLombaController::class, 'index'])->name('kategori-lomba');
+    Route::get('/kategori-lomba', [KategoriLombaController::class, 'index'])->name('kategori-lomba');
     Route::post('/kategori-lomba/store', [KategoriLombaController::class, 'store'])->name('kategori-lomba.store');
     Route::put('/kategori-lomba/{kategoriLomba}', [KategoriLombaController::class, 'update'])->name('kategori-lomba.update');
     Route::delete('/kategori-lomba/{kategoriLomba}', [KategoriLombaController::class, 'destroy'])->name('kategori-lomba.destroy');
@@ -45,6 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/judul-lomba/store', [JudulLombaController::class, 'store'])->name('judul-lomba.store');
     Route::put('/judul-lomba/{judulLomba}', [JudulLombaController::class, 'update'])->name('judul-lomba.update');
     Route::delete('/judul-lomba/{judulLomba}', [JudulLombaController::class, 'destroy'])->name('judul-lomba.destroy');
+
+
 });
 
 // Prestasi

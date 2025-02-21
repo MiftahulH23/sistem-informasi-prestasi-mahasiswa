@@ -13,7 +13,7 @@ const JudulLomba = () => {
     // Form untuk tambah data
     const { data, setData, post, processing, reset } = useForm({
         judul_lomba: "",
-        kategori_lomba_id: "",
+        kategorilomba_id: "",
     });
 
     // Form untuk edit data
@@ -24,9 +24,9 @@ const JudulLomba = () => {
         processing: editProcessing,
         errors: editErrors,
     } = useForm({
-        id: "",
+        judullomba_id: "",
         judul_lomba: "",
-        kategori_lomba_id: "",
+        kategorilomba_id: "",
     });
 
     // State untuk modal edit
@@ -46,9 +46,9 @@ const JudulLomba = () => {
     // Fungsi membuka modal edit
     const openEditModal = (judul) => {
         setEditData({
-            id: judul.id,
+            judullomba_id: judul.judullomba_id,
             judul_lomba: judul.judul_lomba,
-            kategori_lomba_id: judul.kategori_lomba_id,
+            kategorilomba_id: judul.kategorilomba_id,
         });
         setEditModalOpen(true);
     };
@@ -56,7 +56,8 @@ const JudulLomba = () => {
     // Fungsi submit edit data
     const handleEditSubmit = (e) => {
         e.preventDefault();
-        put(route("judul-lomba.update", editData.id), {
+        console.log("Mengupdate ID:", editData.judullomba_id); // Debugging
+        put(route("judul-lomba.update", editData.judullomba_id), {
             data: editData,
             onSuccess: () => {
                 setEditModalOpen(false);
@@ -67,24 +68,36 @@ const JudulLomba = () => {
 
     // Fungsi hapus data
     const handleDelete = (id) => {
-        Swal.fire({
-            title: "Apakah Anda yakin?",
-            text: "Data yang dihapus tidak dapat dikembalikan!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Ya, hapus!",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                router.delete(route("judul-lomba.destroy", id), {
-                    onSuccess: () => {
-                        Swal.fire("Berhasil!", "Judul telah dihapus.", "success");
-                    },
-                });
-            }
-        });
-    };
+    console.log("Menghapus ID:", id); // Debugging
+
+    if (!id) {
+        Swal.fire("Error!", "ID tidak ditemukan.", "error");
+        return;
+    }
+
+    Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Data yang dihapus tidak dapat dikembalikan!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Ya, hapus!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.delete(route("judul-lomba.destroy", id), {
+                onSuccess: () => {
+                    Swal.fire("Berhasil!", "Judul telah dihapus.", "success");
+                },
+                onError: (err) => {
+                    console.log("Error saat menghapus:", err);
+                },
+            });
+        }
+    });
+};
+
+    
 
     return (
         <AuthenticatedLayout>
@@ -104,21 +117,30 @@ const JudulLomba = () => {
                     />
                     <Label className="w-60">Kategori Lomba</Label>
                     <select
-                        name="kategori_lomba_id"
-                        value={data.kategori_lomba_id}
-                        onChange={(e) => setData("kategori_lomba_id", e.target.value)}
+                        name="kategorilomba_id"
+                        value={data.kategorilomba_id}
+                        onChange={(e) =>
+                            setData("kategorilomba_id", e.target.value)
+                        }
                         required
                         className="border rounded p-2"
                     >
                         <option value="">Pilih Kategori</option>
                         {kategoriLomba.map((kategori) => (
-                            <option key={kategori.id} value={kategori.id}>
+                            <option
+                                key={kategori.kategorilomba_id}
+                                value={kategori.kategorilomba_id}
+                            >
                                 {kategori.kategori_lomba}
                             </option>
                         ))}
                     </select>
                 </div>
-                <button type="submit" className="bg-blue-500 text-white px-2 py-1 rounded" disabled={processing}>
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-2 py-1 rounded"
+                    disabled={processing}
+                >
                     {processing ? "Menyimpan..." : "Tambah"}
                 </button>
             </form>
@@ -136,22 +158,28 @@ const JudulLomba = () => {
                 <tbody>
                     {judulLomba.length > 0 ? (
                         judulLomba.map((judul, index) => (
-                            <tr key={judul.id} className="text-center">
+                            <tr key={judul.judullomba_id || index} className="text-center">
                                 <td className="px-4 py-2">{index + 1}</td>
-                                <td className="px-4 py-2">{judul.judul_lomba}</td>
-                                <td className="px-4 py-2">{judul.kategori.kategori_lomba}</td>
+                                <td className="px-4 py-2">
+                                    {judul.judul_lomba}
+                                </td>
+                                <td className="px-4 py-2">
+                                    {judul.kategori.kategori_lomba}
+                                </td>
                                 <td className="px-4 py-2 flex gap-2 justify-center">
                                     <SquarePen
                                         className="cursor-pointer text-blue-500 size-5"
                                         onClick={() => openEditModal(judul)}
                                     />
-                                    <Trash2 className="cursor-pointer text-red-500 size-5" onClick={() => handleDelete(judul.id)} />
+                                    <Trash2 className="cursor-pointer text-red-500 size-5" onClick={() => handleDelete(judul.judullomba_id)} />
                                 </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="4" className="text-center py-4">Tidak ada data judul lomba.</td>
+                            <td colSpan="4" className="text-center py-4">
+                                Tidak ada data judul lomba.
+                            </td>
                         </tr>
                     )}
                 </tbody>
@@ -159,41 +187,67 @@ const JudulLomba = () => {
 
             {/* Modal Edit */}
             {isEditModalOpen && (
-                <Modal show={isEditModalOpen} onClose={() => setEditModalOpen(false)}>
+                <Modal
+                    show={isEditModalOpen}
+                    onClose={() => setEditModalOpen(false)}
+                >
                     <div className="bg-white p-6 rounded-lg shadow-lg w-full">
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-lg font-bold">Edit Judul Lomba</h2>
-                            <X className="cursor-pointer text-gray-500" onClick={() => setEditModalOpen(false)} />
+                            <h2 className="text-lg font-bold">
+                                Edit Judul Lomba
+                            </h2>
+                            <X
+                                className="cursor-pointer text-gray-500"
+                                onClick={() => setEditModalOpen(false)}
+                            />
                         </div>
                         <form onSubmit={handleEditSubmit}>
                             <Label>Judul Lomba</Label>
                             <Input
                                 name="judul_lomba"
                                 value={editData.judul_lomba}
-                                onChange={(e) => setEditData("judul_lomba", e.target.value)}
+                                onChange={(e) =>
+                                    setEditData("judul_lomba", e.target.value)
+                                }
                             />
 
                             <Label>Kategori Lomba</Label>
                             <select
-                                name="kategori_lomba_id"
-                                value={editData.kategori_lomba_id}
-                                onChange={(e) => setEditData("kategori_lomba_id", e.target.value)}
+                                name="kategorilomba_id"
+                                value={editData.kategorilomba_id}
+                                onChange={(e) =>
+                                    setEditData(
+                                        "kategorilomba_id",
+                                        e.target.value
+                                    )
+                                }
                                 required
                                 className="border rounded p-2"
                             >
                                 <option value="">Pilih Kategori</option>
                                 {kategoriLomba.map((kategori) => (
-                                    <option key={kategori.id} value={kategori.id}>
+                                    <option
+                                        key={kategori.kategorilomba_id}
+                                        value={kategori.kategorilomba_id}
+                                    >
                                         {kategori.kategori_lomba}
                                     </option>
                                 ))}
                             </select>
 
                             <div className="mt-4 flex justify-end gap-2">
-                                <button type="button" className="bg-gray-400 text-white px-3 py-1 rounded" onClick={() => setEditModalOpen(false)}>
+                                <button
+                                    type="button"
+                                    className="bg-gray-400 text-white px-3 py-1 rounded"
+                                    onClick={() => setEditModalOpen(false)}
+                                >
                                     Batal
                                 </button>
-                                <button type="submit" className="bg-blue-500 text-white px-3 py-1 rounded" disabled={editProcessing}>
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                                    disabled={editProcessing}
+                                >
                                     {editProcessing ? "Menyimpan..." : "Simpan"}
                                 </button>
                             </div>

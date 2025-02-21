@@ -8,9 +8,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('pengajuan_lomba', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('pengajuanlomba_id')->primary();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->integer('kategori_lomba_id');
+            $table->uuid('kategorilomba_id');
             $table->string('judul_lomba');
             $table->string('jenis_lomba');
             $table->string('tingkat_lomba');
@@ -24,6 +24,8 @@ return new class extends Migration {
             $table->json('anggota_kelompok')->nullable();
             $table->string('surat_tugas');
             $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('kategorilomba_id')->references('kategorilomba_id')->on('kategori_lomba')->onDelete('cascade');
         });
     }
 

@@ -16,22 +16,22 @@ class PengajuanLombaController extends Controller
         $pengajuanLomba = PengajuanLomba::with('kategori') // Ambil data kategori juga
             ->where('user_id', Auth::id())
             ->get();
-            // dd($pengajuanLomba->toArray());
+        // dd($pengajuanLomba->toArray());
         return Inertia::render('Mahasiswa/DataPengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
         ]);
-        
+
     }
     public function indexKemahasiswaan()
     {
         $pengajuanLomba = PengajuanLomba::with('kategori') // Ambil data kategori juga
             ->where('user_id', Auth::id())
             ->get();
-            // dd($pengajuanLomba->toArray());
+        // dd($pengajuanLomba->toArray());
         return Inertia::render('Kemahasiswaan/DataPengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
         ]);
-        
+
     }
 
     public function updateStatus(Request $request, $id)
@@ -58,7 +58,7 @@ class PengajuanLombaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_lomba_id' => 'required|integer',
+            'kategorilomba_id' => 'required',
             'judul_lomba' => 'required|string',
             'jenis_lomba' => 'required|string',
             'tingkat_lomba' => 'required|string',
@@ -86,11 +86,11 @@ class PengajuanLombaController extends Controller
 
 
         $surat_tugas_path = $request->file('surat_tugas')->store('surat_tugas', 'public');
-
+        // dd($request->all());
         // Simpan data ke database
         $pengajuan = PengajuanLomba::create([
             'user_id' => $user->id, // ID user yang login tetap sebagai pemilik pengajuan
-            'kategori_lomba_id' => $request->kategori_lomba_id,
+            'kategorilomba_id' => $request->kategorilomba_id,
             'judul_lomba' => $request->judul_lomba,
             'jenis_lomba' => $request->jenis_lomba,
             'tingkat_lomba' => $request->tingkat_lomba,
@@ -105,6 +105,14 @@ class PengajuanLombaController extends Controller
             'surat_tugas' => $surat_tugas_path,
         ]);
         return redirect()->back()->with('success', 'Pengajuan Lomba berhasil ditambahkan!');
+    }
+
+    public function show($id)
+    {
+        $pengajuanLomba = PengajuanLomba::with('kategori')->findOrFail($id);
+        return Inertia::render('Mahasiswa/DetailPengajuanLomba', [
+            'pengajuanLomba' => $pengajuanLomba,
+        ]);
     }
 
 }
