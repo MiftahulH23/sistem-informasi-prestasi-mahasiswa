@@ -6,7 +6,8 @@ import {
     Notebook,
     FilePlus,
     BookMarked,
-    LayoutList
+    LayoutList,
+    FileBadge,
 } from "lucide-react";
 import { NavProjects } from "@/components/nav-projects";
 import {
@@ -41,9 +42,9 @@ const menuMahasiswa = [
         icon: Notebook,
     },
     {
-        name: "Pelaporan Lomba",
-        url: "#",
-        icon: BookMarked,
+        name: "Pelaporan Prestasi",
+        url: "pelaporan-prestasi",
+        icon: FileBadge,
     },
 ];
 

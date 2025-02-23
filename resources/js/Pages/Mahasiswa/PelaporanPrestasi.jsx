@@ -8,7 +8,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/Components/ui/tooltip";
-const DataPengajuanLomba = ({ pengajuanLomba }) => {
+const PelaporanPrestasi = ({ pengajuanLomba }) => {
     const DetailPengajuanLomba = (id) => {
         router.get(`/data-pengajuan-lomba/show/${id}`);
     };
@@ -35,10 +35,6 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
         {
             accessorKey: "dosen_pembimbing",
             header: "Pembimbing",
-        },
-        {
-            accessorKey: "jumlah_peserta",
-            header: "Jumlah Peserta",
         },
         {
             accessorKey: "tanggal_mulai",
@@ -107,18 +103,12 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
                 const status = row.original.status;
                 return (
                     <div
-                        className={`${
-                            status === "Diterima"
-                                ? "text-green-500"
-                                : status === "Diajukan"
-                                ? "text-blue-500"
-                                : "text-red-500"
-                        } font-semibold`}
+                        className="font-semibold text-green-500"
                     >
                         {status}
                     </div>
                 );
-            },
+            }
         },
         {
             accessorKey: "Detail",
@@ -137,11 +127,28 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
                 );
             },
         },
+        {
+            accessorKey: "Laporan",
+            header: "Laporan",
+            cell: ({ row }) => {
+                const id = row.original.pengajuanlomba_id;
+                return (
+                    <div className="flex gap-2 items-center justify-center">
+                        <button
+                            onClick={() => router.get(`/pelaporan-prestasi/${id}`)}
+                            className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition"
+                        >
+                            Laporan
+                        </button>
+                    </div>
+                );
+            },
+        }
     ];
     return (
         <AuthenticatedLayout>
-            <Head title="Data Pengajuan Lomba" />
-            <h1>Data Pengajuan Lomba</h1>
+            <Head title="Pelaporan Prestasi" />
+            <h1>Pelaporan Prestasi</h1>
             <div className="overflow-x-auto p-4">
                 <DataTable columns={columns} data={pengajuanLomba} />
             </div>
@@ -149,4 +156,4 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
     );
 };
 
-export default DataPengajuanLomba;
+export default PelaporanPrestasi;
