@@ -56,8 +56,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pelaporan-prestasi', [PelaporanPrestasiController::class, 'index'])->name('pelaporan-prestasi');
     Route::get('/pelaporan-prestasi/create', [PelaporanPrestasiController::class, 'create'])->name('pelaporan-prestasi.create');
     Route::post('/pelaporan-prestasi/store', [PelaporanPrestasiController::class, 'store'])->name('pelaporan-prestasi.store');
-    Route::put('/pelaporan-prestasi/{pelaporanPrestasi}', [PelaporanPrestasiController::class, 'update'])->name('pelaporan-prestasi.update');
-    Route::delete('/pelaporan-prestasi/{pelaporanPrestasi}', [PelaporanPrestasiController::class, 'destroy'])->name('pelaporan-prestasi.destroy');
 });
 
 // Prestasi

@@ -8,7 +8,7 @@ import { customFilterFn, DataTable } from "@/Components/DataTable";
 const DataPengajuanLomba = ({ pengajuanLomba }) => {
     const [reviewed, setReviewed] = useState(
         pengajuanLomba.reduce((acc, lomba) => {
-            acc[lomba.id] = lomba.status !== "Diajukan";
+            acc[lomba.pengajuanlomba_id] = lomba.status !== "Diajukan";
             return acc;
         }, {})
     );

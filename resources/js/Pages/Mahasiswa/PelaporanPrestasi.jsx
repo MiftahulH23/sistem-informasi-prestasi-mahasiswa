@@ -8,91 +8,115 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/Components/ui/tooltip";
-const PelaporanPrestasi = ({ pengajuanLomba }) => {
+const PelaporanPrestasi = ({ prestasi }) => {
     const DetailPengajuanLomba = (id) => {
         router.get(`/data-pengajuan-lomba/show/${id}`);
     };
     const columns = [
         {
             id: "Nomor",
-            header: (row, index) => {
-                return <div id="nomor">No</div>;
-            },
+            header: "No",
             cell: (info) => info.row.index + 1,
         },
         {
-            accessorKey: "judul_lomba",
+            accessorKey: "pengajuan_lomba.judul_lomba",
             header: "Judul Lomba",
         },
         {
-            accessorKey: "kategori.kategori_lomba",
-            header: "Kategori Lomba",
+            accessorKey: "capaian_prestasi",
+            header: "Capaian Prestasi",
         },
         {
-            accessorKey: "tingkat_lomba",
-            header: "Tingkat Lomba",
-        },
-        {
-            accessorKey: "dosen_pembimbing",
-            header: "Pembimbing",
-        },
-        {
-            accessorKey: "tanggal_mulai",
-            header: "Tanggal Mulai",
-            cell: ({ row: { original: data } }) => {
-                const dateOpt = {
-                    locale: idLocale,
-                    weekStartsOn: 1,
-                };
-
-                const date = getDate(data.tanggal_mulai, dateOpt);
-                const month = format(data.tanggal_mulai, "LLL", dateOpt);
-                const fullDate = format(data.tanggal_mulai, "PPPP", dateOpt);
-
-                return (
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <div className="m-auto bg-card flex size-9 cursor-default flex-col items-center justify-center rounded-md border text-center">
-                                <span className="text-xs font-semibold leading-snug">
-                                    {date}
-                                </span>
-                                <span className="text-muted-foreground text-xs leading-none">
-                                    {month}
-                                </span>
-                            </div>
-                        </TooltipTrigger>
-                        <TooltipContent className="shadow-md">{`${fullDate}`}</TooltipContent>
-                    </Tooltip>
+            accessorKey: "sertifikat",
+            header: "Sertifikat",
+            cell: ({ row }) => {
+                const sertifikat = row.original.sertifikat;
+                return sertifikat ? (
+                    <a
+                        href={`/storage/${sertifikat}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                    >
+                        Lihat Sertifikat
+                    </a>
+                ) : (
+                    "Tidak ada file"
                 );
             },
         },
         {
-            accessorKey: "tanggal_selesai",
-            header: "Tanggal Selesai",
-            cell: ({ row: { original: data } }) => {
-                const dateOpt = {
-                    locale: idLocale,
-                    weekStartsOn: 1,
-                };
+            accessorKey: "url_media_sosial",
+            header: "URL Media Sosial",
+            cell: ({ row }) => {
+                const url = row.original.url_media_sosial;
+                return url ? (
+                    <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                    >
+                        Kunjungi
+                    </a>
+                ) : (
+                    "Tidak ada URL"
+                );
+            },
+        },
+        {
+            accessorKey: "dokumentasi",
+            header: "Dokumentasi",
+            cell: ({ row }) => {
+                let dokumentasi = row.original.dokumentasi;
 
-                const date = getDate(data.tanggal_selesai, dateOpt);
-                const month = format(data.tanggal_selesai, "LLL", dateOpt);
-                const fullDate = format(data.tanggal_selesai, "PPPP", dateOpt);
+                // Cek jika dokumentasi adalah string, konversi menjadi array
+                if (typeof dokumentasi === "string") {
+                    try {
+                        dokumentasi = JSON.parse(dokumentasi); // Jika JSON array, parse
+                    } catch (error) {
+                        dokumentasi = dokumentasi.split(","); // Jika dipisah koma, ubah ke array
+                    }
+                }
+
+                // Jika setelah dikonversi masih bukan array atau kosong
+                if (!Array.isArray(dokumentasi) || dokumentasi.length === 0) {
+                    return "Tidak ada dokumentasi";
+                }
 
                 return (
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <div className="m-auto bg-card flex size-9 cursor-default flex-col items-center justify-center rounded-md border text-center">
-                                <span className="text-xs font-semibold leading-snug">
-                                    {date}
-                                </span>
-                                <span className="text-muted-foreground text-xs leading-none">
-                                    {month}
-                                </span>
-                            </div>
-                        </TooltipTrigger>
-                        <TooltipContent className="shadow-md">{`${fullDate}`}</TooltipContent>
-                    </Tooltip>
+                    <div className="flex gap-2">
+                        {dokumentasi.map((file, index) => (
+                            <a
+                                key={index}
+                                href={`/storage/${file}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 underline"
+                            >
+                                Gambar {index + 1}
+                            </a>
+                        ))}
+                    </div>
+                );
+            },
+        },
+        {
+            accessorKey: "surat_tugas",
+            header: "Surat Tugas",
+            cell: ({ row }) => {
+                const suratTugas = row.original.surat_tugas;
+                return suratTugas ? (
+                    <a
+                        href={`/storage/${suratTugas}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                    >
+                        Lihat Surat
+                    </a>
+                ) : (
+                    "Tidak ada file"
                 );
             },
         },
@@ -103,54 +127,35 @@ const PelaporanPrestasi = ({ pengajuanLomba }) => {
                 const status = row.original.status;
                 return (
                     <div
-                        className="font-semibold text-green-500"
-                    >
-                        {status}
-                    </div>
-                );
-            }
-        },
-        {
-            accessorKey: "Detail",
-            header: "Detail",
-            cell: ({ row }) => {
-                const id = row.original.pengajuanlomba_id;
-                return (
-                    <div className="flex gap-2 items-center justify-center">
-                        <button
-                            onClick={() => DetailPengajuanLomba(id)}
-                            className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition"
-                        >
-                            Detail
-                        </button>
-                    </div>
+                    className={`${
+                        status === "Diterima"
+                            ? "text-green-500"
+                            : status === "Diajukan"
+                            ? "text-blue-500"
+                            : "text-red-500"
+                    } font-semibold`}
+                >
+                    {status}
+                </div>
                 );
             },
         },
-        {
-            accessorKey: "Laporan",
-            header: "Laporan",
-            cell: ({ row }) => {
-                const id = row.original.pengajuanlomba_id;
-                return (
-                    <div className="flex gap-2 items-center justify-center">
-                        <button
-                            onClick={() => router.get(`/pelaporan-prestasi/${id}`)}
-                            className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition"
-                        >
-                            Laporan
-                        </button>
-                    </div>
-                );
-            },
-        }
     ];
+
     return (
         <AuthenticatedLayout>
             <Head title="Pelaporan Prestasi" />
             <h1>Pelaporan Prestasi</h1>
+            <div className="flex justify-end py-3">
+                <button
+                    onClick={() => router.get("/pelaporan-prestasi/create")}
+                    className="bg-blue-600 py-2 px-4 text-white rounded-md"
+                >
+                    Tambah
+                </button>
+            </div>
             <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={pengajuanLomba} />
+                <DataTable columns={columns} data={prestasi} />
             </div>
         </AuthenticatedLayout>
     );

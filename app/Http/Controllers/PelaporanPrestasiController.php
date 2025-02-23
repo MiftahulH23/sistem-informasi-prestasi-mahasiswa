@@ -6,6 +6,9 @@ use App\Models\PengajuanLomba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
+use App\Models\Prestasi;
+use Illuminate\Support\Str;
 
 class PelaporanPrestasiController extends Controller
 {
@@ -14,13 +17,9 @@ class PelaporanPrestasiController extends Controller
      */
     public function index()
     {
-        $pengajuanLomba = PengajuanLomba::with('kategori')
-            ->where('status', 'Diterima')
-            ->where('user_id', Auth::id())
-            ->get();
-
+        $prestasi = Prestasi::with('pengajuanLomba')->where('user_id', Auth::id())->get();
         return Inertia::render('Mahasiswa/PelaporanPrestasi', [
-            'pengajuanLomba' => $pengajuanLomba,
+            'prestasi' => $prestasi
         ]);
     }
 
@@ -29,7 +28,12 @@ class PelaporanPrestasiController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Mahasiswa/TambahLaporanPrestasi');
+        $lombaOptions = PengajuanLomba::where('status', 'Diterima')
+            ->pluck('judul_lomba', 'pengajuanlomba_id'); // Menggunakan pengajuanlomba_id
+
+        return Inertia('Mahasiswa/TambahLaporanPrestasi', [
+            'lombaOptions' => $lombaOptions,
+        ]);
     }
 
     /**
@@ -37,7 +41,41 @@ class PelaporanPrestasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validasi input
+        $request->validate([
+            'pengajuanlomba_id' => 'required|exists:pengajuan_lomba,pengajuanlomba_id',
+            'capaian_prestasi' => 'required|string',
+            'sertifikat' => 'nullable|file|mimes:pdf|max:2048',
+            'dokumentasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'url_media_sosial' => 'nullable|url',
+            'surat_tugas' => 'nullable|file|mimes:pdf|max:2048',
+        ]);
+
+        // Upload Sertifikat jika ada
+        $sertifikatPath = $request->file('sertifikat') ? $request->file('sertifikat')->store('sertifikat', 'public') : null;
+
+        // Upload Dokumentasi jika ada
+        $dokumentasiPaths = [];
+        if ($request->hasFile('dokumentasi')) {
+            foreach ($request->file('dokumentasi') as $file) {
+                $path = $file->store('dokumentasi', 'public');
+                $dokumentasiPaths[] = $path;
+            }
+        }
+        $suratTugasPath = $request->file('surat_tugas') ? $request->file('surat_tugas')->store('surat_tugas/prestasi', 'public') : null;
+        Prestasi::create([
+            'prestasi_id' => Str::uuid(), // UUID
+            'pengajuanlomba_id' => $request->pengajuanlomba_id,
+            'user_id' => Auth::id(),
+            'capaian_prestasi' => $request->capaian_prestasi,
+            'sertifikat' => $sertifikatPath,
+            'dokumentasi' => json_encode($dokumentasiPaths),
+            'url_media_sosial' => $request->url_media_sosial,
+            'surat_tugas' => $suratTugasPath,
+            'status' => 'Diajukan', // Default status
+        ]);
+
+        return redirect()->back()->with('success', 'Laporan Prestasi berhasil ditambahkan!');
     }
 
     /**
