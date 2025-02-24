@@ -3,9 +3,15 @@ import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import TableComponent from "@/Components/TableComponent";
-import { customFilterFn, DataTable } from "@/Components/DataTable";
+import {
+    customDataFilter,
+    DataTable,
+    DataTableControls,
+    DataTableFilter,
+} from "@/Components/DataTable";
+import { id } from "date-fns/locale";
 
-const DataPengajuanLomba = ({ pengajuanLomba }) => {
+const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const [reviewed, setReviewed] = useState(
         pengajuanLomba.reduce((acc, lomba) => {
             acc[lomba.pengajuanlomba_id] = lomba.status !== "Diajukan";
@@ -31,15 +37,19 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
             header: "Judul Lomba",
         },
         {
-            accessorFn: (row) => row.kategori.kategori_lomba,
+            id : "kategorilomba_id",
+            accessorFn: (row) => {
+                console.log("Kd",row.kategori.kategori_lomba)
+                return row.kategori.kategori_lomba
+            },
             cell: ({ row }) => {
                 const kategori = row.original.kategori.kategori_lomba;
-                return kategori;
+                return row.getValue("kategorilomba_id");    
             },
             header: "Kategori Lomba",
-            filterFn: customFilterFn
+            filterFn: customDataFilter(),
         },
-        {
+        {   
             accessorKey: "tanggal_mulai",
             header: "Tanggal Mulai",
         },
@@ -48,9 +58,10 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
             header: "Tanggal Selesai",
         },
         {
+            id : "status",
             accessorKey: "status",
             header: "Status",
-            filterFn: customFilterFn
+            filterFn: customDataFilter(),
         },
         {
             id: "Aksi",
@@ -106,27 +117,23 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
         },
     ];
 
-    const filter = [
-        {
-            title: "status",
-            data: pengajuanLomba
-                ? [...new Set(pengajuanLomba.map(lomba => lomba.status || "Tidak diketahui"))]
-                : []
-        },
-        {
-            title: "kategori",
-            data: pengajuanLomba
-                ? [...new Set(pengajuanLomba.map(lomba => lomba.kategori?.kategori_lomba || "Tidak ada kategori"))]
-                : []
-        }
-    ];
-    
-
+   const statusPengajuan = ["Diajukan", "Diterima", "Ditolak"];
     return (
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
             <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={pengajuanLomba} filtering={filter} />
+                <DataTable columns={columns} data={pengajuanLomba}>
+                    {({ table }) => {
+                        return (
+                            <DataTableControls
+                                table={table}
+                            >
+                                <DataTableFilter table={table } filter="status" data={statusPengajuan} />
+                                <DataTableFilter table={table } filter="kategorilomba_id" data={kategoriLomba.map(item => item.kategori_lomba)} label="Kategori Lomba" />
+                            </DataTableControls>
+                        );
+                    }}
+                </DataTable>
             </div>
         </AuthenticatedLayout>
     );

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import * as React from "react";
 
 import {
     flexRender,
     getCoreRowModel,
+    getFacetedUniqueValues,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
@@ -13,8 +14,7 @@ import {
 
 import { cn } from "@/lib/utils";
 
-import { Label } from "./ui/label";
-
+import { Label } from "@/components/ui/label";
 import {
     Table,
     TableBody,
@@ -46,9 +46,10 @@ import {
     ChevronUpIcon,
     FilterIcon,
     SearchIcon,
+    XIcon,
 } from "lucide-react";
 
-export function PaginationControls({ table }) {
+export function DataTablePaginations({ table }) {
     const pageSizeOpt = [5, 10, 20];
 
     return (
@@ -115,7 +116,7 @@ export function PaginationControls({ table }) {
                             <Button
                                 size="icon"
                                 variant="outline"
-                                className="cursor-pointer disabled:pointer-events-none disabled:opacity-50"
+                                className="text-icon-accent hover:text-sidebar-icon-accent cursor-pointer disabled:pointer-events-none disabled:opacity-50"
                                 onClick={() => table.firstPage()}
                                 disabled={!table.getCanPreviousPage()}
                                 aria-label="Go to first page"
@@ -132,7 +133,7 @@ export function PaginationControls({ table }) {
                             <Button
                                 size="icon"
                                 variant="outline"
-                                className="cursor-pointer disabled:pointer-events-none disabled:opacity-50"
+                                className="text-icon-accent hover:text-sidebar-icon-accent cursor-pointer disabled:pointer-events-none disabled:opacity-50"
                                 onClick={() => table.previousPage()}
                                 disabled={!table.getCanPreviousPage()}
                                 aria-label="Go to previous page"
@@ -149,7 +150,7 @@ export function PaginationControls({ table }) {
                             <Button
                                 size="icon"
                                 variant="outline"
-                                className="cursor-pointer disabled:pointer-events-none disabled:opacity-50"
+                                className="text-icon-accent hover:text-sidebar-icon-accent cursor-pointer disabled:pointer-events-none disabled:opacity-50"
                                 onClick={() => table.nextPage()}
                                 disabled={!table.getCanNextPage()}
                                 aria-label="Go to next page"
@@ -166,7 +167,7 @@ export function PaginationControls({ table }) {
                             <Button
                                 size="icon"
                                 variant="outline"
-                                className="cursor-pointer disabled:pointer-events-none disabled:opacity-50"
+                                className="text-icon-accent hover:text-sidebar-icon-accent cursor-pointer disabled:pointer-events-none disabled:opacity-50"
                                 onClick={() => table.lastPage()}
                                 disabled={!table.getCanNextPage()}
                                 aria-label="Go to last page"
@@ -185,15 +186,35 @@ export function PaginationControls({ table }) {
     );
 }
 
-export function Controls({ table, search = true, filtering, children }) {
+export function DataTableControls({
+    table,
+    search = true,
+    className,
+    children,
+}) {
+    const inputRef = React.useRef(null);
+
+    const isInputEmpty = inputRef.current
+        ? inputRef.current.value.trim() === ""
+        : true;
+
+    function resetSearch() {
+        table.resetGlobalFilter();
+
+        if (inputRef.current) {
+            inputRef.current.value = "";
+        }
+    }
+
     return (
-        <div className="flex gap-3">
+        <div className={cn("flex gap-3", className)}>
             {search && (
                 <div className="relative">
                     <Input
+                        ref={inputRef}
                         type="search"
                         placeholder="Cari data"
-                        className="ps-8 selection:bg-blue-600 [&::-webkit-search-cancel-button]:appearance-none"
+                        className="pe-6 ps-8 selection:bg-blue-600 [&::-webkit-search-cancel-button]:appearance-none"
                         onChange={(e) =>
                             table.setGlobalFilter(String(e.target.value))
                         }
@@ -201,29 +222,40 @@ export function Controls({ table, search = true, filtering, children }) {
                     <div className="text-muted-foreground pointer-events-none absolute inset-y-0 start-2 flex items-center">
                         <SearchIcon className="size-4" />
                     </div>
+                    {!isInputEmpty && (
+                        <button
+                            type="button"
+                            onClick={resetSearch}
+                            className="text-muted-foreground hover:text-foreground absolute inset-y-0 end-0 flex cursor-pointer items-center px-2"
+                        >
+                            <XIcon className="size-4" />
+                        </button>
+                    )}
                 </div>
             )}
-            {filtering?.map((item, key) => (
-                <Filter
-                    key={key}
-                    title={item.title}
-                    data={item.data}
-                    table={table}
-                />
-            ))}
             {children}
         </div>
     );
 }
 
-export function Filter({ title, data, table }) {
-    const selectedStatuses = useMemo(() => {
-        const filterValue = table.getColumn(title)?.getFilterValue();
+export function DataTableFilter({ filter, table, className, data, label }) {
+    const filterKey = filter;
+
+    const uniqueStatusValues = React.useMemo(() => {
+        const statusColumn = table.getColumn(filterKey);
+        if (!statusColumn) return [];
+
+        const values = Array.from(statusColumn.getFacetedUniqueValues().keys());
+        return values.sort();
+    }, [table.getColumn(filterKey)?.getFacetedUniqueValues()]);
+
+    const selectedStatuses = React.useMemo(() => {
+        const filterValue = table.getColumn(filterKey)?.getFilterValue();
         return filterValue ?? [];
-    }, [table.getColumn(title)?.getFilterValue()]);
+    }, [table.getColumn(filterKey)?.getFilterValue()]);
 
     const handleStatusChange = (checked, value) => {
-        const filterValue = table.getColumn(title)?.getFilterValue();
+        const filterValue = table.getColumn(filterKey)?.getFilterValue();
         const newFilterValue = filterValue ? [...filterValue] : [];
 
         if (checked) {
@@ -234,60 +266,81 @@ export function Filter({ title, data, table }) {
         }
 
         table
-            .getColumn(title)
+            .getColumn(filterKey)
             ?.setFilterValue(
                 newFilterValue.length ? newFilterValue : undefined
             );
     };
-
+    const result = data ?? uniqueStatusValues;
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="capitalize">
+                <Button
+                    variant="outline"
+                    className={cn("gap-1 capitalize", className)}
+                >
                     <FilterIcon
-                        className="-ms-1 me-2 opacity-60"
+                        className="-ms-1 me-1 opacity-50"
                         size={16}
                         strokeWidth={2}
                         aria-hidden="true"
                     />
-                    {title}
+
+                    {label ?? filterKey}
+                    {selectedStatuses.length > 0 && (
+                        <span className="border-border text-black -me-1 ms-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
+                            {selectedStatuses.length}
+                        </span>
+                    )}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="min-w-36 p-3" align="start">
-                <div className="space-y-3">
-                    <div className="text-muted-foreground text-xs font-medium">
-                        Filter
-                    </div>
-                    <div className="space-y-3">
-                        {data.map((item, key) => (
-                            <div key={key} className="flex gap-2">
-                                <Checkbox
-                                    id={item}
-                                    checked={selectedStatuses.includes(item)}
-                                    onCheckedChange={(checked) => {
-                                        handleStatusChange(checked, item);
-                                    }}
-                                />
-                                <Label
-                                    htmlFor={item}
-                                    className="capitalize select-none"
-                                >
-                                    {item}
-                                </Label>
-                            </div>
-                        ))}
-                    </div>
+            <PopoverContent
+                align="start"
+                className="!w-fit !min-w-max space-y-3 p-4"
+            >
+                <div className="text-muted-foreground text-xs font-medium">
+                    Filter
+                </div>
+                <div
+                    data-density={uniqueStatusValues.length > 5 && "large"}
+                    data-is-medium={
+                        uniqueStatusValues.length > 5 &&
+                        uniqueStatusValues.length <= 10
+                    }
+                    data-is-large={uniqueStatusValues.length > 10}
+                    className="grid gap-3 data-[density=large]:grid-flow-row-dense data-[is-large=true]:grid-cols-3 data-[is-medium=true]:grid-cols-2"
+                >
+                    {result.map((item, key) => (
+                        <Label
+                            key={key}
+                            htmlFor={item}
+                            className="flex select-none gap-2 capitalize"
+                        >
+                            <Checkbox
+                                id={item}
+                                checked={selectedStatuses.includes(item)}
+                                onCheckedChange={(checked) => {
+                                    handleStatusChange(checked, item);
+                                }}
+                            />
+                            <span>{item}</span>
+                        </Label>
+                    ))}
                 </div>
             </PopoverContent>
         </Popover>
     );
 }
 
-export const customFilterFn = (row, columnId, filterValue) => {
-    if (!filterValue?.length) return true;
-    const column = row.getValue(columnId);
-    return filterValue.includes(column);
-};
+export function customDataFilter() {
+    function filterFn(row, columnId, filterValue) {
+        if (!filterValue?.length) return true;
+        const column = row.getValue(columnId);
+        return filterValue.includes(column);
+    }
+
+    return filterFn;
+}
 
 export function DataTable({
     columns,
@@ -296,13 +349,12 @@ export function DataTable({
         pagination: true,
         sorting: true,
     },
-    filtering,
-    state,
+    children,
 }) {
-    const [globalFilter, setGlobalFilter] = useState();
-    const [sorting, setSorting] = useState([]);
-    const [columnFilters, setColumnFilters] = useState([]);
-    const [pagination, setPagination] = useState({
+    const [globalFilter, setGlobalFilter] = React.useState();
+    const [sorting, setSorting] = React.useState([]);
+    const [columnFilters, setColumnFilters] = React.useState([]);
+    const [pagination, setPagination] = React.useState({
         pageIndex: 0,
         pageSize: 10,
     });
@@ -311,6 +363,7 @@ export function DataTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        getFacetedUniqueValues: getFacetedUniqueValues(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
@@ -327,24 +380,26 @@ export function DataTable({
         },
     });
 
-    useEffect(() => {
-        const storedData = localStorage.getItem("pageSize");
-        if (storedData) {
-            setPagination((prev) => ({
-                ...prev,
-                pageSize: Number(storedData),
-            }));
+    React.useEffect(() => {
+        if (typeof window !== "undefined") {
+            const storedData = localStorage.getItem("pageSize");
+            if (storedData) {
+                setPagination((prev) => ({
+                    ...prev,
+                    pageSize: Number(storedData),
+                }));
+            }
         }
     }, []);
 
     return (
         <div className="space-y-3">
-            <Controls table={table} filtering={filtering} />
-            <div className="rounded-md border overflow-y-hidden overflow-x-auto w-full">
+            {typeof children === "function" ? children({ table }) : children}
+            <div className="dark:bg-card overflow-hidden rounded-md border bg-zinc-50">
                 <Table className="w-full">
                     <TableHeader className="bg-[#4F94C8]">
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
+                            <TableRow key={headerGroup.id} className="hover:bg-[#4F94C8]">
                                 {headerGroup.headers.map((header) => {
                                     return (
                                         <TableHead
@@ -454,7 +509,7 @@ export function DataTable({
                     </TableBody>
                 </Table>
             </div>
-            {controls.pagination && <PaginationControls table={table} />}
+            {controls.pagination && <DataTablePaginations table={table} />}
         </div>
     );
 }
