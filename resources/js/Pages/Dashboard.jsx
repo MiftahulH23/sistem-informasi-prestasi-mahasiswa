@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
-export default function Dashboard() {
+export default function Dashboard({laravelVersion , phpVersion}) {
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
@@ -10,6 +10,7 @@ export default function Dashboard() {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             You're logged in
+                            <p>Laravel v{laravelVersion} (PHP v{phpVersion})</p>
                         </div>
                     </div>
                 </div>
