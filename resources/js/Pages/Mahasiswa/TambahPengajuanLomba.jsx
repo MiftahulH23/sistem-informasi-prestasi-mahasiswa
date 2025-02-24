@@ -244,8 +244,8 @@ const PengajuanLomba = ({ auth }) => {
                                 required
                             >
                                 <option value="">Pilih Jenis Lomba</option>
-                                <option value="akademik">Akademik</option>
-                                <option value="non-akademik">
+                                <option value="Akademik">Akademik</option>
+                                <option value="Non-Akademik">
                                     Non Akademik
                                 </option>
                             </select>

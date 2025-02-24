@@ -17,7 +17,7 @@ class PengajuanLombaController extends Controller
             ->where('user_id', Auth::id())
             ->get();
         $kategoriLomba = KategoriLomba::all();
-        return Inertia::render('Mahasiswa/DataPengajuanLomba', [
+        return Inertia::render('Mahasiswa/PengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
             'kategoriLomba' => $kategoriLomba,
         ]);

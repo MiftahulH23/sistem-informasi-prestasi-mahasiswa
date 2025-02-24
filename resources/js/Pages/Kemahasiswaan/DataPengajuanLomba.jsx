@@ -63,8 +63,15 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             filterFn: customDataFilter(),
         },
         {
-            accessorKey: "dosen_pembimbing",
-            header: "Pembimbing",
+            id: "tingkat_lomba",
+            accessorKey: "tingkat_lomba",
+            header: "Tingkat Lomba",
+            filterFn: customDataFilter(),
+        },
+        {
+            accessorKey: "jenis_lomba",
+            header: "Jenis Lomba",
+            filterFn: customDataFilter(),
         },
         {
             accessorKey: "tanggal_mulai",
@@ -149,10 +156,6 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             filterFn: customDataFilter(),
         },
         {
-            accessorKey: "porfolio",
-            header: "Portfolio",
-        },
-        {
             accessorKey: "Detail",
             header: "Detail",
             cell: ({ row }) => {
@@ -225,9 +228,17 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     ];
 
     const statusPengajuan = ["Diajukan", "Diterima", "Ditolak"];
+    const tingkatLomba = [
+        "Internasional",
+        "Nasional",
+        "Provinsi",
+        "Lokal-Wilayah",
+    ];
+    const jenisLomba = ["Akademik", "Non-Akademik"];
     return (
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
+            <h1>Update Pengajuan Lomba</h1>
             <div className="overflow-x-auto p-4">
                 <DataTable columns={columns} data={pengajuanLomba}>
                     {({ table }) => {
@@ -245,6 +256,18 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                                         (item) => item.kategori_lomba
                                     )}
                                     label="Kategori Lomba"
+                                />
+                                <DataTableFilter
+                                    table={table}
+                                    filter="tingkat_lomba"
+                                    label="Tingkat Lomba"
+                                    data={tingkatLomba}
+                                />
+                                <DataTableFilter
+                                    table={table}
+                                    filter="jenis_lomba"
+                                    label="Jenis Lomba"
+                                    data={jenisLomba}
                                 />
                             </DataTableControls>
                         );

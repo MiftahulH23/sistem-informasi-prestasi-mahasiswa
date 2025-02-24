@@ -30,7 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'index'])->name('data-pengajuan-lomba');
     Route::get('/update-pengajuan-lomba', [PengajuanLombaController::class, 'indexKemahasiswaan'])->name('update-pengajuan-lomba');
     Route::put('/pengajuan-lomba/{id}/update-status', [PengajuanLombaController::class, 'updateStatus'])->name('pengajuan-lomba.update-status');
-    Route::get('/data-pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
+    Route::get('/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
 });
 
 // Kategori Lomba

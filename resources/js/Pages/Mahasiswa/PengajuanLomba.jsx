@@ -16,7 +16,7 @@ import {
 
 const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const DetailPengajuanLomba = (id) => {
-        router.get(`/data-pengajuan-lomba/show/${id}`);
+        router.get(`/pengajuan-lomba/show/${id}`);
     };
     const columns = [
         {
@@ -48,8 +48,9 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             header: "Pembimbing",
         },
         {
-            accessorKey: "jumlah_peserta",
-            header: "Jumlah Peserta",
+            accessorKey: "jenis_lomba",
+            header: "Jenis Lomba",
+            filterFn: customDataFilter(),
         },
         {
             accessorKey: "tanggal_mulai",
@@ -157,6 +158,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
         "Provinsi",
         "Lokal-Wilayah",
     ];
+    const jenisLomba = ["Akademik", "Non-Akademik"];
     return (
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
@@ -185,6 +187,12 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                                     filter="tingkat_lomba"
                                     label="Tingkat Lomba"
                                     data={tingkatLomba}
+                                />
+                                <DataTableFilter
+                                    table={table}
+                                    filter="jenis_lomba"
+                                    label="Jenis Lomba"
+                                    data={jenisLomba}
                                 />
                                 <button
                                     onClick={() =>

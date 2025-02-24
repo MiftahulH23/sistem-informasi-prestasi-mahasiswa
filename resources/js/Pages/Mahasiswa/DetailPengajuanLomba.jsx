@@ -52,8 +52,13 @@ const DetailPengajuanLomba = ({ pengajuanLomba }) => {
                     </div>
                     <div>
                         <strong>Anggota Kelompok:</strong>{" "}
-                        {pengajuanLomba.anggota_kelompok}
+                        {Array.isArray(pengajuanLomba.anggota_kelompok)
+                            ? pengajuanLomba.anggota_kelompok
+                                  .join(", ")
+                                  .replace(/,([^,]*)$/, " dan$1")
+                            : pengajuanLomba.anggota_kelompok}
                     </div>
+
                     <div>
                         <strong>Status:</strong> {pengajuanLomba.status}
                     </div>
