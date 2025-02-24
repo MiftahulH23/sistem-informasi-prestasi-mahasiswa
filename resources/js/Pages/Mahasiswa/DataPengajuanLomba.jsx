@@ -1,14 +1,20 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-import { DataTable } from "@/Components/DataTable";
-import { id as idLocale } from "date-fns/locale";
+import {
+    customDataFilter,
+    DataTable,
+    DataTableControls,
+    DataTableFilter,
+} from "@/Components/DataTable";
+import { id, id as idLocale } from "date-fns/locale";
 import { format, getDate } from "date-fns";
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
 } from "@/Components/ui/tooltip";
-const DataPengajuanLomba = ({ pengajuanLomba }) => {
+
+const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const DetailPengajuanLomba = (id) => {
         router.get(`/data-pengajuan-lomba/show/${id}`);
     };
@@ -25,12 +31,17 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
             header: "Judul Lomba",
         },
         {
-            accessorKey: "kategori.kategori_lomba",
+            id: "kategorilomba_id",
+            accessorFn: (row) => {
+                return row.kategori.kategori_lomba;
+            },
             header: "Kategori Lomba",
         },
         {
+            id: "tingkat_lomba",
             accessorKey: "tingkat_lomba",
             header: "Tingkat Lomba",
+            filterFn: customDataFilter(),
         },
         {
             accessorKey: "dosen_pembimbing",
@@ -119,6 +130,7 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
                     </div>
                 );
             },
+            filterFn: customDataFilter(),
         },
         {
             accessorKey: "Detail",
@@ -138,12 +150,54 @@ const DataPengajuanLomba = ({ pengajuanLomba }) => {
             },
         },
     ];
+    const statusPengajuan = ["Diajukan", "Diterima", "Ditolak"];
+    const tingkatLomba = [
+        "Internasional",
+        "Nasional",
+        "Provinsi",
+        "Lokal-Wilayah",
+    ];
     return (
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
             <h1>Data Pengajuan Lomba</h1>
             <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={pengajuanLomba} />
+                <DataTable columns={columns} data={pengajuanLomba}>
+                    {({ table }) => {
+                        return (
+                            <DataTableControls>
+                                <DataTableFilter
+                                    table={table}
+                                    filter="status"
+                                    data={statusPengajuan}
+                                    label="Status"
+                                />
+                                <DataTableFilter
+                                    table={table}
+                                    filter="kategorilomba_id"
+                                    data={kategoriLomba.map(
+                                        (item) => item.kategori_lomba
+                                    )}
+                                    label="Kategori Lomba"
+                                />
+                                <DataTableFilter
+                                    table={table}
+                                    filter="tingkat_lomba"
+                                    label="Tingkat Lomba"
+                                    data={tingkatLomba}
+                                />
+                                <button
+                                    onClick={() =>
+                                        router.get("/pengajuan-lomba/create")
+                                    }
+                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
+                                >
+                                    Tambah
+                                </button>
+                            </DataTableControls>
+                        );
+                    }}
+                </DataTable>
             </div>
         </AuthenticatedLayout>
     );

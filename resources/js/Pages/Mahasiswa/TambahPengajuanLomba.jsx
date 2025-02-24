@@ -264,12 +264,12 @@ const PengajuanLomba = ({ auth }) => {
                                 required
                             >
                                 <option value="">Pilih Tingkat Lomba</option>
-                                <option value="internasional">
+                                <option value="Internasional">
                                     Internasional
                                 </option>
-                                <option value="nasional">Nasional</option>
-                                <option value="provinsi">Provinsi</option>
-                                <option value="lokal-wilayah">
+                                <option value="Nasional">Nasional</option>
+                                <option value="Provinsi">Provinsi</option>
+                                <option value="Lokal-Wilayah">
                                     Lokal-Wilayah
                                 </option>
                             </select>

@@ -27,18 +27,13 @@ const menuMahasiswa = [
         icon: LayoutDashboard,
     },
     {
-        name: "Pengajuan Lomba",
-        url: "/pengajuan-lomba",
-        icon: FilePlus,
-    },
-    {
         name: "Prestasi",
         url: "/prestasi",
         icon: Medal,
     },
     {
-        name: "Data Pengajuan Lomba",
-        url: "/data-pengajuan-lomba",
+        name: "Pengajuan Lomba",
+        url: "/pengajuan-lomba",
         icon: Notebook,
     },
     {

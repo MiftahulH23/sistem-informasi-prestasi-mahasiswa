@@ -16,8 +16,10 @@ class PengajuanLombaController extends Controller
         $pengajuanLomba = PengajuanLomba::with('kategori') // Ambil data kategori juga
             ->where('user_id', Auth::id())
             ->get();
+        $kategoriLomba = KategoriLomba::all();
         return Inertia::render('Mahasiswa/DataPengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
+            'kategoriLomba' => $kategoriLomba,
         ]);
 
     }
@@ -50,7 +52,7 @@ class PengajuanLombaController extends Controller
 
     public function create()
     {
-        return Inertia::render('Mahasiswa/PengajuanLomba', [
+        return Inertia::render('Mahasiswa/TambahPengajuanLomba', [
             'kategoriLomba' => KategoriLomba::all(),
             'judulLomba' => JudulLomba::with('kategori')->get()
         ]);

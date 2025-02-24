@@ -16,9 +16,6 @@ import {
 import { Table } from "lucide-react";
 import { filterFns } from "@tanstack/react-table";
 const PelaporanPrestasi = ({ prestasi }) => {
-    const DetailPengajuanLomba = (id) => {
-        router.get(`/data-pengajuan-lomba/show/${id}`);
-    };
     const columns = [
         {
             id: "Nomor",
@@ -160,7 +157,7 @@ const CapaianPrestasi = ["Juara 1", "Juara 2", "Juara 3", "Harapan 1", "Harapan 
                     {({ table }) => {
                         return (
                             <DataTableControls table={table}>
-                                <DataTableFilter table={table} filter={"capaian_prestasi"} label="Capaian Prestasi" data={CapaianPrestasi} />
+                                <DataTableFilter table={table} filter="capaian_prestasi" label="Capaian Prestasi" data={CapaianPrestasi} />
                                 <button
                                     onClick={() =>
                                         router.get("/pelaporan-prestasi/create")
