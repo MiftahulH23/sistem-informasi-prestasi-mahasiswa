@@ -23,27 +23,27 @@ import LogoKemahasiswaan from "@/Assets/images/LogoKemahasiswaan.jpg"
 const menuMahasiswa = [
     {
         name: "Dashboard",
-        url: "dashboard",
+        url: "/dashboard",
         icon: LayoutDashboard,
     },
     {
         name: "Pengajuan Lomba",
-        url: "pengajuan-lomba",
+        url: "/pengajuan-lomba",
         icon: FilePlus,
     },
     {
         name: "Prestasi",
-        url: "prestasi",
+        url: "/prestasi",
         icon: Medal,
     },
     {
         name: "Data Pengajuan Lomba",
-        url: "data-pengajuan-lomba",
+        url: "/data-pengajuan-lomba",
         icon: Notebook,
     },
     {
         name: "Pelaporan Prestasi",
-        url: "pelaporan-prestasi",
+        url: "/pelaporan-prestasi",
         icon: FileBadge,
     },
 ];
@@ -51,7 +51,7 @@ const menuMahasiswa = [
 const menuKemahasiswaan = [
     {
         name: "Dashboard",
-        url: "dashboard",
+        url: "/dashboard",
         icon: LayoutDashboard,
     },
     {
@@ -61,17 +61,17 @@ const menuKemahasiswaan = [
     },
     {
         name: "Udpate Pengajuan Lomba",
-        url: "update-pengajuan-lomba",
+        url: "/update-pengajuan-lomba",
         icon: Medal,
     },
     {
         name: "Kategori Lomba",
-        url: "kategori-lomba",
+        url: "/kategori-lomba",
         icon: Group,
     },
     {
         name: "Judul Lomba",
-        url: "judul-lomba",
+        url: "/judul-lomba",
         icon: LayoutList,
     },
 ];
@@ -88,14 +88,14 @@ const menuEksekutif = [
     },
 ];
 export function AppSidebar({ ...props }) {
-  const role = "kemahasiswaan";
+  const role = "mahasiswa";
   const menu = {
     mahasiswa: menuMahasiswa,
     kemahasiswaan: menuKemahasiswaan,
     eksekutif: menuEksekutif,
   }
     return (
-        <Sidebar variant="inset" {...props}>
+        <Sidebar variant="inset" {...props} className="z-20">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>

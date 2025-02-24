@@ -1,15 +1,13 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
-import { useState } from "react";
-import Swal from "sweetalert2";
-import TableComponent from "@/Components/TableComponent";
 import {
     customDataFilter,
     DataTable,
     DataTableControls,
     DataTableFilter,
 } from "@/Components/DataTable";
-import { id } from "date-fns/locale";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, router } from "@inertiajs/react";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const [reviewed, setReviewed] = useState(

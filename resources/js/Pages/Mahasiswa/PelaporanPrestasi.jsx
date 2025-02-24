@@ -1,13 +1,20 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-import { DataTable } from "@/Components/DataTable";
-import { id as idLocale } from "date-fns/locale";
+import {
+    customDataFilter,
+    DataTable,
+    DataTableControls,
+    DataTableFilter,
+} from "@/Components/DataTable";
+import { id, id as idLocale } from "date-fns/locale";
 import { format, getDate } from "date-fns";
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
 } from "@/Components/ui/tooltip";
+import { Table } from "lucide-react";
+import { filterFns } from "@tanstack/react-table";
 const PelaporanPrestasi = ({ prestasi }) => {
     const DetailPengajuanLomba = (id) => {
         router.get(`/data-pengajuan-lomba/show/${id}`);
@@ -23,8 +30,10 @@ const PelaporanPrestasi = ({ prestasi }) => {
             header: "Judul Lomba",
         },
         {
+            id : "capaian_prestasi",
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
+            filterFn: customDataFilter()
         },
         {
             accessorKey: "sertifikat",
@@ -127,35 +136,43 @@ const PelaporanPrestasi = ({ prestasi }) => {
                 const status = row.original.status;
                 return (
                     <div
-                    className={`${
-                        status === "Diterima"
-                            ? "text-green-500"
-                            : status === "Diajukan"
-                            ? "text-blue-500"
-                            : "text-red-500"
-                    } font-semibold`}
-                >
-                    {status}
-                </div>
+                        className={`${
+                            status === "Diterima"
+                                ? "text-green-500"
+                                : status === "Diajukan"
+                                ? "text-blue-500"
+                                : "text-red-500"
+                        } font-semibold`}
+                    >
+                        {status}
+                    </div>
                 );
             },
         },
     ];
-
+const CapaianPrestasi = ["Juara 1", "Juara 2", "Juara 3", "Harapan 1", "Harapan 2", "Harapan 3"];
     return (
         <AuthenticatedLayout>
             <Head title="Pelaporan Prestasi" />
             <h1>Pelaporan Prestasi</h1>
-            <div className="flex justify-end py-3">
-                <button
-                    onClick={() => router.get("/pelaporan-prestasi/create")}
-                    className="bg-blue-600 py-2 px-4 text-white rounded-md"
-                >
-                    Tambah
-                </button>
-            </div>
             <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={prestasi} />
+                <DataTable columns={columns} data={prestasi}>
+                    {({ table }) => {
+                        return (
+                            <DataTableControls table={table}>
+                                <DataTableFilter table={table} filter={"capaian_prestasi"} label="Capaian Prestasi" data={CapaianPrestasi} />
+                                <button
+                                    onClick={() =>
+                                        router.get("/pelaporan-prestasi/create")
+                                    }
+                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
+                                >
+                                    Tambah
+                                </button>
+                            </DataTableControls>
+                        );
+                    }}
+                </DataTable>
             </div>
         </AuthenticatedLayout>
     );
