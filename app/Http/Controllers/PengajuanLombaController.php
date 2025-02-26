@@ -6,9 +6,12 @@ use App\Models\PengajuanLomba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Log;
 use App\Models\KategoriLomba;
 use App\Models\JudulLomba;
+use App\Models\User;
+use App\Notifications\Pengajuan;
+use Illuminate\Support\Facades\Notification;
+
 class PengajuanLombaController extends Controller
 {
     public function index()
@@ -107,6 +110,9 @@ class PengajuanLombaController extends Controller
             'anggota_kelompok' => $anggota_kelompok, // Sudah termasuk user yang login jika kelompok
             'surat_tugas' => $surat_tugas_path,
         ]);
+
+        $kemahasiswaan = User::where('email', 'miftahul21si@mahasiswa.pcr.ac.id')->first();
+        $kemahasiswaan->notify(new Pengajuan($user->name));
         return redirect()->back()->with('success', 'Pengajuan Lomba berhasil ditambahkan!');
     }
 
@@ -116,6 +122,18 @@ class PengajuanLombaController extends Controller
         return Inertia::render('Mahasiswa/DetailPengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
         ]);
+    }
+
+    public function notify()
+    {
+        $user = Auth::user();
+        $email = "miftahul21si@mahasiswa.pcr.ac.id";
+        $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya." ;
+
+        Notification::route('mail', $email)
+            ->notify(new Pengajuan($message));
+
+        return "Notifikasi berhasil dikirim!";
     }
 
 }
