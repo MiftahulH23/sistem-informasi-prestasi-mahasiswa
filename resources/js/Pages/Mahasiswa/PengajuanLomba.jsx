@@ -1,18 +1,18 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
 import {
-    customDataFilter,
     DataTable,
     DataTableControls,
-    DataTableFilter,
+    DataTableFilter
 } from "@/Components/DataTable";
-import { id, id as idLocale } from "date-fns/locale";
-import { format, getDate } from "date-fns";
+import { Filter } from "@/Components/Filter";
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
 } from "@/Components/ui/tooltip";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, router } from "@inertiajs/react";
+import { format, getDate } from "date-fns";
+import { id as idLocale } from "date-fns/locale";
 
 const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const DetailPengajuanLomba = (id) => {
@@ -41,7 +41,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             id: "tingkat_lomba",
             accessorKey: "tingkat_lomba",
             header: "Tingkat Lomba",
-            filterFn: customDataFilter(),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             accessorKey: "dosen_pembimbing",
@@ -50,7 +50,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
         {
             accessorKey: "jenis_lomba",
             header: "Jenis Lomba",
-            filterFn: customDataFilter(),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             accessorKey: "tanggal_mulai",
@@ -81,6 +81,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </Tooltip>
                 );
             },
+            filterFn: Filter.dataTable("date-year")
         },
         {
             accessorKey: "tanggal_selesai",
@@ -131,7 +132,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </div>
                 );
             },
-            filterFn: customDataFilter(),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             accessorKey: "Detail",
@@ -167,7 +168,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 <DataTable columns={columns} data={pengajuanLomba}>
                     {({ table }) => {
                         return (
-                            <DataTableControls>
+                            <DataTableControls table={table}>
                                 <DataTableFilter
                                     table={table}
                                     filter="status"
@@ -193,6 +194,12 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                                     filter="jenis_lomba"
                                     label="Jenis Lomba"
                                     data={jenisLomba}
+                                />
+                                <DataTableFilter
+                                    table={table}
+                                    filter="tanggal_mulai"
+                                    label="Tahun"
+                                    variant="date-year"
                                 />
                                 <button
                                     onClick={() =>

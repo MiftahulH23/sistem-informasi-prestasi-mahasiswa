@@ -1,20 +1,19 @@
 import {
-    customDataFilter,
     DataTable,
     DataTableControls,
-    DataTableFilter,
+    DataTableFilter
 } from "@/Components/DataTable";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
-import { useState } from "react";
-import Swal from "sweetalert2";
-import { id, id as idLocale } from "date-fns/locale";
-import { format, getDate } from "date-fns";
 import {
     Tooltip,
     TooltipContent,
     TooltipTrigger,
 } from "@/Components/ui/tooltip";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, router } from "@inertiajs/react";
+import { format, getDate } from "date-fns";
+import { id as idLocale } from "date-fns/locale";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const [reviewed, setReviewed] = useState(
@@ -54,24 +53,24 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 return row.getValue("kategorilomba_id");
             },
             header: "Kategori Lomba",
-            filterFn: customDataFilter(),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             id: "tingkat_lomba",
             accessorKey: "tingkat_lomba",
             header: "Tingkat Lomba",
-            filterFn: customDataFilter(),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             id: "tingkat_lomba",
             accessorKey: "tingkat_lomba",
             header: "Tingkat Lomba",
-            filterFn: customDataFilter(),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             accessorKey: "jenis_lomba",
             header: "Jenis Lomba",
-            filterFn: customDataFilter(),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             accessorKey: "tanggal_mulai",
@@ -153,7 +152,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </div>
                 );
             },
-            filterFn: customDataFilter(),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             accessorKey: "Detail",

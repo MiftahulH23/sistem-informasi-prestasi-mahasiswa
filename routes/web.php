@@ -27,7 +27,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengajuan-lomba/create', [PengajuanLombaController::class, 'create'])->name('pengajuan-lomba.create');
     Route::post('/pengajuan-lomba/store', [PengajuanLombaController::class, 'store'])->name('pengajuan-lomba.store');
-    Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'index'])->name('data-pengajuan-lomba');
+    Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'index'])->name('pengajuan-lomba.index');
     Route::get('/update-pengajuan-lomba', [PengajuanLombaController::class, 'indexKemahasiswaan'])->name('update-pengajuan-lomba');
     Route::put('/pengajuan-lomba/{id}/update-status', [PengajuanLombaController::class, 'updateStatus'])->name('pengajuan-lomba.update-status');
     Route::get('/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');

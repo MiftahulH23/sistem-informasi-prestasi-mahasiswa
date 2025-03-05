@@ -95,7 +95,7 @@ const PengajuanLomba = ({ auth }) => {
     };
 
     const handleSubmit = (e) => {
-        console.log("Data sebelum submit:", data); 
+        console.log("Data sebelum submit:", data);
         e.preventDefault();
         e.target.reset();
 
@@ -145,6 +145,10 @@ const PengajuanLomba = ({ auth }) => {
                     "success"
                 );
             },
+            onError: (errors) => {
+                const message = Object.values(errors)[0];
+                Swal.fire("Gagal!", message, "error");
+            },
         });
     };
     return (
@@ -168,7 +172,7 @@ const PengajuanLomba = ({ auth }) => {
                                 id="kategorilomba_id"
                                 name="kategorilomba_id"
                                 onChange={handleKategoriChange}
-                                required
+                                
                                 value={selectedKategori}
                             >
                                 <option value="">Pilih Kategori</option>
@@ -201,7 +205,7 @@ const PengajuanLomba = ({ auth }) => {
                                             judul_lomba: e.target.value,
                                         })
                                     }
-                                    required
+                                    
                                     placeholder="Masukkan Judul Lomba"
                                     value={data.judul_lomba}
                                 />
@@ -215,7 +219,7 @@ const PengajuanLomba = ({ auth }) => {
                                             judul_lomba: e.target.value,
                                         })
                                     }
-                                    required
+                                    
                                     value={data.judul_lomba}
                                 >
                                     <option value="">Pilih Judul</option>
@@ -241,7 +245,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("jenis_lomba", e.target.value)
                                 }
-                                required
+                                
                             >
                                 <option value="">Pilih Jenis Lomba</option>
                                 <option value="Akademik">Akademik</option>
@@ -261,7 +265,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tingkat_lomba", e.target.value)
                                 }
-                                required
+                                
                             >
                                 <option value="">Pilih Tingkat Lomba</option>
                                 <option value="Internasional">
@@ -287,7 +291,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("model_pelaksanaan", e.target.value)
                                 }
-                                required
+                                
                             >
                                 <option value="">Pilih Model Pelaksanan</option>
                                 <option value="offline">Offline</option>
@@ -307,7 +311,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("dosen_pembimbing", e.target.value)
                                 }
-                                required
+                                
                             >
                                 <option value="">Input Dosen Pembimbing</option>
                                 <option value="SPA">SPA</option>
@@ -326,7 +330,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tanggal_mulai", e.target.value)
                                 }
-                                required
+                                
                             />
                         </div>
 
@@ -343,7 +347,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tanggal_selesai", e.target.value)
                                 }
-                                required
+                                
                             />
                         </div>
 
@@ -358,7 +362,7 @@ const PengajuanLomba = ({ auth }) => {
                                 className="h-10 px-3 border rounded-md"
                                 value={jenisKepesertaan}
                                 onChange={handleKepesertaanChange}
-                                required
+                                
                             >
                                 <option value="">
                                     Pilih Jenis Kepesertaan
@@ -406,7 +410,7 @@ const PengajuanLomba = ({ auth }) => {
                                                     e.target.value
                                                 )
                                             }
-                                            required
+                                            
                                             placeholder={`Anggota ${index + 1}`}
                                         />
                                         <button
@@ -456,7 +460,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("surat_tugas", e.target.files[0])
                                 }
-                                required
+                                
                             />
                         </div>
                     </div>

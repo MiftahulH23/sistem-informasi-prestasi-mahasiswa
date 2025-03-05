@@ -1,20 +1,10 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
 import {
-    customDataFilter,
     DataTable,
     DataTableControls,
-    DataTableFilter,
+    DataTableFilter
 } from "@/Components/DataTable";
-import { id, id as idLocale } from "date-fns/locale";
-import { format, getDate } from "date-fns";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/Components/ui/tooltip";
-import { Table } from "lucide-react";
-import { filterFns } from "@tanstack/react-table";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, router } from "@inertiajs/react";
 const PelaporanPrestasi = ({ prestasi }) => {
     const columns = [
         {
@@ -30,7 +20,7 @@ const PelaporanPrestasi = ({ prestasi }) => {
             id : "capaian_prestasi",
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
-            filterFn: customDataFilter()
+            
         },
         {
             accessorKey: "sertifikat",

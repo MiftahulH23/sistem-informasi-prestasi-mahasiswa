@@ -47,7 +47,10 @@ import {
     FilterIcon,
     SearchIcon,
     XIcon,
+    CalendarIcon,
 } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { getYear } from "date-fns";
 
 export function DataTablePaginations({ table }) {
     const pageSizeOpt = [5, 10, 20];
@@ -238,23 +241,49 @@ export function DataTableControls({
     );
 }
 
-export function DataTableFilter({ filter, table, className, data, label }) {
-    const filterKey = filter;
+export function DataTableFilter(props) {
+    const {
+        filter,
+        table,
+        className,
+        data,
+        label,
+        variant = "checkbox",
+    } = props;
+    const filterKey = String(filter);
 
-    const uniqueStatusValues = React.useMemo(() => {
-        const statusColumn = table.getColumn(filterKey);
-        if (!statusColumn) return [];
+    const [date, setDate] = React.useState();
+    const [selected, setSelected] = React.useState();
+    const [popoverOpen, setPopoverOpen] = React.useState(false);
+    const [selectedYear, setSelectedYear] = React.useState();
 
-        const values = Array.from(statusColumn.getFacetedUniqueValues().keys());
+    const filterColumn = table.getColumn(filterKey);
+    const facetedUniqueValues = filterColumn?.getFacetedUniqueValues();
+    const filterValue = filterColumn?.getFilterValue();
+
+    const uniqueValues = React.useMemo(() => {
+        if (!facetedUniqueValues) return [];
+        const values = Array.from(facetedUniqueValues.keys());
         return values.sort();
-    }, [table.getColumn(filterKey)?.getFacetedUniqueValues()]);
+    }, [facetedUniqueValues]);
 
-    const selectedStatuses = React.useMemo(() => {
-        const filterValue = table.getColumn(filterKey)?.getFilterValue();
+    const uniqueYearValues = React.useMemo(() => {
+        if (!facetedUniqueValues) return [];
+
+        const years = Array.from(facetedUniqueValues.keys()).map((date) => {
+            const year = getYear(new Date(date));
+            return year;
+        });
+
+        const uniqueYears = [...new Set(years)];
+        return uniqueYears.sort((a, b) => b - a);
+    }, [facetedUniqueValues]);
+
+    const selectedValue = React.useMemo(() => {
         return filterValue ?? [];
-    }, [table.getColumn(filterKey)?.getFilterValue()]);
+    }, [filterValue]);
 
-    const handleStatusChange = (checked, value) => {
+    const handleCheckboxChange = (checked, value) => {
         const filterValue = table.getColumn(filterKey)?.getFilterValue();
         const newFilterValue = filterValue ? [...filterValue] : [];
 
@@ -271,9 +300,114 @@ export function DataTableFilter({ filter, table, className, data, label }) {
                 newFilterValue.length ? newFilterValue : undefined
             );
     };
-    const result = data ?? uniqueStatusValues;
+
+    function handleRadioChange(value) {
+        setSelected(value);
+        table.getColumn(filterKey)?.setFilterValue(value);
+    }
+
+    function handleDateChange(selectedDate) {
+        setDate(selectedDate);
+
+        table
+            .getColumn(filterKey)
+            ?.setFilterValue(
+                selectedDate?.from && selectedDate?.to
+                    ? [selectedDate.from, addHours(selectedDate.to, 23)]
+                    : undefined
+            );
+    }
+
+    function handleClearFilter() {
+        setPopoverOpen(false);
+        setSelected(undefined);
+        setSelectedYear(undefined);
+        table.getColumn(filterKey)?.setFilterValue(undefined);
+    }
+
+    const mapData = data ?? uniqueValues;
+
+    if (variant === "date-range") {
+        return (
+            <DatePickerRange
+                placeholder={label ?? "Tanggal"}
+                state={[date, setDate]}
+                handleSelect={(e) => handleDateChange(e)}
+            />
+        );
+    }
+
+    if (variant === "date-year") {
+        function handleDateYearChange(value) {
+            setSelectedYear(value);
+            table.getColumn(filterKey)?.setFilterValue(value);
+        }
+
+        return (
+            <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+                <PopoverTrigger asChild>
+                    <Button
+                        variant="outline"
+                        className={cn("gap-1 capitalize", className)}
+                    >
+                        <CalendarIcon
+                            className="-ms-1 me-1 opacity-50"
+                            size={16}
+                            strokeWidth={2}
+                            aria-hidden="true"
+                        />
+                        {label ?? filterKey}
+                        {selectedYear && (
+                            <span className="bg-primary/80 -me-1 ms-1 size-2 rounded-full" />
+                        )}
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                    align="start"
+                    data-density={mapData.length > 5 && "large"}
+                    data-is-medium={mapData.length > 5 && mapData.length <= 10}
+                    data-is-large={mapData.length > 10}
+                    className="group !w-fit !min-w-28 !gap-2 p-4"
+                >
+                    <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground mb-2 text-xs font-medium">
+                            Filter
+                        </span>
+                        {selectedYear && (
+                            <button
+                                onClick={handleClearFilter}
+                                className="text-foreground mb-2 cursor-pointer text-xs font-medium hover:underline hover:underline-offset-2"
+                            >
+                                Clear
+                            </button>
+                        )}
+                    </div>
+                    <RadioGroup
+                        value={selectedYear}
+                        onValueChange={(value) => handleDateYearChange(value)}
+                        className="group-has-data-[density=large]:grid-flow-row-dense group-has-data-[is-large=true]:grid-cols-3 group-has-data-[is-medium=true]:grid-cols-2 grid gap-2.5"
+                    >
+                        {uniqueYearValues.map((item, key) => (
+                            <Label
+                                key={key}
+                                htmlFor={key.toString()}
+                                className="flex select-none gap-2 capitalize"
+                            >
+                                <RadioGroupItem
+                                    value={item.toString()}
+                                    id={key.toString()}
+                                />
+                                <span>{item}</span>
+                            </Label>
+                        ))}
+                    </RadioGroup>
+                </PopoverContent>
+            </Popover>
+        );
+    }
+
     return (
-        <Popover>
+        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
@@ -285,62 +419,83 @@ export function DataTableFilter({ filter, table, className, data, label }) {
                         strokeWidth={2}
                         aria-hidden="true"
                     />
-
                     {label ?? filterKey}
-                    {selectedStatuses.length > 0 && (
-                        <span className="border-border text-black -me-1 ms-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-                            {selectedStatuses.length}
+                    {variant === "radio" && selected && (
+                        <span className="bg-primary/80 -me-1 ms-1 size-2 rounded-full" />
+                    )}
+                    {variant === "checkbox" && selectedValue.length > 0 && (
+                        <span className="border-border bg-primary/80 text-primary-foreground -me-1 ms-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
+                            {selectedValue.length}
                         </span>
                     )}
                 </Button>
             </PopoverTrigger>
             <PopoverContent
                 align="start"
-                className="!w-fit !min-w-max space-y-3 p-4"
+                data-density={mapData.length > 5 && "large"}
+                data-is-medium={mapData.length > 5 && mapData.length <= 10}
+                data-is-large={mapData.length > 10}
+                className="group !w-fit !min-w-max !gap-2 p-4"
             >
-                <div className="text-muted-foreground text-xs font-medium">
-                    Filter
-                </div>
-                <div
-                    data-density={uniqueStatusValues.length > 5 && "large"}
-                    data-is-medium={
-                        uniqueStatusValues.length > 5 &&
-                        uniqueStatusValues.length <= 10
-                    }
-                    data-is-large={uniqueStatusValues.length > 10}
-                    className="grid gap-3 data-[density=large]:grid-flow-row-dense data-[is-large=true]:grid-cols-3 data-[is-medium=true]:grid-cols-2"
-                >
-                    {result.map((item, key) => (
-                        <Label
-                            key={key}
-                            htmlFor={item}
-                            className="flex select-none gap-2 capitalize"
+                <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground mb-2 text-xs font-medium">
+                        Filter
+                    </span>
+                    {(selected || selectedValue.length > 0) && (
+                        <button
+                            onClick={handleClearFilter}
+                            className="text-foreground mb-2 cursor-pointer text-xs font-medium hover:underline hover:underline-offset-2"
                         >
-                            <Checkbox
-                                id={item}
-                                checked={selectedStatuses.includes(item)}
-                                onCheckedChange={(checked) => {
-                                    handleStatusChange(checked, item);
-                                }}
-                            />
-                            <span>{item}</span>
-                        </Label>
-                    ))}
+                            Clear
+                        </button>
+                    )}
                 </div>
+                {variant === "checkbox" && (
+                    <div className="group-has-data-[density=large]:grid-flow-row-dense group-has-data-[is-large=true]:grid-cols-3 group-has-data-[is-medium=true]:grid-cols-2 grid gap-3">
+                        {mapData.map((item, key) => (
+                            <Label
+                                key={key}
+                                htmlFor={item}
+                                className="flex select-none gap-2 capitalize"
+                            >
+                                <Checkbox
+                                    id={item}
+                                    checked={selectedValue.includes(item)}
+                                    onCheckedChange={(checked) => {
+                                        handleCheckboxChange(checked, item);
+                                    }}
+                                />
+                                <span>{item}</span>
+                            </Label>
+                        ))}
+                    </div>
+                )}
+                {variant === "radio" && (
+                    <RadioGroup
+                        value={selected}
+                        onValueChange={handleRadioChange}
+                        className="group-has-data-[density=large]:grid-flow-row-dense group-has-data-[is-large=true]:grid-cols-3 group-has-data-[is-medium=true]:grid-cols-2 grid gap-2.5"
+                    >
+                        {mapData.map((item, key) => (
+                            <Label
+                                key={key}
+                                htmlFor={key.toString()}
+                                className="flex select-none gap-2 capitalize"
+                            >
+                                <RadioGroupItem
+                                    value={item}
+                                    id={key.toString()}
+                                />
+                                <span>{item}</span>
+                            </Label>
+                        ))}
+                    </RadioGroup>
+                )}
             </PopoverContent>
         </Popover>
     );
 }
 
-export function customDataFilter() {
-    function filterFn(row, columnId, filterValue) {
-        if (!filterValue?.length) return true;
-        const column = row.getValue(columnId);
-        return filterValue.includes(column);
-    }
-
-    return filterFn;
-}
 
 export function DataTable({
     columns,
@@ -399,7 +554,10 @@ export function DataTable({
                 <Table className="w-full">
                     <TableHeader className="bg-[#4F94C8]">
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id} className="hover:bg-[#4F94C8]">
+                            <TableRow
+                                key={headerGroup.id}
+                                className="hover:bg-[#4F94C8]"
+                            >
                                 {headerGroup.headers.map((header) => {
                                     return (
                                         <TableHead
