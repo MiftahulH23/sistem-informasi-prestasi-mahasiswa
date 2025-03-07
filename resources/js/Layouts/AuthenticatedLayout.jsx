@@ -11,7 +11,7 @@ export default function AuthenticatedLayout({children }) {
     return (
         <SidebarProvider className="w-screen">
             <AppSidebar />
-            <SidebarInset className="flex-auto">
+            <SidebarInset className="flex-auto w-screen overflow-y-auto">
                 <header className="flex h-16 shrink-0 items-center gap-2 bg-background sticky top-0 z-10">
                     <div className="flex items-center justify-between gap-2 px-4 w-full">
                         <SidebarTrigger className="-ml-1" />

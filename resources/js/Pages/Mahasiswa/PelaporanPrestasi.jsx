@@ -153,7 +153,7 @@ const PelaporanPrestasi = ({ prestasi }) => {
             <Head title="Pelaporan Prestasi" />
             <h1>Pelaporan Prestasi</h1>
             <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={prestasi}>
+                <DataTable columns={columns} data={prestasi} className="">
                     {({ table }) => {
                         return (
                             <DataTableControls table={table}>
