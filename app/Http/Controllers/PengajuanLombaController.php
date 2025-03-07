@@ -27,14 +27,13 @@ class PengajuanLombaController extends Controller
         ]);
 
     }
-    public function indexKemahasiswaan()
+    public function editStatus()
     {
         $pengajuanLomba = PengajuanLomba::with('kategori') // Ambil data kategori juga
-            ->where('user_id', Auth::id())
             ->get();
         $kategoriLomba = KategoriLomba::all();
         // dd($pengajuanLomba->toArray());
-        return Inertia::render('Kemahasiswaan/DataPengajuanLomba', [
+        return Inertia::render('Kemahasiswaan/UpdateStatusPengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
             'kategoriLomba' => $kategoriLomba,
         ]);

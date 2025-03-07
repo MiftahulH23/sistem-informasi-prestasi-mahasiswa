@@ -28,7 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengajuan-lomba/create', [PengajuanLombaController::class, 'create'])->name('pengajuan-lomba.create');
     Route::post('/pengajuan-lomba/store', [PengajuanLombaController::class, 'store'])->name('pengajuan-lomba.store');
     Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'index'])->name('pengajuan-lomba.index');
-    Route::get('/update-pengajuan-lomba', [PengajuanLombaController::class, 'indexKemahasiswaan'])->name('update-pengajuan-lomba');
+    Route::get('/update-pengajuan-lomba', [PengajuanLombaController::class, 'editStatus'])->name('update-pengajuan-lomba');
     Route::put('/pengajuan-lomba/{id}/update-status', [PengajuanLombaController::class, 'updateStatus'])->name('pengajuan-lomba.update-status');
     Route::get('/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
 });
@@ -56,6 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pelaporan-prestasi', [PelaporanPrestasiController::class, 'index'])->name('pelaporan-prestasi');
     Route::get('/pelaporan-prestasi/create', [PelaporanPrestasiController::class, 'create'])->name('pelaporan-prestasi.create');
     Route::post('/pelaporan-prestasi/store', [PelaporanPrestasiController::class, 'store'])->name('pelaporan-prestasi.store');
+    Route::get('/update-pelaporan-prestasi', [PelaporanPrestasiController::class, 'editStatus'])->name('update-pelaporan-prestasi');
+    Route::put('/pelaporan-prestasi/{id}/update-status', [PelaporanPrestasiController::class, 'updateStatus'])->name('pelaporan-prestasi.update-status');
 });
 
 // Prestasi

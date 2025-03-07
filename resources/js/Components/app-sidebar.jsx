@@ -55,11 +55,6 @@ const menuKemahasiswaan = [
         icon: Medal,
     },
     {
-        name: "Udpate Pengajuan Lomba",
-        url: "/update-pengajuan-lomba",
-        icon: Medal,
-    },
-    {
         name: "Kategori Lomba",
         url: "/kategori-lomba",
         icon: Group,
@@ -68,6 +63,16 @@ const menuKemahasiswaan = [
         name: "Judul Lomba",
         url: "/judul-lomba",
         icon: LayoutList,
+    },
+    {
+        name: "Udpate Pengajuan Lomba",
+        url: "/update-pengajuan-lomba",
+        icon: Medal,
+    },
+    {
+        name: "Update Pelaporan Prestasi",
+        url: "/update-pelaporan-prestasi",
+        icon: FileBadge,
     },
 ];
 const menuEksekutif = [
@@ -83,7 +88,7 @@ const menuEksekutif = [
     },
 ];
 export function AppSidebar({ ...props }) {
-  const role = "mahasiswa";
+  const role = "kemahasiswaan";
   const menu = {
     mahasiswa: menuMahasiswa,
     kemahasiswaan: menuKemahasiswaan,

@@ -6,7 +6,42 @@ import {
 import { Filter } from "@/Components/Filter";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-const PelaporanPrestasi = ({ prestasi }) => {
+import { useState } from "react";
+import Swal from "sweetalert2";
+
+const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
+    // Inisialisasi reviewed berdasarkan status prestasi
+    const [reviewed, setReviewed] = useState(
+        prestasi.reduce((acc, item) => {
+            acc[item.prestasi_id] = item.status !== "Diajukan"; // Jika bukan "Diajukan", maka sudah direview
+            return acc;
+        }, {})
+    );
+
+    const updateStatus = (id, status) => {
+        router.put(
+            `/pelaporan-prestasi/${id}/update-status`,
+            { status },
+            {
+                onSuccess: () => {
+                    setReviewed((prev) => ({ ...prev, [id]: true })); // Tandai sebagai sudah direview
+                    Swal.fire(
+                        "Berhasil!",
+                        "Status pengajuan berhasil diubah.",
+                        "success"
+                    );
+                },
+                onError: () => {
+                    Swal.fire(
+                        "Gagal!",
+                        "Terjadi kesalahan, coba lagi nanti.",
+                        "error"
+                    );
+                },
+            }
+        );
+    };
+
     const columns = [
         {
             id: "Nomor",
@@ -21,7 +56,7 @@ const PelaporanPrestasi = ({ prestasi }) => {
             id: "capaian_prestasi",
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
-            filterFn: Filter.dataTable("checkbox"),
+            filterFn: Filter.dataTable("checkbox")
         },
         {
             accessorKey: "sertifikat",
@@ -136,7 +171,59 @@ const PelaporanPrestasi = ({ prestasi }) => {
                     </div>
                 );
             },
-            filterFn: Filter.dataTable("checkbox"),
+            filterFn: Filter.dataTable("checkbox")
+        },
+        {
+            id: "Aksi",
+            header: "Aksi",
+            cell: ({ row }) => {
+                const id = row.original.prestasi_id;
+                return reviewed[id] ? (
+                    <span className="text-gray-500">Sudah Direview</span>
+                ) : (
+                    <div className="flex gap-2 items-center justify-center">
+                        <button
+                            onClick={() => updateStatus(id, "Diterima")}
+                            className="bg-blue-500 text-white px-1 rounded size-5"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="lucide lucide-check w-full h-full object-cover"
+                            >
+                                <path d="M20 6 9 17l-5-5" />
+                            </svg>
+                        </button>
+                        <button
+                            onClick={() => updateStatus(id, "Ditolak")}
+                            className="bg-red-500 text-white px-1 rounded size-5"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="lucide lucide-x w-full h-full object-cover"
+                            >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                );
+            },
         },
     ];
     const CapaianPrestasi = [
@@ -150,40 +237,37 @@ const PelaporanPrestasi = ({ prestasi }) => {
     const Status = ["Diajukan", "Diterima", "Ditolak"];
     return (
         <AuthenticatedLayout>
-            <Head title="Pelaporan Prestasi" />
-            <h1>Pelaporan Prestasi</h1>
+            <Head title="Update Pelaporan Prestasi" />
+            <h1>Update Pelaporan Prestasi</h1>
             <div className="overflow-x-auto p-4">
                 <DataTable columns={columns} data={prestasi}>
-                    {({ table }) => {
-                        return (
-                            <DataTableControls table={table}>
-                                <DataTableFilter
-                                    table={table}
-                                    filter="capaian_prestasi"
-                                    label="Capaian Prestasi"
-                                    data={CapaianPrestasi}
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="status"
-                                    label="Status"
-                                    data={Status}
-                                />
-                                <button
-                                    onClick={() =>
-                                        router.get("/pelaporan-prestasi/create")
-                                    }
-                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
-                                >
-                                    Tambah
-                                </button>
-                            </DataTableControls>
-                        );
-                    }}
+                    {({ table }) => (
+                        <DataTableControls table={table}>
+                            <DataTableFilter
+                                table={table}
+                                filter="capaian_prestasi"
+                                label="Capaian Prestasi"
+                                data={CapaianPrestasi}
+                            />
+                            <DataTableFilter
+                                table={table}
+                                filter="status"
+                                label="Status"
+                                data={Status} />
+                            <button
+                                onClick={() =>
+                                    router.get("/pelaporan-prestasi/create")
+                                }
+                                className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
+                            >
+                                Tambah
+                            </button>
+                        </DataTableControls>
+                    )}
                 </DataTable>
             </div>
         </AuthenticatedLayout>
     );
 };
 
-export default PelaporanPrestasi;
+export default UpdateStatusPelaporanPrestasi;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KategoriLomba;
 use App\Models\PengajuanLomba;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -89,9 +90,25 @@ class PelaporanPrestasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function editStatus()
     {
-        //
+        $prestasi = Prestasi::with('pengajuanLomba')->get();
+        // dd($pelaporanPrestasi->toArray());
+        return Inertia::render('Kemahasiswaan/UpdateStatusPelaporanPrestasi', [
+            'prestasi' =>$prestasi,
+        ]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Diterima,Ditolak',
+        ]);
+
+        $pelaporanPrestasi = Prestasi::findOrFail($id);
+        $pelaporanPrestasi->update(['status' => $request->status]);
+
+        return back()->with('success', 'Status berhasil diperbarui.');
     }
 
     /**

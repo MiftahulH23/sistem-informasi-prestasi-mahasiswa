@@ -3,6 +3,7 @@ import {
     DataTableControls,
     DataTableFilter
 } from "@/Components/DataTable";
+import { Filter } from "@/Components/Filter";
 import {
     Tooltip,
     TooltipContent,
@@ -15,7 +16,7 @@ import { id as idLocale } from "date-fns/locale";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
-const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
+const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const [reviewed, setReviewed] = useState(
         pengajuanLomba.reduce((acc, lomba) => {
             acc[lomba.pengajuanlomba_id] = lomba.status !== "Diajukan";
@@ -53,12 +54,6 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 return row.getValue("kategorilomba_id");
             },
             header: "Kategori Lomba",
-            filterFn: Filter.dataTable("checkbox")
-        },
-        {
-            id: "tingkat_lomba",
-            accessorKey: "tingkat_lomba",
-            header: "Tingkat Lomba",
             filterFn: Filter.dataTable("checkbox")
         },
         {
@@ -277,4 +272,4 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     );
 };
 
-export default DataPengajuanLomba;
+export default UpdateStatusPengajuanLomba;
