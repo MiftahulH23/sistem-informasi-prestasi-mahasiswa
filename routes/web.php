@@ -7,6 +7,7 @@ use App\Http\Controllers\KategoriLombaController;
 use App\Http\Controllers\JudulLombaController;
 use App\Http\Controllers\PelaporanPrestasiController;
 use App\Http\Controllers\PengajuanLombaController;
+use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -61,9 +62,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Prestasi
-Route::get('/prestasi', function () {
-    return Inertia::render('Prestasi');
-})->middleware(['auth', 'verified'])->name('prestasi');
+Route::middleware(['auth', 'verified'])->group(function(){
+    Route::get('/prestasi', [PrestasiController::class,'index'])->name('prestasi.index');
+});
 
 // Profile
 Route::middleware('auth')->group(function () {

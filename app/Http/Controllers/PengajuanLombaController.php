@@ -12,6 +12,7 @@ use App\Models\JudulLomba;
 use App\Models\User;
 use App\Notifications\Pengajuan;
 use Illuminate\Support\Facades\Notification;
+use Exception;
 
 class PengajuanLombaController extends Controller
 {

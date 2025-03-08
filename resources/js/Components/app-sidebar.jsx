@@ -51,7 +51,7 @@ const menuKemahasiswaan = [
     },
     {
         name: "Prestasi",
-        url: "#",
+        url: "/prestasi",
         icon: Medal,
     },
     {
