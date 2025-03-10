@@ -13,6 +13,7 @@ const PengajuanLomba = ({ auth }) => {
         judul_lomba: "",
         jenis_lomba: "",
         tingkat_lomba: "",
+        program_studi: "",
         model_pelaksanaan: "",
         dosen_pembimbing: "",
         tanggal_mulai: "",
@@ -172,7 +173,6 @@ const PengajuanLomba = ({ auth }) => {
                                 id="kategorilomba_id"
                                 name="kategorilomba_id"
                                 onChange={handleKategoriChange}
-                                
                                 value={selectedKategori}
                             >
                                 <option value="">Pilih Kategori</option>
@@ -205,7 +205,6 @@ const PengajuanLomba = ({ auth }) => {
                                             judul_lomba: e.target.value,
                                         })
                                     }
-                                    
                                     placeholder="Masukkan Judul Lomba"
                                     value={data.judul_lomba}
                                 />
@@ -219,7 +218,6 @@ const PengajuanLomba = ({ auth }) => {
                                             judul_lomba: e.target.value,
                                         })
                                     }
-                                    
                                     value={data.judul_lomba}
                                 >
                                     <option value="">Pilih Judul</option>
@@ -245,7 +243,6 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("jenis_lomba", e.target.value)
                                 }
-                                
                             >
                                 <option value="">Pilih Jenis Lomba</option>
                                 <option value="Akademik">Akademik</option>
@@ -265,7 +262,6 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tingkat_lomba", e.target.value)
                                 }
-                                
                             >
                                 <option value="">Pilih Tingkat Lomba</option>
                                 <option value="Internasional">
@@ -291,11 +287,30 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("model_pelaksanaan", e.target.value)
                                 }
-                                
                             >
                                 <option value="">Pilih Model Pelaksanan</option>
                                 <option value="offline">Offline</option>
                                 <option value="online">Online</option>
+                            </select>
+                        </div>
+                        {/* Program Studi */}
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="program_studi">Program Studi</Label>
+                            <select
+                                id="program_studi"
+                                name="program_studi"
+                                className="h-10 px-3 border rounded-md"
+                                onChange={(e) =>
+                                    setData("program_studi", e.target.value)
+                                }
+                            >
+                                <option value="">Pilih Program Studi</option>
+                                <option value="Teknik Informatika">
+                                    Teknik Informatika
+                                </option>
+                                <option value="Sistem Informasi">
+                                    Sistem Informasi
+                                </option>
                             </select>
                         </div>
 
@@ -311,7 +326,6 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("dosen_pembimbing", e.target.value)
                                 }
-                                
                             >
                                 <option value="">Input Dosen Pembimbing</option>
                                 <option value="SPA">SPA</option>
@@ -330,7 +344,6 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tanggal_mulai", e.target.value)
                                 }
-                                
                             />
                         </div>
 
@@ -347,7 +360,6 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("tanggal_selesai", e.target.value)
                                 }
-                                
                             />
                         </div>
 
@@ -362,7 +374,6 @@ const PengajuanLomba = ({ auth }) => {
                                 className="h-10 px-3 border rounded-md"
                                 value={jenisKepesertaan}
                                 onChange={handleKepesertaanChange}
-                                
                             >
                                 <option value="">
                                     Pilih Jenis Kepesertaan
@@ -410,7 +421,6 @@ const PengajuanLomba = ({ auth }) => {
                                                     e.target.value
                                                 )
                                             }
-                                            
                                             placeholder={`Anggota ${index + 1}`}
                                         />
                                         <button
@@ -460,7 +470,6 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={(e) =>
                                     setData("surat_tugas", e.target.files[0])
                                 }
-                                
                             />
                         </div>
                     </div>

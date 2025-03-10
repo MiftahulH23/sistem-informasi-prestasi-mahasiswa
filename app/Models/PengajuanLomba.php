@@ -23,6 +23,7 @@ class PengajuanLomba extends Model
         'jenis_lomba',
         'tingkat_lomba',
         'model_pelaksanaan',
+        'program_studi',
         'dosen_pembimbing',
         'tanggal_mulai',
         'tanggal_selesai',

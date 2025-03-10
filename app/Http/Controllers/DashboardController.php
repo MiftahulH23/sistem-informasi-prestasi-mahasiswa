@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PengajuanLomba;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -14,7 +17,35 @@ class DashboardController extends Controller
      */
     public function index(): Response
     {
+        $oneYearAgo = Carbon::now()->subYear();
+
+        // Mapping nama Program Studi ke Singkatan
+        $programSingkatan = [
+            'Sistem Informasi' => 'SI',
+            'Teknik Informatika' => 'TI',
+            'Teknik Elektro' => 'TE',
+            'Teknik Mesin' => 'TM',
+            'Teknik Sipil' => 'TS',
+            'Manajemen Informatika' => 'MI',
+            'Akuntansi' => 'AK',
+        ];
+
+        // Ambil data dari database
+        $chartData = PengajuanLomba::select('program_studi', DB::raw('count(*) as total'))
+            ->where('created_at', '>=', $oneYearAgo)
+            ->groupBy('program_studi')
+            ->orderBy('total', 'desc')
+            ->get()
+            ->map(function ($item) use ($programSingkatan) {
+                return [
+                    'program_studi' => $programSingkatan[$item->program_studi] ?? $item->program_studi,
+                    'total' => $item->total,
+                ];
+            })
+            ->toArray();
+
         return Inertia::render('Dashboard', [
+            'chartData' => $chartData,
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
         ]);

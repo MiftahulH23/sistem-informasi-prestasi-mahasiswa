@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('judul_lomba');
             $table->string('jenis_lomba');
             $table->string('tingkat_lomba');
+            $table->string('program_studi');
             $table->string('model_pelaksanaan');
             $table->string('dosen_pembimbing');
             $table->date('tanggal_mulai');
