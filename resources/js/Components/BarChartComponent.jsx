@@ -1,13 +1,10 @@
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+    CardHeader
 } from "@/components/ui/card";
 import {
     ChartContainer,
@@ -28,7 +25,7 @@ export function BarChartComponent({ chartData }) {
         <Card>
             <CardHeader>
                 <CardDescription>
-                    Data Pengajuan Lomba 1 Tahun Terakhir
+                    <p className="text-primary font-semibold">Data Prestasi 1 Tahun Terakhir</p>
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -49,17 +46,12 @@ export function BarChartComponent({ chartData }) {
                         />
                         <ChartTooltip
                             cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
+                            content={<ChartTooltipContent />}
                         />
-                        <Bar dataKey="total" fill="#2563eb" radius={5} />
+                        <Bar dataKey="total" fill="#2D9CDB" radius={5} className="h-5" />
                     </BarChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="flex-col items-start gap-2 text-sm">
-                <div className="leading-none text-muted-foreground">
-                    Menampilkan jumlah pengajuan lomba dalam satu tahun terakhir
-                </div>
-            </CardFooter>
         </Card>
     );
 }

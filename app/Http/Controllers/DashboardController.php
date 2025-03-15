@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PengajuanLomba;
+use App\Models\Prestasi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,7 +20,7 @@ class DashboardController extends Controller
     {
         $oneYearAgo = Carbon::now()->subYear();
 
-        // Mapping nama Program Studi ke Singkatan
+        // Mapping singkatan program studi
         $programSingkatan = [
             'Sistem Informasi' => 'SI',
             'Teknik Informatika' => 'TI',
@@ -30,26 +31,50 @@ class DashboardController extends Controller
             'Akuntansi' => 'AK',
         ];
 
-        // Ambil data dari database
-        $chartData = PengajuanLomba::select('program_studi', DB::raw('count(*) as total'))
+        // Ambil data dari tabel `prestasi` dengan relasi ke `pengajuanlomba`
+        $chartData = Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
-            ->groupBy('program_studi')
-            ->orderBy('total', 'desc')
+            ->with('pengajuanlomba') // Mengambil data dari tabel `pengajuanlomba`
             ->get()
-            ->map(function ($item) use ($programSingkatan) {
+            ->groupBy(fn($item) => $item->pengajuanlomba->program_studi) // Grup berdasarkan program studi
+            ->map(function ($items, $programStudi) use ($programSingkatan) {
                 return [
-                    'program_studi' => $programSingkatan[$item->program_studi] ?? $item->program_studi,
-                    'total' => $item->total,
+                    'program_studi' => $programSingkatan[$programStudi] ?? $programStudi,
+                    'total' => $items->count(),
                 ];
             })
-            ->toArray();
+            ->values();
+
+        $lineChartData = Prestasi::where('status', 'Diterima')
+            ->whereHas('pengajuanlomba', function ($query) use ($oneYearAgo) {
+                $query->where('tanggal_mulai', '>=', $oneYearAgo);
+            })
+            ->with('pengajuanlomba')
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->pengajuanlomba->tanggal_mulai)->format('F'); // Grup berdasarkan bulan
+            })
+            ->map(function ($items, $month) {
+                return [
+                    'month' => $month,
+                    'Akademik' => $items->where('pengajuanlomba.jenis_lomba', 'Akademik')->count(),
+                    'Non-Akademik' => $items->where('pengajuanlomba.jenis_lomba', 'Non-Akademik')->count(),
+                ];
+            })
+            ->sortBy(function ($item) {
+                return Carbon::parse($item['month'])->month; // Urutkan berdasarkan bulan (1-12)
+            })
+            ->values();
+
+        // dd($lineChartData);
+
 
         return Inertia::render('Dashboard', [
             'chartData' => $chartData,
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
+            'lineChartData' => $lineChartData,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
