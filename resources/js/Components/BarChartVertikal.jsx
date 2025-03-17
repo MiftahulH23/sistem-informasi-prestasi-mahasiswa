@@ -31,11 +31,11 @@ export function BarChartVertikal({ TingkatLomba }) {
                     <p className="text-primary font-semibold">
                         Tingkat Prestasi
                     </p>
-                    <p className="text-xs">Dalam 1 Tahun Terakhir</p>
+                    <p className="text-xs">Tahun {new Date().getFullYear()}</p>
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig}>
+                <ChartContainer config={chartConfig} className="h-72 w-full">
                     <BarChart accessibilityLayer data={TingkatLomba}>
                         <CartesianGrid vertical={false} />
                         <XAxis
@@ -44,10 +44,12 @@ export function BarChartVertikal({ TingkatLomba }) {
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
+                            className="text-xs"
+                            
                         />
                         <ChartTooltip
                             cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
+                            content={<ChartTooltipContent  />}
                         />
                         <Bar
                             dataKey="total"

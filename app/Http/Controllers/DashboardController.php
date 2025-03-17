@@ -24,10 +24,10 @@ class DashboardController extends Controller
         $programSingkatan = [
             'Sistem Informasi' => 'SI',
             'Teknik Informatika' => 'TI',
-            'Teknik Elektro' => 'TE',
+            'Teknologi Rekayasa Mekatronika' => 'TRM',
             'Teknik Mesin' => 'TM',
             'Teknik Listrik' => 'TL',
-            'Manajemen Informatika' => 'MI',
+            'Teknik Rekayasa Komputer' => 'TRK',
             'Akuntansi' => 'AK',
         ];
 
@@ -80,12 +80,26 @@ class DashboardController extends Controller
             })
             ->values();
 
+        $KategoriLomba = Prestasi::where('status', 'Diterima')
+            ->where('created_at', '>=', $oneYearAgo)
+            ->with('pengajuanlomba.kategori')
+            ->get()
+            ->groupBy(fn($item) => optional($item->pengajuanlomba->kategori)->kategori_lomba) // Gunakan nama kategori
+            ->map(function ($items, $namaKategori) {
+                return [
+                    'kategori_lomba' => $namaKategori ?? 'Tidak Diketahui', // Gunakan nama kategori atau default
+                    'total' => $items->count(),
+                ];
+            })
+            ->values();
 
+        // dd($KategoriLomba);
 
         return Inertia::render('Dashboard', [
             'chartData' => $chartData,
             'lineChartData' => $lineChartData,
             'TingkatLomba' => $TingkatLomba,
+            'KategoriLomba' => $KategoriLomba,
         ]);
     }
 

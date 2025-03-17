@@ -41,18 +41,19 @@ class PengajuanLombaFactory extends Factory
 // Umum : 229ed366-5386-4798-a095-12c2cc36bf6f
 // Kemendikbud : 067ed062-6533-4ed1-873f-181888fd887c
 // Bakorma : a2d71bb7-f041-43a2-981b-20865956fe57
+// Kategori A : c5cc8a77-41b6-4434-8376-b59221ba4efb
 
         return [
             'user_id' => 1, // Tetap 1 untuk semua data
-            'kategorilomba_id' => '229ed366-5386-4798-a095-12c2cc36bf6f',
-            'judul_lomba' => 'Lomba Umum Intinya', // Judul tetap
+            'kategorilomba_id' => 'c5cc8a77-41b6-4434-8376-b59221ba4efb',
+            'judul_lomba' => 'Lomba Kategori A', // Judul tetap
             'jenis_lomba' => 'Non-Akademik', // Tetap Non-Akademik
             'tingkat_lomba' => 'Provinsi', 
             'model_pelaksanaan' => 'Online',
             'dosen_pembimbing' => 'Dr. Ahmad Sudrajat', // Nama dosen tetap
-            'program_studi' => 'Teknik Listrik', 
-            'tanggal_mulai' => '2025-03-01', // Tanggal tetap
-            'tanggal_selesai' => '2025-03-05', // Tanggal tetap
+            'program_studi' => 'Teknologi Rekayasa Mekatronika', 
+            'tanggal_mulai' => '2025-04-01', // Tanggal tetap
+            'tanggal_selesai' => '2025-04-05', // Tanggal tetap
             'jenis_kepesertaan' => 'Individu', // Tetap Individu
             'jumlah_peserta' => 1, // Tetap 1
             'anggota_kelompok' => 'Miftahul Huda', // Kosong karena individu

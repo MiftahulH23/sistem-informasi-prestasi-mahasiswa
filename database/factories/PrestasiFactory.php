@@ -30,8 +30,7 @@ class PrestasiFactory extends Factory
 
         return [
             'prestasi_id' => (string) Str::uuid(), // ID unik tetap menggunakan UUID
-            'pengajuanlomba_id' => 'f8538af9-b0ba-40b8-a846-4584ed0e78d9
-', 
+            'pengajuanlomba_id' => '739bf924-5c8a-4177-a3d6-fc064abd84f0', 
             'user_id' => 1, // Tetap ID 1, pastikan ada user dengan ID ini
             'capaian_prestasi' => 'Juara 3', // Tetap "Juara 1"
             'sertifikat' => 'sertifikat.pdf', // Selalu ada sertifikat

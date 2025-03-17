@@ -25,14 +25,14 @@ export function BarChartComponent({ chartData }) {
         <Card>
             <CardHeader>
                 <CardDescription>
-                    <p className="text-primary font-semibold">Data Prestasi 1 Tahun Terakhir</p>
+                    <p className="text-primary font-semibold">Jumlah Prestasi Prodi</p>
                     <p className="text-xs">
-                        Berdasarkan Program Studi
+                    Tahun {new Date().getFullYear()}
                     </p>
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig}>
+                <ChartContainer config={chartConfig} className="h-72 w-full">
                     <BarChart
                         accessibilityLayer
                         data={chartData}
