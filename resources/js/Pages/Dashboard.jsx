@@ -2,8 +2,9 @@ import { BarChartComponent } from "@/Components/BarChartComponent";
 import LineChartComponent from "@/Components/LineChartComponent";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { BarChartVertikal } from "@/Components/BarChartVertikal";
 
-export default function Dashboard({ chartData, lineChartData }) {
+export default function Dashboard({ chartData, lineChartData, TingkatLomba }) {
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
@@ -14,6 +15,7 @@ export default function Dashboard({ chartData, lineChartData }) {
                         chartData={chartData}
                         className="w-full"
                     />
+                    <BarChartVertikal TingkatLomba={TingkatLomba}  />
                 </div>
             </div>
         </AuthenticatedLayout>

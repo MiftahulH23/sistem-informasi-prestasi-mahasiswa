@@ -66,12 +66,26 @@ class DashboardController extends Controller
             })
             ->values();
 
-        // dd($lineChartData);
+
+        $TingkatLomba = Prestasi::where('status', 'Diterima')
+            ->where('created_at', '>=', $oneYearAgo)
+            ->with('pengajuanlomba') // Mengambil data dari tabel `pengajuanlomba`
+            ->get()
+            ->groupBy(fn($item) => optional($item->pengajuanlomba)->tingkat_lomba) // Grup berdasarkan tingkat lomba
+            ->map(function ($items, $TingkatLomba) {
+                return [
+                    'tingkat_lomba' => $TingkatLomba, // Menggunakan tingkat lomba yang benar
+                    'total' => $items->count(),
+                ];
+            })
+            ->values();
+
 
 
         return Inertia::render('Dashboard', [
             'chartData' => $chartData,
             'lineChartData' => $lineChartData,
+            'TingkatLomba' => $TingkatLomba,
         ]);
     }
 

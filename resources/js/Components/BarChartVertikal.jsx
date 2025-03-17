@@ -1,10 +1,15 @@
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
+"use client";
+
+import { TrendingUp } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
     Card,
     CardContent,
     CardDescription,
-    CardHeader
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import {
     ChartContainer,
@@ -12,46 +17,44 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export function BarChartComponent({ chartData }) {
-    // Konfigurasi warna untuk shadcn chart
+export function BarChartVertikal({ TingkatLomba }) {
     const chartConfig = {
         total: {
             label: "Total Prestasi",
             color: "hsl(var(--chart-1))",
         },
     };
-
     return (
         <Card>
             <CardHeader>
                 <CardDescription>
-                    <p className="text-primary font-semibold">Data Prestasi 1 Tahun Terakhir</p>
-                    <p className="text-xs">
-                        Berdasarkan Program Studi
+                    <p className="text-primary font-semibold">
+                        Tingkat Prestasi
                     </p>
+                    <p className="text-xs">Dalam 1 Tahun Terakhir</p>
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
-                    <BarChart
-                        accessibilityLayer
-                        data={chartData}
-                        layout="vertical"
-                        margin={{ left: -20 }}
-                    >
-                        <XAxis type="number" dataKey="total" hide />
-                        <YAxis
-                            dataKey="program_studi"
+                    <BarChart accessibilityLayer data={TingkatLomba}>
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                            dataKey="tingkat_lomba"
                             type="category"
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
+                            tickFormatter={(value) => value.slice(0, 3)}
                         />
                         <ChartTooltip
                             cursor={false}
-                            content={<ChartTooltipContent />}
+                            content={<ChartTooltipContent hideLabel />}
                         />
-                        <Bar dataKey="total" fill="#2D9CDB" radius={5} className="h-5" />
+                        <Bar
+                            dataKey="total"
+                            fill="#2D9CDB"
+                            radius={5}
+                        />
                     </BarChart>
                 </ChartContainer>
             </CardContent>
