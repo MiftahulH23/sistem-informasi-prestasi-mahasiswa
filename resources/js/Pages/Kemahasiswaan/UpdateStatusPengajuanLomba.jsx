@@ -30,7 +30,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
         setReviewed((prev) => ({ ...prev, [id]: true }));
     };
     const DetailPengajuanLomba = (id) => {
-        router.get(`/data-pengajuan-lomba/show/${id}`);
+        router.get(`/pengajuan-lomba/show/${id}`);
     };
     const columns = [
         {

@@ -36,7 +36,11 @@ export function BarChartVertikal({ TingkatLomba }) {
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig} className="h-72 w-full">
-                    <BarChart accessibilityLayer data={TingkatLomba}>
+                    <BarChart
+                        accessibilityLayer
+                        data={TingkatLomba}
+                        margin={{bottom: 35}}
+                    >
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey="tingkat_lomba"
@@ -44,18 +48,15 @@ export function BarChartVertikal({ TingkatLomba }) {
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
-                            className="text-xs"
-                            
+                            className="text-[10px]" // Ukuran font kecil
+                            angle={-45} // Memutar label
+                            textAnchor="end" // Anchor teks
                         />
                         <ChartTooltip
                             cursor={false}
-                            content={<ChartTooltipContent  />}
+                            content={<ChartTooltipContent />}
                         />
-                        <Bar
-                            dataKey="total"
-                            fill="#2D9CDB"
-                            radius={5}
-                        />
+                        <Bar dataKey="total" fill="#2D9CDB" radius={5} />
                     </BarChart>
                 </ChartContainer>
             </CardContent>
