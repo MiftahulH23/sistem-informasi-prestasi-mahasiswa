@@ -32,6 +32,9 @@ class Prestasi extends Model
         static::creating(function ($model) {
             $model->prestasi_id = (string) Str::uuid(); // Generate UUID otomatis
         });
+        static::addGlobalScope('orderByCreatedAt', function ($query) {
+            $query->orderBy('created_at', 'desc');
+        });
     }
 
     protected $casts = [

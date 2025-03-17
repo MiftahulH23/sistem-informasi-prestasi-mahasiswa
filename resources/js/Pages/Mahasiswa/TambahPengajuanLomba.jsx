@@ -175,7 +175,7 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={handleKategoriChange}
                                 value={selectedKategori}
                             >
-                                <option value="">Pilih Kategori</option>
+                                <option value="" disabled selected>Pilih Kategori</option>
                                 {kategoriLomba.map((kategori) => (
                                     <option
                                         key={kategori.kategorilomba_id}
@@ -220,7 +220,7 @@ const PengajuanLomba = ({ auth }) => {
                                     }
                                     value={data.judul_lomba}
                                 >
-                                    <option value="">Pilih Judul</option>
+                                    <option value="" disabled selected>Pilih Judul</option>
                                     {filteredJudul.map((judul) => (
                                         <option
                                             key={judul.judullomba_id}
@@ -244,7 +244,7 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("jenis_lomba", e.target.value)
                                 }
                             >
-                                <option value="">Pilih Jenis Lomba</option>
+                                <option value="" disabled selected>Pilih Jenis Lomba</option>
                                 <option value="Akademik">Akademik</option>
                                 <option value="Non-Akademik">
                                     Non Akademik
@@ -263,7 +263,7 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("tingkat_lomba", e.target.value)
                                 }
                             >
-                                <option value="">Pilih Tingkat Lomba</option>
+                                <option value="" disabled selected>Pilih Tingkat Lomba</option>
                                 <option value="Internasional">
                                     Internasional
                                 </option>
@@ -288,7 +288,7 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("model_pelaksanaan", e.target.value)
                                 }
                             >
-                                <option value="">Pilih Model Pelaksanan</option>
+                                <option value="" disabled selected>Pilih Model Pelaksanan</option>
                                 <option value="offline">Offline</option>
                                 <option value="online">Online</option>
                             </select>
@@ -304,12 +304,23 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("program_studi", e.target.value)
                                 }
                             >
-                                <option value="">Pilih Program Studi</option>
+                                <option value="" disabled selected>
+                                    Pilih Program Studi
+                                </option>
                                 <option value="Teknik Informatika">
                                     Teknik Informatika
                                 </option>
                                 <option value="Sistem Informasi">
                                     Sistem Informasi
+                                </option>
+                                <option value="Teknik Elektronika">
+                                    Teknik Elektronika
+                                </option>
+                                <option value="Teknik Listrik">
+                                    Teknik Listrik
+                                </option>
+                                <option value="Teknik Mesin">
+                                    Teknik Mesin
                                 </option>
                             </select>
                         </div>
@@ -327,7 +338,7 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("dosen_pembimbing", e.target.value)
                                 }
                             >
-                                <option value="">Input Dosen Pembimbing</option>
+                                <option value="" disabled selected>Input Dosen Pembimbing</option>
                                 <option value="SPA">SPA</option>
                                 <option value="ATD">ATD</option>
                             </select>
@@ -375,7 +386,7 @@ const PengajuanLomba = ({ auth }) => {
                                 value={jenisKepesertaan}
                                 onChange={handleKepesertaanChange}
                             >
-                                <option value="">
+                                <option value="" disabled selected>
                                     Pilih Jenis Kepesertaan
                                 </option>
                                 <option value="individu">Individu</option>

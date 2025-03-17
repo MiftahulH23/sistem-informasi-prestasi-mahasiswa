@@ -30,11 +30,13 @@ class PelaporanPrestasiController extends Controller
     public function create()
     {
         $lombaOptions = PengajuanLomba::where('status', 'Diterima')
-            ->pluck('judul_lomba', 'pengajuanlomba_id'); // Menggunakan pengajuanlomba_id
+            ->where('user_id', auth()->id()) // Menyaring berdasarkan user yang login
+            ->pluck('judul_lomba', 'pengajuanlomba_id');
 
         return Inertia('Mahasiswa/TambahLaporanPrestasi', [
             'lombaOptions' => $lombaOptions,
         ]);
+
     }
 
     /**
@@ -95,7 +97,7 @@ class PelaporanPrestasiController extends Controller
         $prestasi = Prestasi::with('pengajuanLomba')->get();
         // dd($pelaporanPrestasi->toArray());
         return Inertia::render('Kemahasiswaan/UpdateStatusPelaporanPrestasi', [
-            'prestasi' =>$prestasi,
+            'prestasi' => $prestasi,
         ]);
     }
 

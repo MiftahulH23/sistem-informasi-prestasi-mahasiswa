@@ -26,6 +26,9 @@ export function BarChartComponent({ chartData }) {
             <CardHeader>
                 <CardDescription>
                     <p className="text-primary font-semibold">Data Prestasi 1 Tahun Terakhir</p>
+                    <p className="text-xs">
+                        Berdasarkan Program Studi
+                    </p>
                 </CardDescription>
             </CardHeader>
             <CardContent>

@@ -39,6 +39,9 @@ class PengajuanLomba extends Model
         static::creating(function ($model) {
             $model->pengajuanlomba_id = (string) Str::uuid(); // Generate UUID otomatis
         });
+        static::addGlobalScope('orderByCreatedAt', function ($query) {
+            $query->orderBy('created_at', 'desc');
+        });
     }
 
     protected $casts = [
