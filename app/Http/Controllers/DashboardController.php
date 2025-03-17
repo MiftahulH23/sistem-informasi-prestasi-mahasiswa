@@ -26,7 +26,7 @@ class DashboardController extends Controller
             'Teknik Informatika' => 'TI',
             'Teknik Elektro' => 'TE',
             'Teknik Mesin' => 'TM',
-            'Teknik Sipil' => 'TS',
+            'Teknik Listrik' => 'TL',
             'Manajemen Informatika' => 'MI',
             'Akuntansi' => 'AK',
         ];

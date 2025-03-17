@@ -38,11 +38,12 @@ export default function LineChartComponent({ lineChartData }) {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <ChartContainer config={chartConfig}>
+                <ChartContainer config={chartConfig} className="h-40 w-full">
                     <LineChart
                         accessibilityLayer
                         data={lineChartData}
                         className="w-full"
+                        margin={{ left: -20 }}
                     >
                         <CartesianGrid vertical={false} className="w-full" />
                         <XAxis

@@ -9,7 +9,7 @@ class PengajuanLombaSeeder extends Seeder
 {
     public function run()
     {
-        PengajuanLomba::factory(10)->create([
+        PengajuanLomba::factory(3)->create([
             'user_id' => 1, // Gunakan user ID 1 untuk semua data
         ]);
     }

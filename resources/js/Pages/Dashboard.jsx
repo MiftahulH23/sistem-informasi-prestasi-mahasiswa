@@ -8,14 +8,20 @@ export default function Dashboard({ chartData, lineChartData, TingkatLomba }) {
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <LineChartComponent lineChartData={lineChartData} />
+            <h1>Dashboard</h1>
+            <div>
+                <div className="h-72">
+                    <LineChartComponent
+                        lineChartData={lineChartData}
+                        className="h-full"
+                    />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
                     <BarChartComponent
                         chartData={chartData}
                         className="w-full"
                     />
-                    <BarChartVertikal TingkatLomba={TingkatLomba}  />
+                    <BarChartVertikal TingkatLomba={TingkatLomba} />
                 </div>
             </div>
         </AuthenticatedLayout>
