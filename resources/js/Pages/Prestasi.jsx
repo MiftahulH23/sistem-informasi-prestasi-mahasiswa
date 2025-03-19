@@ -1,18 +1,9 @@
-import {
-    DataTable,
-    DataTableControls,
-    DataTableFilter,
-} from "@/Components/DataTable";
-import { Filter } from "@/Components/Filter";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/Components/ui/tooltip";
+
+import { DataTable, DataTableControls } from "@/Components/data-table";
+import { DataTableFilter } from "@/Components/data-table/filter";
+import { customFilterFns } from "@/Components/data-table/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
-import { format, getDate } from "date-fns";
-import { id as idLocale } from "date-fns/locale";
+import { Head } from "@inertiajs/react";
 
 const Prestasi = ({data}) => {
     const columns = [
@@ -30,19 +21,25 @@ const Prestasi = ({data}) => {
         {
             accessorKey: "capaian_prestasi",
             header: "Pembimbing",
+            filterFn: customFilterFns["checkbox"],
         },
         {
+            id: "tingkat_lomba",
             accessorKey: "pengajuan_lomba.tingkat_lomba",
             header: "Tingkat Lomba",
+            filterFn: customFilterFns["checkbox"],
         },
         {
+            id: "kategori_lomba",
             accessorKey: "pengajuan_lomba.kategori.kategori_lomba",  // Akses nama kategori
             header: "Kategori",
+            filterFn: customFilterFns["checkbox"],
         },
         {
+            id: "jenis_lomba",
             accessorKey: "pengajuan_lomba.jenis_lomba",
             header: "Jenis Lomba",
-            filterFn: Filter.dataTable("checkbox"),
+            filterFn: customFilterFns["checkbox"],
         },
     ];
     const statusPengajuan = ["Diajukan", "Diterima", "Ditolak"];
@@ -53,6 +50,7 @@ const Prestasi = ({data}) => {
         "Lokal-Wilayah",
     ];
     const jenisLomba = ["Akademik", "Non-Akademik"];
+    const capaianPrestasi = ["Juara 1", "Juara 2", "Juara 3", "Harapan 1", "Harapan 2", "Harapan 3"];
     return (
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
@@ -62,6 +60,27 @@ const Prestasi = ({data}) => {
                     {({ table }) => {
                         return (
                             <DataTableControls table={table}>
+                                <DataTableFilter table={table} extend={[
+                                    {
+                                        id: "capaian_prestasi",
+                                        label: "Capaian Prestasi",
+                                        data: capaianPrestasi,
+                                    },
+                                    {
+                                        id: "tingkat_lomba",
+                                        label: "Tingkat Lomba",
+                                        data: tingkatLomba,
+                                    },
+                                    {
+                                        id: "jenis_lomba",
+                                        label: "Jenis Lomba",
+                                        data: jenisLomba,
+                                    },
+                                    {
+                                        id: "kategori_lomba",
+                                        label: "Kategori Lomba",
+                                    },
+                                    ]} />
                             </DataTableControls>
                         );
                     }}

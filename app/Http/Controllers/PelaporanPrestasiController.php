@@ -18,7 +18,9 @@ class PelaporanPrestasiController extends Controller
      */
     public function index()
     {
-        $prestasi = Prestasi::with('pengajuanLomba')->where('user_id', Auth::id())->get();
+        $prestasi = Prestasi::with(['pengajuanLomba.kategori'])
+            ->where('user_id', Auth::id())
+            ->get();
         return Inertia::render('Mahasiswa/PelaporanPrestasi', [
             'prestasi' => $prestasi
         ]);

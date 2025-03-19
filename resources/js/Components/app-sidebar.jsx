@@ -88,7 +88,7 @@ const menuEksekutif = [
     },
 ];
 export function AppSidebar({ ...props }) {
-  const role = "mahasiswa";
+  const role = "kemahasiswaan";
   const menu = {
     mahasiswa: menuMahasiswa,
     kemahasiswaan: menuKemahasiswaan,

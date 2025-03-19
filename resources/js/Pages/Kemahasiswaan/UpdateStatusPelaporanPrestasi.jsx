@@ -1,9 +1,6 @@
-import {
-    DataTable,
-    DataTableControls,
-    DataTableFilter,
-} from "@/Components/DataTable";
-import { Filter } from "@/Components/Filter";
+import { DataTable, DataTableControls } from "@/Components/data-table";
+import { DataTableFilter } from "@/Components/data-table/filter";
+import { customFilterFns } from "@/Components/data-table/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
@@ -56,7 +53,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
             id: "capaian_prestasi",
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
             accessorKey: "sertifikat",
@@ -171,7 +168,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                     </div>
                 );
             },
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
             id: "Aksi",
@@ -245,15 +242,19 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                         <DataTableControls table={table}>
                             <DataTableFilter
                                 table={table}
-                                filter="capaian_prestasi"
-                                label="Capaian Prestasi"
-                                data={CapaianPrestasi}
+                                extend={[
+                                    {
+                                        id: "capaian_prestasi",
+                                        label: "Capaian Prestasi",
+                                        data: CapaianPrestasi,
+                                    },
+                                    {
+                                        id: "status",
+                                        label: "Status",
+                                        data: Status,
+                                    },
+                                ]}
                             />
-                            <DataTableFilter
-                                table={table}
-                                filter="status"
-                                label="Status"
-                                data={Status} />
                             <button
                                 onClick={() =>
                                     router.get("/pelaporan-prestasi/create")

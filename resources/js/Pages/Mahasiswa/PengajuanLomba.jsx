@@ -34,6 +34,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 return row.kategori.kategori_lomba;
             },
             header: "Kategori Lomba",
+            filterFn: customFilterFns["checkbox"],
         },
         {
             id: "tingkat_lomba",
@@ -182,6 +183,20 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                                             id: "tingkat_lomba",
                                             label: "Tingkat Lomba",
                                             data: tingkatLomba,
+                                        },
+                                        {
+                                            id: "jenis_lomba",
+                                            label: "Jenis Lomba",
+                                            data: jenisLomba,
+                                        },
+                                        {
+                                            id: "kategorilomba_id",
+                                            label: "Kategori Lomba",
+                                        },
+                                        {
+                                            id: "kategorilomba_id",
+                                            label: "Kategori Lomba",
+                                            data: kategoriLomba,
                                         },
                                         {
                                             id: "tanggal_mulai",

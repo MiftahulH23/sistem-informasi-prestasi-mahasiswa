@@ -1,11 +1,10 @@
-import {
-    DataTable,
-    DataTableControls,
-    DataTableFilter,
-} from "@/Components/DataTable";
+import { DataTable, DataTableControls } from "@/Components/data-table";
+import { DataTableFilter } from "@/Components/data-table/filter";
+import { customFilterFns } from "@/Components/data-table/utils";
 import { Filter } from "@/Components/Filter";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
+import { id } from "date-fns/locale";
 const PelaporanPrestasi = ({ prestasi }) => {
     const columns = [
         {
@@ -18,10 +17,16 @@ const PelaporanPrestasi = ({ prestasi }) => {
             header: "Judul Lomba",
         },
         {
+            id: "kategori_lomba",
+            accessorKey: "pengajuan_lomba.kategori.kategori_lomba",
+            header: "Kategori Lomba",
+            filterFn: customFilterFns["checkbox"],
+        },
+        {
             id: "capaian_prestasi",
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
-            filterFn: Filter.dataTable("checkbox"),
+            filterFn: customFilterFns["checkbox"],
         },
         {
             accessorKey: "sertifikat",
@@ -136,7 +141,7 @@ const PelaporanPrestasi = ({ prestasi }) => {
                     </div>
                 );
             },
-            filterFn: Filter.dataTable("checkbox"),
+            filterFn: customFilterFns["checkbox"],
         },
     ];
     const CapaianPrestasi = [
@@ -159,15 +164,23 @@ const PelaporanPrestasi = ({ prestasi }) => {
                             <DataTableControls table={table}>
                                 <DataTableFilter
                                     table={table}
-                                    filter="capaian_prestasi"
-                                    label="Capaian Prestasi"
-                                    data={CapaianPrestasi}
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="status"
-                                    label="Status"
-                                    data={Status}
+                                    extend={[
+                                        {
+                                            id: "capaian_prestasi",
+                                            label: "Capaian Prestasi",
+                                            data: CapaianPrestasi,
+                                        },
+                                        {
+                                            id: "kategori_lomba",
+                                            label: "Kategori Lomba",
+                                        },
+                                        {
+                                            id: "status",
+                                            label: "Status",
+                                            data: Status,
+                                        }
+
+                                    ]}
                                 />
                                 <button
                                     onClick={() =>

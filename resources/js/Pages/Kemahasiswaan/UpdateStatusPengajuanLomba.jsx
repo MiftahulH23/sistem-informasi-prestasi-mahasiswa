@@ -1,8 +1,6 @@
-import {
-    DataTable,
-    DataTableControls,
-    DataTableFilter
-} from "@/Components/DataTable";
+import { DataTable, DataTableControls } from "@/Components/data-table";
+import { DataTableFilter } from "@/Components/data-table/filter";
+import { customFilterFns } from "@/Components/data-table/utils";
 import { Filter } from "@/Components/Filter";
 import {
     Tooltip,
@@ -54,18 +52,18 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 return row.getValue("kategorilomba_id");
             },
             header: "Kategori Lomba",
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
             id: "tingkat_lomba",
             accessorKey: "tingkat_lomba",
             header: "Tingkat Lomba",
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
             accessorKey: "jenis_lomba",
             header: "Jenis Lomba",
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
             accessorKey: "tanggal_mulai",
@@ -96,6 +94,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </Tooltip>
                 );
             },
+            filterFn: customFilterFns["date-year"],
         },
         {
             accessorKey: "tanggal_selesai",
@@ -147,7 +146,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </div>
                 );
             },
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
             accessorKey: "Detail",
@@ -218,7 +217,6 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 );
             },
         },
-        
     ];
 
     const statusPengajuan = ["Diajukan", "Diterima", "Ditolak"];
@@ -240,28 +238,37 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                             <DataTableControls table={table}>
                                 <DataTableFilter
                                     table={table}
-                                    filter="status"
-                                    data={statusPengajuan}
+                                    extend={[
+                                        {
+                                            id: "kategorilomba_id",
+                                            label: "Kategori Lomba",
+                                        },
+                                        {
+                                            id: "tingkat_lomba",
+                                            label: "Tingkat Lomba",
+                                            data: tingkatLomba,
+                                        },
+                                        {
+                                            id: "jenis_lomba",
+                                            label: "Jenis Lomba",
+                                            data: jenisLomba,
+                                        },
+                                        {
+                                            id: "status",
+                                            label: "Status",
+                                            data: statusPengajuan,
+                                        },
+                                        {
+                                            id: "tanggal_mulai",
+                                            detached: true,
+                                        },
+                                    ]}
                                 />
                                 <DataTableFilter
                                     table={table}
-                                    filter="kategorilomba_id"
-                                    data={kategoriLomba.map(
-                                        (item) => item.kategori_lomba
-                                    )}
-                                    label="Kategori Lomba"
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="tingkat_lomba"
-                                    label="Tingkat Lomba"
-                                    data={tingkatLomba}
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="jenis_lomba"
-                                    label="Jenis Lomba"
-                                    data={jenisLomba}
+                                    filter="tanggal_mulai"
+                                    label="Tahun"
+                                    standalone
                                 />
                             </DataTableControls>
                         );
