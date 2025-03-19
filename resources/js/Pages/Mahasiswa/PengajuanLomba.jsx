@@ -1,9 +1,7 @@
-import {
-    DataTable,
-    DataTableControls,
-    DataTableFilter
-} from "@/Components/DataTable";
-import { Filter } from "@/Components/Filter";
+import { DataTable, DataTableControls } from "@/Components/data-table";
+import { DataTableFilter } from "@/Components/data-table/filter";
+import { customFilterFns } from "@/Components/data-table/utils";
+
 import {
     Tooltip,
     TooltipContent,
@@ -12,7 +10,7 @@ import {
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import { format, getDate } from "date-fns";
-import { id as idLocale } from "date-fns/locale";
+import { id, id as idLocale } from "date-fns/locale";
 
 const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const DetailPengajuanLomba = (id) => {
@@ -41,18 +39,21 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             id: "tingkat_lomba",
             accessorKey: "tingkat_lomba",
             header: "Tingkat Lomba",
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
+            id: "dosen_pembimbing",
             accessorKey: "dosen_pembimbing",
             header: "Pembimbing",
         },
         {
+            id: "jenis_lomba",
             accessorKey: "jenis_lomba",
             header: "Jenis Lomba",
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
+            id: "tanggal_mulai",
             accessorKey: "tanggal_mulai",
             header: "Tanggal Mulai",
             cell: ({ row: { original: data } }) => {
@@ -81,7 +82,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </Tooltip>
                 );
             },
-            filterFn: Filter.dataTable("date-year")
+            filterFn: customFilterFns["date-year"],
         },
         {
             accessorKey: "tanggal_selesai",
@@ -132,7 +133,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </div>
                 );
             },
-            filterFn: Filter.dataTable("checkbox")
+            filterFn: customFilterFns["checkbox"],
         },
         {
             accessorKey: "Detail",
@@ -171,35 +172,28 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                             <DataTableControls table={table}>
                                 <DataTableFilter
                                     table={table}
-                                    filter="status"
-                                    data={statusPengajuan}
-                                    label="Status"
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="kategorilomba_id"
-                                    data={kategoriLomba.map(
-                                        (item) => item.kategori_lomba
-                                    )}
-                                    label="Kategori Lomba"
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="tingkat_lomba"
-                                    label="Tingkat Lomba"
-                                    data={tingkatLomba}
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="jenis_lomba"
-                                    label="Jenis Lomba"
-                                    data={jenisLomba}
+                                    extend={[
+                                        {
+                                            id: "status",
+                                            label: "Status",
+                                            data: statusPengajuan,
+                                        },
+                                        {
+                                            id: "tingkat_lomba",
+                                            label: "Tingkat Lomba",
+                                            data: tingkatLomba,
+                                        },
+                                        {
+                                            id: "tanggal_mulai",
+                                            detached: true,
+                                        },
+                                    ]}
                                 />
                                 <DataTableFilter
                                     table={table}
                                     filter="tanggal_mulai"
                                     label="Tahun"
-                                    variant="date-year"
+                                    standalone
                                 />
                                 <button
                                     onClick={() =>
