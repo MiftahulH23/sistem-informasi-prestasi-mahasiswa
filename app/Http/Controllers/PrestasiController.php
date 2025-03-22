@@ -11,9 +11,9 @@ class PrestasiController extends Controller
 {
     public function index()
     {
-        $data = Prestasi::with(['pengajuanLomba.kategori'])->where('status', 'Diterima')->get();
+        $prestasi = Prestasi::with(['pengajuanLomba.kategori'])->where('status', 'Diterima')->get();
 
-        return Inertia::render("Prestasi", ["data" => $data]);
+        return Inertia::render("Prestasi", ["prestasi" => $prestasi]);
     }
 
 }

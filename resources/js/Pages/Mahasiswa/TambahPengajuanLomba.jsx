@@ -6,7 +6,7 @@ import { Input } from "@/Components/ui/input";
 import Swal from "sweetalert2";
 
 const PengajuanLomba = ({ auth }) => {
-    const { kategoriLomba, judulLomba } = usePage().props;
+    const { kategoriLomba, judulLomba, users } = usePage().props;
     const { flash } = usePage().props;
     const { data, setData, post, processing, reset, errors } = useForm({
         kategorilomba_id: "",
@@ -75,10 +75,7 @@ const PengajuanLomba = ({ auth }) => {
     };
 
     const addAnggota = () => {
-        const newAnggota = [...anggotaKelompok, ""];
-        setAnggotaKelompok(newAnggota);
-        setData("anggota_kelompok", newAnggota);
-        setData("jumlah_peserta", newAnggota.length + 1); // Update jumlah peserta
+        setAnggotaKelompok([...anggotaKelompok, ""]);
     };
 
     const removeAnggota = (index) => {
@@ -175,7 +172,9 @@ const PengajuanLomba = ({ auth }) => {
                                 onChange={handleKategoriChange}
                                 value={selectedKategori}
                             >
-                                <option value="" disabled selected>Pilih Kategori</option>
+                                <option value="" disabled selected>
+                                    Pilih Kategori
+                                </option>
                                 {kategoriLomba.map((kategori) => (
                                     <option
                                         key={kategori.kategorilomba_id}
@@ -220,7 +219,9 @@ const PengajuanLomba = ({ auth }) => {
                                     }
                                     value={data.judul_lomba}
                                 >
-                                    <option value="" disabled selected>Pilih Judul</option>
+                                    <option value="" disabled selected>
+                                        Pilih Judul
+                                    </option>
                                     {filteredJudul.map((judul) => (
                                         <option
                                             key={judul.judullomba_id}
@@ -244,7 +245,9 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("jenis_lomba", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>Pilih Jenis Lomba</option>
+                                <option value="" disabled selected>
+                                    Pilih Jenis Lomba
+                                </option>
                                 <option value="Akademik">Akademik</option>
                                 <option value="Non-Akademik">
                                     Non Akademik
@@ -263,7 +266,9 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("tingkat_lomba", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>Pilih Tingkat Lomba</option>
+                                <option value="" disabled selected>
+                                    Pilih Tingkat Lomba
+                                </option>
                                 <option value="Internasional">
                                     Internasional
                                 </option>
@@ -288,7 +293,9 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("model_pelaksanaan", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>Pilih Model Pelaksanan</option>
+                                <option value="" disabled selected>
+                                    Pilih Model Pelaksanan
+                                </option>
                                 <option value="offline">Offline</option>
                                 <option value="online">Online</option>
                             </select>
@@ -338,7 +345,9 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("dosen_pembimbing", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>Input Dosen Pembimbing</option>
+                                <option value="" disabled selected>
+                                    Input Dosen Pembimbing
+                                </option>
                                 <option value="SPA">SPA</option>
                                 <option value="ATD">ATD</option>
                             </select>
@@ -422,9 +431,8 @@ const PengajuanLomba = ({ auth }) => {
                                         key={index}
                                         className="flex items-center gap-2"
                                     >
-                                        <Input
-                                            type="text"
-                                            className="h-10 flex-1"
+                                        <select
+                                            className="h-10 flex-1 border rounded-md px-3"
                                             value={anggota}
                                             onChange={(e) =>
                                                 handleAnggotaChange(
@@ -432,8 +440,19 @@ const PengajuanLomba = ({ auth }) => {
                                                     e.target.value
                                                 )
                                             }
-                                            placeholder={`Anggota ${index + 1}`}
-                                        />
+                                        >
+                                            <option value="" disabled>
+                                                Pilih Anggota
+                                            </option>
+                                            {users.map((user) => (
+                                                <option
+                                                    key={user.id}
+                                                    value={user.name}
+                                                >
+                                                    {user.name}
+                                                </option>
+                                            ))}
+                                        </select>
                                         <button
                                             type="button"
                                             className="bg-red-500 text-white px-3 py-1 rounded-md"

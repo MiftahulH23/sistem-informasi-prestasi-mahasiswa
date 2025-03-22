@@ -58,15 +58,14 @@ class PengajuanLombaController extends Controller
     {
         return Inertia::render('Mahasiswa/TambahPengajuanLomba', [
             'kategoriLomba' => KategoriLomba::all(),
-            'judulLomba' => JudulLomba::with('kategori')->get()
+            'judulLomba' => JudulLomba::with('kategori')->get(),
+            'users' => User::all()
         ]);
     }
 
     public function store(Request $request)
     {
         try {
-
-
             $request->validate([
                 'kategorilomba_id' => 'required',
                 'judul_lomba' => 'required|string',
@@ -122,7 +121,6 @@ class PengajuanLombaController extends Controller
 
 
             $surat_tugas_path = $request->file('surat_tugas')->store('surat_tugas', 'public');
-            // dd($request->all());
             // Simpan data ke database
             $pengajuan = PengajuanLomba::create([
                 'user_id' => $user->id, // ID user yang login tetap sebagai pemilik pengajuan
@@ -141,9 +139,6 @@ class PengajuanLombaController extends Controller
                 'anggota_kelompok' => $anggota_kelompok, // Sudah termasuk user yang login jika kelompok
                 'surat_tugas' => $surat_tugas_path,
             ]);
-
-
-
             return redirect()->back()->with('success', 'Pengajuan Lomba berhasil ditambahkan! dari b');
         } catch (Exception $e) {
             return redirect()->back()->with('errors', $e->getMessage());

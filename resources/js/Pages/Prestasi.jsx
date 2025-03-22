@@ -1,11 +1,17 @@
-
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
 import { customFilterFns } from "@/Components/data-table/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { format, getDate } from "date-fns";
+import { id as idLocale } from "date-fns/locale";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/Components/ui/tooltip";
 
-const Prestasi = ({data}) => {
+const Prestasi = ({ prestasi }) => {
     const columns = [
         {
             id: "Nomor",
@@ -31,7 +37,7 @@ const Prestasi = ({data}) => {
         },
         {
             id: "kategori_lomba",
-            accessorKey: "pengajuan_lomba.kategori.kategori_lomba",  // Akses nama kategori
+            accessorKey: "pengajuan_lomba.kategori.kategori_lomba", // Akses nama kategori
             header: "Kategori",
             filterFn: customFilterFns["checkbox"],
         },
@@ -41,8 +47,49 @@ const Prestasi = ({data}) => {
             header: "Jenis Lomba",
             filterFn: customFilterFns["checkbox"],
         },
+        {
+            id: "tahun",
+            accessorKey: "pengajuan_lomba.tanggal_mulai",
+            header: "Tanggal Mulai",
+            cell: ({ row: { original: data } }) => {
+                if (!data?.pengajuan_lomba?.tanggal_mulai) {
+                    return <span>-</span>; // Tampilkan tanda "-" jika data kosong
+                }
+
+                const dateOpt = {
+                    locale: idLocale,
+                    weekStartsOn: 1,
+                };
+
+                const dateObj = new Date(data.pengajuan_lomba.tanggal_mulai);
+
+                if (isNaN(dateObj)) {
+                    return <span>Invalid Date</span>; // Jika parsing gagal, tampilkan pesan error
+                }
+
+                const date = format(dateObj, "d", dateOpt);
+                const month = format(dateObj, "LLL", dateOpt);
+                const fullDate = format(dateObj, "PPPP", dateOpt);
+
+                return (
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <div className="m-auto bg-card flex size-9 cursor-default flex-col items-center justify-center rounded-md border text-center">
+                                <span className="text-xs font-semibold leading-snug">
+                                    {date}
+                                </span>
+                                <span className="text-muted-foreground text-xs leading-none">
+                                    {month}
+                                </span>
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="shadow-md">{`${fullDate}`}</TooltipContent>
+                    </Tooltip>
+                );
+            },
+            filterFn: customFilterFns["date-year"],
+        },
     ];
-    const statusPengajuan = ["Diajukan", "Diterima", "Ditolak"];
     const tingkatLomba = [
         "Internasional",
         "Nasional",
@@ -50,37 +97,57 @@ const Prestasi = ({data}) => {
         "Lokal-Wilayah",
     ];
     const jenisLomba = ["Akademik", "Non-Akademik"];
-    const capaianPrestasi = ["Juara 1", "Juara 2", "Juara 3", "Harapan 1", "Harapan 2", "Harapan 3"];
+    const capaianPrestasi = [
+        "Juara 1",
+        "Juara 2",
+        "Juara 3",
+        "Harapan 1",
+        "Harapan 2",
+        "Harapan 3",
+    ];
     return (
         <AuthenticatedLayout>
-            <Head title="Data Pengajuan Lomba" />
-            <h1>Data Pengajuan Lomba</h1>
+            <Head title="Data Prestasi" />
+            <h1>Prestasi Mahasiswa</h1>
             <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={data}>
+                <DataTable columns={columns} data={prestasi}>
                     {({ table }) => {
                         return (
                             <DataTableControls table={table}>
-                                <DataTableFilter table={table} extend={[
-                                    {
-                                        id: "capaian_prestasi",
-                                        label: "Capaian Prestasi",
-                                        data: capaianPrestasi,
-                                    },
-                                    {
-                                        id: "tingkat_lomba",
-                                        label: "Tingkat Lomba",
-                                        data: tingkatLomba,
-                                    },
-                                    {
-                                        id: "jenis_lomba",
-                                        label: "Jenis Lomba",
-                                        data: jenisLomba,
-                                    },
-                                    {
-                                        id: "kategori_lomba",
-                                        label: "Kategori Lomba",
-                                    },
-                                    ]} />
+                                <DataTableFilter
+                                    table={table}
+                                    extend={[
+                                        {
+                                            id: "capaian_prestasi",
+                                            label: "Capaian Prestasi",
+                                            data: capaianPrestasi,
+                                        },
+                                        {
+                                            id: "tingkat_lomba",
+                                            label: "Tingkat Lomba",
+                                            data: tingkatLomba,
+                                        },
+                                        {
+                                            id: "jenis_lomba",
+                                            label: "Jenis Lomba",
+                                            data: jenisLomba,
+                                        },
+                                        {
+                                            id: "kategori_lomba",
+                                            label: "Kategori Lomba",
+                                        },
+                                        {
+                                            id: "tahun",
+                                            detached: true,
+                                        },
+                                    ]}
+                                />
+                                <DataTableFilter
+                                    table={table}
+                                    filter="tahun"
+                                    label="Tahun"
+                                    standalone
+                                />
                             </DataTableControls>
                         );
                     }}
