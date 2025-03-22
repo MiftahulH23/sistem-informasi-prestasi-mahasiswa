@@ -53,9 +53,29 @@ const DetailPengajuanLomba = ({ pengajuanLomba }) => {
                     <div>
                         <strong>Anggota Kelompok:</strong>{" "}
                         {Array.isArray(pengajuanLomba.anggota_kelompok)
-                            ? pengajuanLomba.anggota_kelompok
-                                  .join(", ")
-                                  .replace(/,([^,]*)$/, " dan$1")
+                            ? pengajuanLomba.anggota_kelompok.map(
+                                  (anggota, index) => (
+                                      <span key={index}>
+                                          <a
+                                              href="#"
+                                              className="text-blue-500 hover:underline"
+                                              onClick={() =>
+                                                  router.get(
+                                                      `/pengajuan-lomba/portofolio/${encodeURIComponent(
+                                                          anggota
+                                                      )}`
+                                                  )
+                                              }
+                                          >
+                                              {anggota}
+                                          </a>
+                                          {index !==
+                                              pengajuanLomba.anggota_kelompok
+                                                  .length -
+                                                  1 && ", "}
+                                      </span>
+                                  )
+                              )
                             : pengajuanLomba.anggota_kelompok}
                     </div>
 

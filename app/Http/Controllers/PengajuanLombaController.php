@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PengajuanLomba;
+use App\Models\Prestasi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -105,7 +106,7 @@ class PengajuanLombaController extends Controller
                 'surat_tugas.mimes' => 'Surat tugas harus berformat PDF.',
                 'surat_tugas.max' => 'Ukuran surat tugas tidak boleh lebih dari 5MB.',
             ]);
-            
+
 
             // Ambil user yang login
             $user = Auth::user();
@@ -164,6 +165,19 @@ class PengajuanLombaController extends Controller
 
         return "Notifikasi berhasil dikirim!";
     }
+
+    public function portofolio($nama)
+    {
+        $pengajuans = PengajuanLomba::whereJsonContains('anggota_kelompok', $nama)
+            ->with(['kategori', 'prestasi']) // Perbaikan relasi
+            ->get();
+
+        return Inertia::render('Mahasiswa/PortofolioLomba', [
+            'nama' => $nama,
+            'pengajuans' => $pengajuans
+        ]);
+    }
+
 
 }
 

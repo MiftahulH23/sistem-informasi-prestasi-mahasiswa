@@ -56,6 +56,11 @@ class PengajuanLomba extends Model
     {
         return $this->belongsTo(KategoriLomba::class, 'kategorilomba_id');
     }
+    public function prestasi()
+    {
+        return $this->hasMany(Prestasi::class, 'pengajuanlomba_id', 'pengajuanlomba_id');
+    }
+
 
 
 }

@@ -154,7 +154,7 @@ export function DataTable<Data, Value>(props: DataTable<Data, Value>) {
             {typeof children === "function" ? children({ table }) : children}
             <div className="bg-card border-border overflow-hidden rounded-md border">
                 <Table>
-                    <TableHeader className="bg-[#4F94C8]">
+                    <TableHeader className="bg-black **:!text-center">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow
                                 key={headerGroup.id}
@@ -164,14 +164,14 @@ export function DataTable<Data, Value>(props: DataTable<Data, Value>) {
                                     return (
                                         <TableHead
                                             key={header.id}
-                                            className="not-has-[*]:w-14 has-[*]:min-w-24 text-white text-center"
+                                            className="not-has-[*]:w-14 has-[*]:min-w-24 text-black text-center bg-blue-700"
                                         >
                                             {header.isPlaceholder ? null : header.column.getCanSort() &&
                                               controls.sorting ? (
                                                 <div
                                                     className={cn(
                                                         header.column.getCanSort() &&
-                                                            "flex h-full cursor-pointer select-none items-center gap-2"
+                                                            "flex h-full cursor-pointer select-none items-center gap-2 text-center"
                                                     )}
                                                     onClick={header.column.getToggleSortingHandler()}
                                                     onKeyDown={(e) => {
