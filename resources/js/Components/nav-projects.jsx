@@ -1,23 +1,20 @@
-import { Folder, MoreHorizontal, Share, Trash2 } from "lucide-react";
+import { Folder, Share, Trash2 } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar"
-import { Link } from "@inertiajs/react"
+  useSidebar
+} from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import { Link } from "@inertiajs/react";
 
 export function NavProjects({
   projects

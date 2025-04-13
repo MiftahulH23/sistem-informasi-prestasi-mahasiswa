@@ -140,6 +140,12 @@ class PengajuanLombaController extends Controller
                 'anggota_kelompok' => $anggota_kelompok, // Sudah termasuk user yang login jika kelompok
                 'surat_tugas' => $surat_tugas_path,
             ]);
+            $user = Auth::user();
+            $email = "miftahul21si@mahasiswa.pcr.ac.id";
+            $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
+
+            Notification::route('mail', $email)
+                ->notify(new Pengajuan($message));
             return redirect()->back()->with('success', 'Pengajuan Lomba berhasil ditambahkan! dari b');
         } catch (Exception $e) {
             return redirect()->back()->with('errors', $e->getMessage());

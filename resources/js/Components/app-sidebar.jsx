@@ -1,14 +1,4 @@
-import * as React from "react";
-import {
-    Group,
-    LayoutDashboard,
-    Medal,
-    Notebook,
-    FilePlus,
-    BookMarked,
-    LayoutList,
-    FileBadge,
-} from "lucide-react";
+import LogoKemahasiswaan from "@/Assets/images/LogoKemahasiswaan.jpg";
 import { NavProjects } from "@/components/nav-projects";
 import {
     Sidebar,
@@ -18,7 +8,16 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import LogoKemahasiswaan from "@/Assets/images/LogoKemahasiswaan.jpg"
+import { usePage } from "@inertiajs/react";
+import {
+    BookMarked,
+    FileBadge,
+    Group,
+    LayoutDashboard,
+    LayoutList,
+    Medal,
+    Notebook
+} from "lucide-react";
 
 const menuMahasiswa = [
     {
@@ -88,22 +87,30 @@ const menuEksekutif = [
     },
 ];
 export function AppSidebar({ ...props }) {
-  const role = "mahasiswa";
-  const menu = {
-    mahasiswa: menuMahasiswa,
-    kemahasiswaan: menuKemahasiswaan,
-    eksekutif: menuEksekutif,
-  }
+    const user = usePage().props.auth.user;
+    const role = user.role;
+    const menu = {
+        Mahasiswa: menuMahasiswa,
+        Kemahasiswaan: menuKemahasiswaan,
+        eksekutif: menuEksekutif,
+    };
+    console.log("User role:", role);
     return (
         <Sidebar variant="inset" {...props} className="z-20">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild className="hover:bg-transparent">
+                        <SidebarMenuButton
+                            size="lg"
+                            asChild
+                            className="hover:bg-transparent"
+                        >
                             <a href="/dashboard">
                                 <div className="w-8 h-8 overflow-hidden">
-                                    <img src={LogoKemahasiswaan} alt="Logo Kemahasiswaan" />
-
+                                    <img
+                                        src={LogoKemahasiswaan}
+                                        alt="Logo Kemahasiswaan"
+                                    />
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-semibold">

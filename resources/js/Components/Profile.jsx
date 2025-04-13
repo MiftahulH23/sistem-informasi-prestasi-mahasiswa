@@ -3,21 +3,15 @@ import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Link, usePage } from "@inertiajs/react";
 import {
-    Bolt,
-    BookOpen,
     ChevronDown,
-    Layers2,
-    LogOut,
-    Pin,
-    UserPen,
+    LogOut
 } from "lucide-react";
 
 export default function Profile() {

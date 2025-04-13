@@ -47,13 +47,12 @@ const PortofolioLomba = () => {
                                         <ul className="list-disc ml-5">
                                             {capaianPrestasi.map((p) => (
                                                 <li key={p.prestasi_id}>
-                                                    {p.capaian_prestasi} -{" "}
-                                                    {p.status}
+                                                    {p.capaian_prestasi}
                                                 </li>
                                             ))}
                                         </ul>
                                     ) : (
-                                        <p>Belum ada capaian</p>
+                                        <p>Belum Dilaporkan</p>
                                     )}
                                 </div>
                             </div>
