@@ -1,10 +1,8 @@
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
 import { customFilterFns } from "@/Components/data-table/utils";
-import { Filter } from "@/Components/Filter";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-import { id } from "date-fns/locale";
 const PelaporanPrestasi = ({ prestasi }) => {
     const columns = [
         {

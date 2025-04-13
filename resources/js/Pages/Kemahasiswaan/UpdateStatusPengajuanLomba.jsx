@@ -1,7 +1,7 @@
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
 import { customFilterFns } from "@/Components/data-table/utils";
-import { Filter } from "@/Components/Filter";
+
 import {
     Tooltip,
     TooltipContent,

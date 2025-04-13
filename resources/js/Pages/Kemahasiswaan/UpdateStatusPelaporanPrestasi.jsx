@@ -114,7 +114,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                 }
 
                 return (
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 justify-center">
                         {dokumentasi.map((file, index) => (
                             <a
                                 key={index}

@@ -1,23 +1,7 @@
-
-import React from "react";
-import { Column } from "@tanstack/react-table";
-import { addHours, addMinutes, format, getYear } from "date-fns";
-import { DateRange } from "react-day-picker";
-
 import { camelToKebab, cn } from "@/lib/utils";
-
-import type {
-  DataTableFilter,
-  FilterComponent,
-  FilterContext,
-  FilterMap,
-  FilterMapItem,
-  FilterVariant,
-  GroupedFilter,
-  StandaloneFilter,
-} from "./types";
+import { addHours, addMinutes, format, getYear } from "date-fns";
+import React from "react";
 import { customFilterFns } from "./utils";
-
 import {
   CalendarIcon,
   CalendarRangeIcon,
@@ -27,16 +11,16 @@ import {
   ListFilterIcon,
   SquareCheckIcon,
 } from "lucide-react";
-import { Label } from "../ui/label";
-import { Checkbox } from "../ui/checkbox";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Calendar } from "../ui/calendar";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Separator } from "../ui/separator";
 
 // eslint-disable-next-line
-const FilterContext = React.createContext<FilterContext<any> | null>(null);
+const FilterContext = React.createContext(null);
 
 /**
  * @function hooks for filter context
@@ -48,46 +32,46 @@ const FilterContext = React.createContext<FilterContext<any> | null>(null);
  * - `isFilterActive` check if column is filtering
  * - `formatFilterName` format column filter name to match custom `filters`
  */
-function useFilter<T>() {
+function useFilter() {
   const context = React.useContext(FilterContext);
 
   if (!context) {
     throw new Error("useFilter must be used within a FilterProvider.");
   }
 
-  return context as FilterContext<T>;
+  return context;
 }
 
 /**
  * @function FilterContext provider
  */
-function FilterProvider<T>({ children }: { children: React.ReactNode }) {
-  const [state, setState] = React.useState<keyof T>();
+function FilterProvider({ children }) {
+  const [state, setState] = React.useState();
 
   // Get all filter variant based on `utils.ts`
-  const filters = React.useMemo<FilterVariant[]>(() => {
-    return Object.keys(customFilterFns) as FilterVariant[];
+  const filters = React.useMemo(() => {
+    return Object.keys(customFilterFns);
   }, []);
 
   // Check if column is filtering
-  const isFilterActive = React.useCallback((column: Column<T>) => {
+  const isFilterActive = React.useCallback((column) => {
     return column.getFilterValue() !== undefined;
   }, []);
 
   // Format column filter name to match custom `filters`
-  const formatFilterName = React.useCallback((column: Column<T>) => {
+  const formatFilterName = React.useCallback((column) => {
     const filterFnName = column?.getFilterFn()?.name ?? "unknown";
-    const formatName = camelToKebab(filterFnName) as FilterVariant;
+    const formatName = camelToKebab(filterFnName);
     return formatName;
   }, []);
 
   // Reset filter value column
-  const clearFilter = React.useCallback((column: Column<T>) => {
+  const clearFilter = React.useCallback((column) => {
     setState(undefined);
     column.setFilterValue(undefined);
   }, []);
 
-  const contextValue = React.useMemo<FilterContext<T>>(
+  const contextValue = React.useMemo(
     () => ({
       state,
       setState,
@@ -106,9 +90,9 @@ function FilterProvider<T>({ children }: { children: React.ReactNode }) {
   );
 }
 
-function CheckboxFilter<T>(props: FilterComponent<T>) {
+function CheckboxFilter(props) {
   const { column, data, label, standalone, className, ...rest } = props;
-  const { setState, clearFilter, isFilterActive } = useFilter<T>();
+  const { setState, clearFilter, isFilterActive } = useFilter();
 
   const [open, setOpen] = React.useState(false);
 
@@ -116,7 +100,7 @@ function CheckboxFilter<T>(props: FilterComponent<T>) {
   const isFiltering = isFilterActive(column);
 
   // get current filter value
-  const filterValue = column.getFilterValue() as string[];
+  const filterValue = column.getFilterValue();
 
   // get unique values from exist data
   const facetedUniqueValues = column.getFacetedUniqueValues();
@@ -131,8 +115,8 @@ function CheckboxFilter<T>(props: FilterComponent<T>) {
     return filterValue ?? [];
   }, [filterValue]);
 
-  const handleCheckboxChange = (checked: boolean, value: string) => {
-    const filterValue = column.getFilterValue() as string[];
+  const handleCheckboxChange = (checked, value) => {
+    const filterValue = column.getFilterValue();
     const newFilterValue = Array.isArray(filterValue) ? [...filterValue] : [];
 
     if (checked) {
@@ -163,7 +147,7 @@ function CheckboxFilter<T>(props: FilterComponent<T>) {
             <Checkbox
               id={item}
               checked={selectedValue.includes(item)}
-              onCheckedChange={(checked: boolean) => {
+              onCheckedChange={(checked) => {
                 handleCheckboxChange(checked, item);
               }}
             />
@@ -245,9 +229,9 @@ function CheckboxFilter<T>(props: FilterComponent<T>) {
   );
 }
 
-function RadioFilter<T>(props: FilterComponent<T>) {
+function RadioFilter(props) {
   const { column, data, label, standalone, className, ...rest } = props;
-  const { setState, clearFilter, isFilterActive } = useFilter<T>();
+  const { setState, clearFilter, isFilterActive } = useFilter();
 
   const [open, setOpen] = React.useState(false);
 
@@ -268,8 +252,8 @@ function RadioFilter<T>(props: FilterComponent<T>) {
   function Filter() {
     return (
       <RadioGroup
-        value={column.getFilterValue() as string}
-        onValueChange={(value: string) => column.setFilterValue(value)}
+        value={column.getFilterValue()}
+        onValueChange={(value) => column.setFilterValue(value)}
         data-large={mapData.length >= 10}
         className="grid gap-2.5 data-[large=true]:grid-cols-2"
       >
@@ -361,16 +345,16 @@ function RadioFilter<T>(props: FilterComponent<T>) {
   );
 }
 
-function DateRangeFilter<T>(props: FilterComponent<T>) {
+function DateRangeFilter(props) {
   const { column, label, standalone } = props;
-  const { setState, clearFilter, isFilterActive } = useFilter<T>();
+  const { setState, clearFilter, isFilterActive } = useFilter();
 
-  const [date, setDate] = React.useState<DateRange | undefined>();
+  const [date, setDate] = React.useState();
 
   // check is filter active
   const isFiltering = isFilterActive(column);
 
-  const filterValue = column.getFilterValue() as string[];
+  const filterValue = column.getFilterValue();
 
   // get date range from filter value
   const from = filterValue?.[0] ? new Date(filterValue[0]) : undefined;
@@ -382,7 +366,7 @@ function DateRangeFilter<T>(props: FilterComponent<T>) {
     to: isNaN(to?.getTime() || NaN) ? undefined : to,
   };
 
-  function handleDateChange(selectedDate: DateRange | undefined) {
+  function handleDateChange(selectedDate) {
     column.setFilterValue(
       selectedDate?.from && selectedDate?.to
         ? [selectedDate.from, addMinutes(addHours(selectedDate.to, 23), 59)]
@@ -482,9 +466,9 @@ function DateRangeFilter<T>(props: FilterComponent<T>) {
   );
 }
 
-function DateYearFilter<T>(props: FilterComponent<T>) {
+function DateYearFilter(props) {
   const { column, label, data, standalone, className, ...rest } = props;
-  const { setState, clearFilter, isFilterActive } = useFilter<T>();
+  const { setState, clearFilter, isFilterActive } = useFilter();
 
   const [open, setOpen] = React.useState(false);
 
@@ -510,8 +494,8 @@ function DateYearFilter<T>(props: FilterComponent<T>) {
   function Filter() {
     return (
       <RadioGroup
-        value={column.getFilterValue() as string}
-        onValueChange={(value: string) => column.setFilterValue(value)}
+        value={column.getFilterValue()}
+        onValueChange={(value) => column.setFilterValue(value)}
         data-large={mapData.length >= 10}
         className="grid gap-2 data-[large=true]:grid-cols-2"
       >
@@ -607,8 +591,8 @@ function DateYearFilter<T>(props: FilterComponent<T>) {
  * Define each filter component based on filter variant
  * @returns components, icon
  */
-function filterMap<T>(variant?: FilterVariant) {
-  const filterComponents: FilterMap<T> = {
+function filterMap(variant) {
+  const filterComponents = {
     checkbox: { component: CheckboxFilter, icon: SquareCheckIcon },
     radio: { component: RadioFilter, icon: CircleCheckIcon },
     "date-range": { component: DateRangeFilter, icon: CalendarRangeIcon },
@@ -622,9 +606,9 @@ function filterMap<T>(variant?: FilterVariant) {
  * @function Filter list for grouped filter
  * @description Manage filter state to show active filter component on popover
  */
-function FilterList<T>(props: FilterComponent<T>) {
+function FilterList(props) {
   const { column, data, label } = props;
-  const { state, setState, isFilterActive, formatFilterName } = useFilter<T>();
+  const { state, setState, isFilterActive, formatFilterName } = useFilter();
 
   // get current filter value
   const filterValue = column.getFilterValue();
@@ -634,7 +618,7 @@ function FilterList<T>(props: FilterComponent<T>) {
     return Array.isArray(filterValue) ? filterValue : [];
   }, [filterValue]);
 
-  const filterText: Record<FilterVariant, string> = {
+  const filterText= {
     checkbox: column.id,
     radio: column.id,
     "date-range": "Tanggal",
@@ -645,7 +629,7 @@ function FilterList<T>(props: FilterComponent<T>) {
   const filterKey = formatFilterName(column);
 
   // define filter components and icon
-  const filterComponents = filterMap<T>() as FilterMap<T>;
+  const filterComponents = filterMap();
   const Icon = filterComponents[filterKey].icon;
   const Component = filterComponents[filterKey].component;
 
@@ -668,7 +652,7 @@ function FilterList<T>(props: FilterComponent<T>) {
       size="sm"
       variant="ghost"
       className="h-7 justify-start !ps-2 text-sm"
-      onClick={() => setState(column.id as keyof T)}
+      onClick={() => setState(column.id)}
     >
       <Icon className="text-muted-foreground size-4" />
       <span className="capitalize">{label ?? filterText[filterKey]}</span>
@@ -684,16 +668,16 @@ function FilterList<T>(props: FilterComponent<T>) {
   );
 }
 
-function FilterComponent<T>(props: DataTableFilter<T>) {
+function FilterComponent(props) {
   const { table, standalone = false, className, ...rest } = props;
   const { state, setState, filters, formatFilterName, isFilterActive } =
-    useFilter<T>();
+    useFilter();
 
   const [open, setOpen] = React.useState(false);
 
   // separate props
-  const { extend } = props as GroupedFilter<T>;
-  const { filter: filterKey, label, data } = props as StandaloneFilter<T>;
+  const { extend } = props;
+  const { filter: filterKey, label, data } = props;
 
   const detachedColumns = extend?.filter((item) => item.detached) ?? [];
   let excludeColumns = ["actions"];
@@ -701,7 +685,7 @@ function FilterComponent<T>(props: DataTableFilter<T>) {
   // exclude columns from detached extend data
   if (extend) {
     excludeColumns = excludeColumns.concat(
-      detachedColumns.map((item) => item.id) as string[],
+      detachedColumns.map((item) => item.id),
     );
   }
 
@@ -730,12 +714,12 @@ function FilterComponent<T>(props: DataTableFilter<T>) {
     const filterKey = formatFilterName(standaloneColumn);
 
     // get filter components
-    const filterComponents = filterMap<T>(filterKey) as FilterMapItem<T>;
+    const filterComponents = filterMap(filterKey);
     const Component = filterComponents.component;
 
     return (
       <Component
-        column={standaloneColumn!}
+        column={standaloneColumn}
         data={data}
         label={label}
         className={className}
@@ -754,7 +738,7 @@ function FilterComponent<T>(props: DataTableFilter<T>) {
   }
 
   // get extend data fn
-  function extendItems<T>(column: Column<T>) {
+  function extendItems(column) {
     return extend?.find((item) => item.id === column.id);
   }
 
@@ -807,7 +791,7 @@ function FilterComponent<T>(props: DataTableFilter<T>) {
   );
 }
 
-export function DataTableFilter<T>(props: DataTableFilter<T>) {
+export function DataTableFilter(props) {
   return (
     <FilterProvider>
       <FilterComponent {...props} />

@@ -1,4 +1,3 @@
-import { Table } from "@tanstack/react-table";
 import { Button } from "@/Components/ui/button";
 import { Label } from "@/Components/ui/label";
 import {
@@ -21,7 +20,7 @@ import {
   ChevronRightIcon,
 } from "lucide-react";
 
-export function DataTablePaginations<TData>(props: { table: Table<TData> }) {
+export function DataTablePaginations(props) {
   const { table } = props;
   const pageSizeOpt = [5, 10, 20];
 

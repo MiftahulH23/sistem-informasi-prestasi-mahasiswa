@@ -1,23 +1,3 @@
-/**
- * @file Define custom filter functions for data table.
- *
- * @description
- * filterFn naming must be consistent with the filter variant.
- * do not use prefix or suffix for filterFn name.
- *
- * filterFn name use `camelCase`.
- * variant name use `kebab-case`.
- *
- * @example
- * filterFn: dateYear
- * variant: "date-year"
- *
- * define variant name as key in `customFilterFns` with it's filterFn.
- * export only `customFilterFns`.
- *
- * @author hibatillah
- */
-import { Row } from "@tanstack/react-table";
 import { isSameYear, isWithinInterval } from "date-fns";
 
 /**
@@ -38,13 +18,13 @@ export const customFilterFns = {
  * @private
  * Store filter function inside {customFilterFns}.
  */
-function checkbox<T>(
-  row: Row<T>,
-  columnId: string,
-  filterValue: string[],
-): boolean {
+function checkbox(
+  row,
+  columnId,
+  filterValue,
+){
   if (!filterValue?.length) return true;
-  const column = row.getValue(columnId) as string;
+  const column = row.getValue(columnId);
   return filterValue.includes(column);
 }
 
@@ -52,7 +32,7 @@ function checkbox<T>(
  * @private
  * Store filter function inside {customFilterFns}.
  */
-function radio<T>(row: Row<T>, columnId: string, filterValue: string): boolean {
+function radio(row, columnId, filterValue){
   if (!filterValue) return true;
   const column = String(row.getValue(columnId));
   return String(filterValue) === column;
@@ -62,14 +42,14 @@ function radio<T>(row: Row<T>, columnId: string, filterValue: string): boolean {
  * @private
  * Store filter function inside {customFilterFns}.
  */
-function dateRange<T>(
-  row: Row<T>,
-  columnId: string,
-  filterValue: string[],
-): boolean {
+function dateRange(
+  row,
+  columnId,
+  filterValue,
+){
   if (!filterValue || filterValue.length !== 2) return true;
 
-  const rowDate = new Date(row.getValue(columnId) as string);
+  const rowDate = new Date(row.getValue(columnId));
   const from = new Date(filterValue[0]);
   const to = new Date(filterValue[1]);
 
@@ -80,13 +60,13 @@ function dateRange<T>(
  * @private
  * Store filter function inside {customFilterFns}.
  */
-function dateYear<T>(
-  row: Row<T>,
-  columnId: string,
-  filterValue: string | undefined,
+function dateYear(
+  row,
+  columnId,
+  filterValue,
 ) {
   if (!filterValue) return true;
-  const rowYear = new Date(row.getValue(columnId) as string);
+  const rowYear = new Date(row.getValue(columnId));
   const selectedYear = new Date(Number(filterValue), 1, 1);
   return isSameYear(rowYear, selectedYear);
 }
