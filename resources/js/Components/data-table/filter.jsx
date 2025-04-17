@@ -689,11 +689,6 @@ function FilterComponent(props) {
     );
   }
 
-  /**
-   * Get all columns
-   *
-   * except includes in `excludeColumns` and filter name includes in `filters`
-   */
   const columns = table
     .getAllColumns()
     .filter((column) => !excludeColumns.includes(column.id))

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Str;
 
 class SocialiteController extends Controller
 {
@@ -20,37 +21,53 @@ class SocialiteController extends Controller
     public function callback()
     {
         $socialUser = Socialite::driver('google')->user();
-        $registeredUser = User::where('google_id', $socialUser->id)->orWhere('email', $socialUser->email)->first();
+
+        // Tentukan role berdasarkan email
+        $email = $socialUser->email;
+        $role = 'mahasiswa'; // Default
+
+        if ($email === 'kemahasiswaan@pcr.ac.id') {
+            $role = 'Kemahasiswaan';
+        } elseif (Str::endsWith($email, '@pcr.ac.id')) {
+            $role = 'Dosen';
+        } elseif (Str::endsWith($email, '@mahasiswa.pcr.ac.id')) {
+            $role = 'Mahasiswa';
+        }
+
+        $registeredUser = User::where('google_id', $socialUser->id)
+            ->orWhere('email', $email)
+            ->first();
 
         if ($registeredUser) {
             $registeredUser->update([
                 'name' => $socialUser->name,
-                'email' => $socialUser->email,
+                'email' => $email,
                 'password' => Hash::make('123'),
                 'google_id' => $socialUser->id,
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
+                'role' => $role, // update role
             ]);
+
             Auth::login($registeredUser, true);
         } else {
             $user = User::create([
                 'name' => $socialUser->name,
-                'email' => $socialUser->email,
-                'password' => Hash::make('123'), // Password default
+                'email' => $email,
+                'password' => Hash::make('123'),
                 'avatar' => $socialUser->avatar,
                 'google_id' => $socialUser->id,
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
+                'role' => $role,
             ]);
-
             Auth::login($user, true);
         }
 
-        // Simpan informasi login di cookie agar tetap login selama 2 jam
         Cookie::queue('user_session', Auth::user()->id, 120);
-
-        return redirect()->intended('/dashboard'); 
+        return redirect()->intended('/dashboard');
     }
+
 
     public function logout(Request $request)
     {
