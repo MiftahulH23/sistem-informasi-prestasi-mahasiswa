@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class DashboardController extends Controller
 {
@@ -18,9 +19,18 @@ class DashboardController extends Controller
      */
     public function index(): Response
     {
+        return Inertia::render('Dashboard', [
+            'chartData' => $this->getChartDataByProgramStudi(),
+            'lineChartData' => $this->getLineChartData(),
+            'TingkatLomba' => $this->getChartDataByTingkatLomba(),
+            'KategoriLomba' => $this->getChartDataByKategoriLomba(),
+        ]);
+    }
+
+    private function getChartDataByProgramStudi()
+    {
         $oneYearAgo = Carbon::now()->subYear();
 
-        // Mapping singkatan program studi
         $programSingkatan = [
             'Sistem Informasi' => 'SI',
             'Teknik Informatika' => 'TI',
@@ -31,12 +41,11 @@ class DashboardController extends Controller
             'Akuntansi' => 'AK',
         ];
 
-        // Ambil data dari tabel `prestasi` dengan relasi ke `pengajuanlomba`
-        $chartData = Prestasi::where('status', 'Diterima')
+        return Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
-            ->with('pengajuanlomba') // Mengambil data dari tabel `pengajuanlomba`
+            ->with('pengajuanlomba')
             ->get()
-            ->groupBy(fn($item) => $item->pengajuanlomba->program_studi) // Grup berdasarkan program studi
+            ->groupBy(fn($item) => $item->pengajuanlomba->program_studi)
             ->map(function ($items, $programStudi) use ($programSingkatan) {
                 return [
                     'program_studi' => $programSingkatan[$programStudi] ?? $programStudi,
@@ -44,63 +53,80 @@ class DashboardController extends Controller
                 ];
             })
             ->values();
+    }
 
-        $lineChartData = Prestasi::where('status', 'Diterima')
-            ->whereHas('pengajuanlomba', function ($query) use ($oneYearAgo) {
-                $query->where('tanggal_mulai', '>=', $oneYearAgo);
-            })
+    private function getLineChartData()
+    {
+        $oneYearAgo = Carbon::now()->subYear();
+
+        $months = collect([
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ]);
+
+        $prestasi = Prestasi::where('status', 'Diterima')
+            ->whereHas('pengajuanlomba', fn($query) => $query->where('tanggal_mulai', '>=', $oneYearAgo))
             ->with('pengajuanlomba')
             ->get()
-            ->groupBy(function ($item) {
-                return Carbon::parse($item->pengajuanlomba->tanggal_mulai)->format('F'); // Grup berdasarkan bulan
-            })
+            ->groupBy(fn($item) => Carbon::parse($item->pengajuanlomba->tanggal_mulai)->format('F'))
             ->map(function ($items, $month) {
                 return [
                     'month' => $month,
                     'Akademik' => $items->where('pengajuanlomba.jenis_lomba', 'Akademik')->count(),
                     'Non-Akademik' => $items->where('pengajuanlomba.jenis_lomba', 'Non-Akademik')->count(),
                 ];
-            })
-            ->sortBy(function ($item) {
-                return Carbon::parse($item['month'])->month; // Urutkan berdasarkan bulan (1-12)
-            })
-            ->values();
+            });
 
+        return $months->map(function ($month) use ($prestasi) {
+            $data = $prestasi->firstWhere('month', $month);
+            return [
+                'month' => $month,
+                'Akademik' => $data['Akademik'] ?? 0,
+                'Non-Akademik' => $data['Non-Akademik'] ?? 0,
+            ];
+        });
+    }
 
-        $TingkatLomba = Prestasi::where('status', 'Diterima')
+    private function getChartDataByTingkatLomba()
+    {
+        $oneYearAgo = Carbon::now()->subYear();
+
+        return Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
-            ->with('pengajuanlomba') // Mengambil data dari tabel `pengajuanlomba`
+            ->with('pengajuanlomba')
             ->get()
-            ->groupBy(fn($item) => optional($item->pengajuanlomba)->tingkat_lomba) // Grup berdasarkan tingkat lomba
-            ->map(function ($items, $TingkatLomba) {
-                return [
-                    'tingkat_lomba' => $TingkatLomba, // Menggunakan tingkat lomba yang benar
-                    'total' => $items->count(),
-                ];
-            })
+            ->groupBy(fn($item) => optional($item->pengajuanlomba)->tingkat_lomba)
+            ->map(fn($items, $tingkat) => [
+                'tingkat_lomba' => $tingkat,
+                'total' => $items->count(),
+            ])
             ->values();
+    }
 
-        $KategoriLomba = Prestasi::where('status', 'Diterima')
+    private function getChartDataByKategoriLomba()
+    {
+        $oneYearAgo = Carbon::now()->subYear();
+
+        return Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
             ->with('pengajuanlomba.kategori')
             ->get()
-            ->groupBy(fn($item) => optional($item->pengajuanlomba->kategori)->kategori_lomba) // Gunakan nama kategori
-            ->map(function ($items, $namaKategori) {
-                return [
-                    'kategori_lomba' => $namaKategori ?? 'Tidak Diketahui', // Gunakan nama kategori atau default
-                    'total' => $items->count(),
-                ];
-            })
+            ->groupBy(fn($item) => optional($item->pengajuanlomba->kategori)->kategori_lomba)
+            ->map(fn($items, $kategori) => [
+                'kategori_lomba' => $kategori ?? 'Tidak Diketahui',
+                'total' => $items->count(),
+            ])
             ->values();
-
-        // dd($KategoriLomba);
-
-        return Inertia::render('Dashboard', [
-            'chartData' => $chartData,
-            'lineChartData' => $lineChartData,
-            'TingkatLomba' => $TingkatLomba,
-            'KategoriLomba' => $KategoriLomba,
-        ]);
     }
 
 
