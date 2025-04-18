@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriLombaController;
 use App\Http\Controllers\JudulLombaController;
@@ -31,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'index'])->name('pengajuan-lomba.index');
     Route::get('/update-pengajuan-lomba', [PengajuanLombaController::class, 'editStatus'])->name('update-pengajuan-lomba');
     Route::put('/pengajuan-lomba/{id}/update-status', [PengajuanLombaController::class, 'updateStatus'])->name('pengajuan-lomba.update-status');
+    Route::get('/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
     Route::get('/update-pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
     Route::get('/update-pengajuan-lomba/portofolio/{id}', [PengajuanLombaController::class, 'portofolio']);
 
@@ -66,6 +68,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Prestasi
 Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/prestasi', [PrestasiController::class,'index'])->name('prestasi.index');
+});
+
+// Bimbingan
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan.index');
+    Route::get('/bimbingan/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
+    Route::get('/bimbingan/{pengajuanlomba_id}', [BimbinganController::class, 'show']);
+
 });
 
 // Profile

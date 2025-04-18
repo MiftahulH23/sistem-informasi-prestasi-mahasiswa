@@ -16,7 +16,8 @@ import {
     LayoutDashboard,
     LayoutList,
     Medal,
-    Notebook
+    Notebook,
+    BookOpenText
 } from "lucide-react";
 
 const menuMahasiswa = [
@@ -40,6 +41,12 @@ const menuMahasiswa = [
         url: "/pelaporan-prestasi",
         icon: FileBadge,
     },
+    {
+        name: "Bimbingan",
+        url: "/bimbingan",
+        icon: BookOpenText,
+    },
+    
 ];
 
 const menuKemahasiswaan = [

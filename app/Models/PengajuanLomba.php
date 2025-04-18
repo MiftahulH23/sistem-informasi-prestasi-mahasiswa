@@ -60,6 +60,10 @@ class PengajuanLomba extends Model
     {
         return $this->hasMany(Prestasi::class, 'pengajuanlomba_id');
     }
+    public function bimbingan()
+    {
+        return $this->hasMany(Bimbingan::class, 'pengajuanlomba_id');
+    }
 
 
 
