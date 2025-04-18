@@ -60,7 +60,7 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                                           className="text-blue-500 hover:underline"
                                           onClick={() =>
                                               router.get(
-                                                  `/pengajuan-lomba/portofolio/${anggota.id}`
+                                                  `/update-pengajuan-lomba/portofolio/${anggota.id}`
                                               )
                                           }
                                       >
