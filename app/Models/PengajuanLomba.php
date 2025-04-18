@@ -58,8 +58,10 @@ class PengajuanLomba extends Model
     }
     public function prestasi()
     {
-        return $this->hasMany(Prestasi::class, 'pengajuanlomba_id', 'pengajuanlomba_id');
+        return $this->hasMany(Prestasi::class, 'pengajuanlomba_id');
     }
+
+
 
 
 

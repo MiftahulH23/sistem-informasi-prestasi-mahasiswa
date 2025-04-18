@@ -31,15 +31,36 @@ class PelaporanPrestasiController extends Controller
      */
     public function create()
     {
-        $lombaOptions = PengajuanLomba::where('status', 'Diterima')
-            ->where('user_id', auth()->id()) // Menyaring berdasarkan user yang login
-            ->pluck('judul_lomba', 'pengajuanlomba_id');
+        $userId = auth()->id();
+
+        // Ambil semua pengajuan lomba milik user yang statusnya Diterima
+        $pengajuans = PengajuanLomba::where('status', 'Diterima')
+            ->where('user_id', $userId)
+            ->get();
+
+        // Filter hanya yang belum ada prestasi atau semua prestasinya Ditolak
+        $filtered = $pengajuans->filter(function ($pengajuan) {
+            $prestasi = $pengajuan->prestasi; 
+
+            if ($prestasi->isEmpty()) {
+                return true; // belum ada prestasi sama sekali
+            }
+
+            // kalau semua statusnya Ditolak, maka bisa
+            return $prestasi->every(function ($p) {
+                return $p->status === 'Ditolak';
+            });
+        });
+
+        // Ambil judul dan ID-nya
+        $lombaOptions = $filtered->pluck('judul_lomba', 'pengajuanlomba_id');
 
         return Inertia('Mahasiswa/TambahLaporanPrestasi', [
             'lombaOptions' => $lombaOptions,
         ]);
-
     }
+
+
 
     /**
      * Store a newly created resource in storage.
