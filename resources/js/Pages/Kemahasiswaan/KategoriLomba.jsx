@@ -1,21 +1,20 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import React, { useEffect, useState } from "react";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import { Label } from "@/Components/ui/label";
-import { Input } from "@/Components/ui/input";
-import { Trash2, SquarePen, X } from "lucide-react";
+import { DataTable, DataTableControls } from "@/Components/data-table";
+import { DataTableFilter } from "@/Components/data-table/filter";
+import { customFilterFns } from "@/Components/data-table/utils";
 import Modal from "@/Components/Modal";
-import { router } from "@inertiajs/react";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { SquarePen, Trash2, X } from "lucide-react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 
-
-
 const KategoriLomba = ({ kategoriLomba }) => {
-    const { flash } = usePage().props; 
+    const { flash } = usePage().props;
     const { data, setData, post, processing, reset, errors } = useForm({
         kategori_lomba: "",
     });
-
 
     // State untuk modal edit
     const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -36,11 +35,14 @@ const KategoriLomba = ({ kategoriLomba }) => {
         post(route("kategori-lomba.store"), {
             onSuccess: () => {
                 reset();
-                Swal.fire("Berhasil!", "Kategori berhasil ditambah.", "success");
+                Swal.fire(
+                    "Berhasil!",
+                    "Kategori berhasil ditambah.",
+                    "success"
+                );
             },
         });
     };
-    
 
     // Handle hapus kategori
     const handleDelete = (id) => {
@@ -57,14 +59,17 @@ const KategoriLomba = ({ kategoriLomba }) => {
             if (result.isConfirmed) {
                 router.delete(route("kategori-lomba.destroy", id), {
                     onSuccess: () => {
-                        Swal.fire("Berhasil!", "Kategori telah dihapus.", "success");
+                        Swal.fire(
+                            "Berhasil!",
+                            "Kategori telah dihapus.",
+                            "success"
+                        );
                     },
                 });
             }
         });
     };
-    
-    
+
     // Handle edit kategori (buka modal & set data)
     const openEditModal = (kategori) => {
         setSelectedKategori(kategori);
@@ -85,18 +90,55 @@ const KategoriLomba = ({ kategoriLomba }) => {
         });
     };
 
+    const columns = [
+        {
+            id: "Nomor",
+            header: "No",
+            cell: (info) => info.row.index + 1,
+        },
+        {
+            id: "kategori_lomba",
+            header: "Kategori Lomba",
+            accessorKey: "kategori_lomba",
+            filterFn: customFilterFns["checkbox"]
+        },
+        {
+            id: "Aksi",
+            header: "Aksi",
+            cell: (info) => (
+                <div className="flex gap-2 justify-center">
+                    <SquarePen
+                        className="cursor-pointer text-blue-500 size-5"
+                        onClick={() => openEditModal(info.row.original)}
+                    />
+                    <Trash2
+                        className="cursor-pointer text-red-500 size-5"
+                        onClick={() =>
+                            handleDelete(info.row.original.kategorilomba_id)
+                        }
+                    />
+                </div>
+            ),
+        },
+    ];
+
     return (
         <AuthenticatedLayout>
             <Head title="Kategori Lomba" />
             <h1 className="text-xl font-bold mb-4">Kategori Lomba</h1>
             {/* Form Tambah */}
-            <form onSubmit={handleSubmit} className="flex justify-start items-center gap-5">
+            <form
+                onSubmit={handleSubmit}
+                className="flex justify-start items-center gap-5"
+            >
                 <div className="flex gap-2 items-center">
                     <Label className="w-40">Kategori Lomba</Label>
                     <Input
                         name="kategori_lomba"
                         value={data.kategori_lomba}
-                        onChange={(e) => setData("kategori_lomba", e.target.value)}
+                        onChange={(e) =>
+                            setData("kategori_lomba", e.target.value)
+                        }
                         placeholder="Masukkan kategori"
                         required
                     />
@@ -111,46 +153,29 @@ const KategoriLomba = ({ kategoriLomba }) => {
             </form>
 
             {/* Tampilkan error validasi */}
-            {errors.kategori_lomba && <p className="text-red-500">{errors.kategori_lomba}</p>}
-            
-            <table className="table mt-4 w-full">
-                <thead>
-                    <tr className="bg-white text-center rounded-lg">
-                        <th className="px-4 py-2">No</th>
-                        <th className="px-4 py-2">Kategori Lomba</th>
-                        <th className="px-4 py-2">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {kategoriLomba.length > 0 ? (
-                        kategoriLomba.map((kategori, index) => (
-                            <tr key={kategori.id} className="text-center">
-                                <td className="px-4 py-2">{index + 1}</td>
-                                <td className="px-4 py-2">{kategori.kategori_lomba}</td>
-                                <td className="px-4 py-2 flex gap-2 justify-center">
-                                    <SquarePen
-                                        className="cursor-pointer text-blue-500 size-5"
-                                        onClick={() => openEditModal(kategori)}
-                                    />
-                                    <Trash2
-                                        className="cursor-pointer text-red-500 size-5"
-                                        onClick={() => handleDelete(kategori.kategorilomba_id)}
-                                    />
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="3" className="text-center py-4">
-                                Tidak ada data kategori lomba.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-
+            {errors.kategori_lomba && (
+                <p className="text-red-500">{errors.kategori_lomba}</p>
+            )}
+            <DataTable columns={columns} data={kategoriLomba}>
+                {({ table }) => (
+                    <DataTableControls table={table}>
+                        <DataTableFilter
+                            table={table}
+                            extend={[
+                                {
+                                    id: "kategori_lomba",
+                                    label: "Kategori Lomba",
+                                }
+                            ]}
+                        />
+                    </DataTableControls>
+                )}
+            </DataTable>
             {/* Modal Edit */}
-            <Modal show={isEditModalOpen} onClose={() => setEditModalOpen(false)}>
+            <Modal
+                show={isEditModalOpen}
+                onClose={() => setEditModalOpen(false)}
+            >
                 <div className="bg-white p-6 rounded-lg shadow-lg w-full">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-lg font-bold">Edit Kategori</h2>
@@ -164,10 +189,14 @@ const KategoriLomba = ({ kategoriLomba }) => {
                         <Input
                             name="kategori_lomba"
                             value={editData.kategori_lomba}
-                            onChange={(e) => setEditData("kategori_lomba", e.target.value)}
+                            onChange={(e) =>
+                                setEditData("kategori_lomba", e.target.value)
+                            }
                         />
                         {editErrors.kategori_lomba && (
-                            <p className="text-red-500">{editErrors.kategori_lomba}</p>
+                            <p className="text-red-500">
+                                {editErrors.kategori_lomba}
+                            </p>
                         )}
                         <div className="mt-4 flex justify-end gap-2">
                             <button

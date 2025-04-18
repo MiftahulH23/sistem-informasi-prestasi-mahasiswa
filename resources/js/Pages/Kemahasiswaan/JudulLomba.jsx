@@ -6,6 +6,9 @@ import { Input } from "@/Components/ui/input";
 import Swal from "sweetalert2";
 import { Trash2, SquarePen, X } from "lucide-react";
 import Modal from "@/Components/Modal";
+import { DataTable, DataTableControls } from "@/Components/data-table";
+import { DataTableFilter } from "@/Components/data-table/filter";
+import { customFilterFns } from "@/Components/data-table/utils";
 
 const JudulLomba = () => {
     const { kategoriLomba, judulLomba } = usePage().props;
@@ -68,36 +71,76 @@ const JudulLomba = () => {
 
     // Fungsi hapus data
     const handleDelete = (id) => {
-    console.log("Menghapus ID:", id); // Debugging
+        console.log("Menghapus ID:", id); // Debugging
 
-    if (!id) {
-        Swal.fire("Error!", "ID tidak ditemukan.", "error");
-        return;
-    }
-
-    Swal.fire({
-        title: "Apakah Anda yakin?",
-        text: "Data yang dihapus tidak dapat dikembalikan!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Ya, hapus!",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            router.delete(route("judul-lomba.destroy", id), {
-                onSuccess: () => {
-                    Swal.fire("Berhasil!", "Judul telah dihapus.", "success");
-                },
-                onError: (err) => {
-                    console.log("Error saat menghapus:", err);
-                },
-            });
+        if (!id) {
+            Swal.fire("Error!", "ID tidak ditemukan.", "error");
+            return;
         }
-    });
-};
 
-    
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Data yang dihapus tidak dapat dikembalikan!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, hapus!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.delete(route("judul-lomba.destroy", id), {
+                    onSuccess: () => {
+                        Swal.fire(
+                            "Berhasil!",
+                            "Judul telah dihapus.",
+                            "success"
+                        );
+                    },
+                    onError: (err) => {
+                        console.log("Error saat menghapus:", err);
+                    },
+                });
+            }
+        });
+    };
+    // Taruh di luar fungsi handleDelete dan sebelum return
+    const columns = [
+        {
+            id: "Nomor",
+            header: "No",
+            cell: (info) => info.row.index + 1,
+        },
+        {
+            id: "judul_lomba",
+            header: "Judul Lomba",
+            accessorKey: "judul_lomba",
+            filterFn: customFilterFns["checkbox"]
+        },
+        {
+            id: "Kategori Lomba",
+            header: "Kategori Lomba",
+            accessorKey: "kategori.kategori_lomba",
+            filterFn: customFilterFns["checkbox"]
+        },
+        {
+            id: "Aksi",
+            header: "Aksi",
+            cell: (info) => (
+                <div className="flex gap-2 justify-center">
+                    <SquarePen
+                        className="cursor-pointer text-blue-500 size-5"
+                        onClick={() => openEditModal(info.row.original)}
+                    />
+                    <Trash2
+                        className="cursor-pointer text-red-500 size-5"
+                        onClick={() =>
+                            handleDelete(info.row.original.judullomba_id)
+                        }
+                    />
+                </div>
+            ),
+        },
+    ];
 
     return (
         <AuthenticatedLayout>
@@ -145,45 +188,16 @@ const JudulLomba = () => {
                 </button>
             </form>
 
-            {/* Tabel Data */}
-            <table className="table mt-4 w-full">
-                <thead>
-                    <tr className="bg-white text-center rounded-lg">
-                        <th className="px-4 py-2">No</th>
-                        <th className="px-4 py-2">Judul Lomba</th>
-                        <th className="px-4 py-2">Kategori Lomba</th>
-                        <th className="px-4 py-2">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {judulLomba.length > 0 ? (
-                        judulLomba.map((judul, index) => (
-                            <tr key={judul.judullomba_id || index} className="text-center">
-                                <td className="px-4 py-2">{index + 1}</td>
-                                <td className="px-4 py-2">
-                                    {judul.judul_lomba}
-                                </td>
-                                <td className="px-4 py-2">
-                                    {judul.kategori.kategori_lomba}
-                                </td>
-                                <td className="px-4 py-2 flex gap-2 justify-center">
-                                    <SquarePen
-                                        className="cursor-pointer text-blue-500 size-5"
-                                        onClick={() => openEditModal(judul)}
-                                    />
-                                    <Trash2 className="cursor-pointer text-red-500 size-5" onClick={() => handleDelete(judul.judullomba_id)} />
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="4" className="text-center py-4">
-                                Tidak ada data judul lomba.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            <DataTable columns={columns} data={judulLomba}>
+                {({ table }) => (
+                    <DataTableControls table={table}>
+                        <DataTableFilter
+                            table={table}
+                            
+                        />
+                    </DataTableControls>
+                )}
+            </DataTable>
 
             {/* Modal Edit */}
             {isEditModalOpen && (
