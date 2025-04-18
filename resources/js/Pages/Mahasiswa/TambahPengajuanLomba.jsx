@@ -447,7 +447,7 @@ const PengajuanLomba = ({ auth }) => {
                                             {users.map((user) => (
                                                 <option
                                                     key={user.id}
-                                                    value={user.name}
+                                                    value={user.id}
                                                 >
                                                     {user.name}
                                                 </option>

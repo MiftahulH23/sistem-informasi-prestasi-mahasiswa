@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 
-const DetailPengajuanLomba = ({ pengajuanLomba }) => {
+const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
     return (
         <AuthenticatedLayout>
             <Head title="Detail Pengajuan Lomba" />
@@ -52,33 +52,25 @@ const DetailPengajuanLomba = ({ pengajuanLomba }) => {
                     </div>
                     <div>
                         <strong>Anggota Kelompok:</strong>{" "}
-                        {Array.isArray(pengajuanLomba.anggota_kelompok)
-                            ? pengajuanLomba.anggota_kelompok.map(
-                                  (anggota, index) => (
-                                      <span key={index}>
-                                          <a
-                                              href="#"
-                                              className="text-blue-500 hover:underline"
-                                              onClick={() =>
-                                                  router.get(
-                                                      `/pengajuan-lomba/portofolio/${encodeURIComponent(
-                                                          anggota
-                                                      )}`
-                                                  )
-                                              }
-                                          >
-                                              {anggota}
-                                          </a>
-                                          {index !==
-                                              pengajuanLomba.anggota_kelompok
-                                                  .length -
-                                                  1 && ", "}
-                                      </span>
-                                  )
-                              )
-                            : pengajuanLomba.anggota_kelompok}
+                        {anggotaUser.length > 0
+                            ? anggotaUser.map((anggota, index) => (
+                                  <span key={anggota.id}>
+                                      <a
+                                          href="#"
+                                          className="text-blue-500 hover:underline"
+                                          onClick={() =>
+                                              router.get(
+                                                  `/pengajuan-lomba/portofolio/${anggota.id}`
+                                              )
+                                          }
+                                      >
+                                          {anggota.name}
+                                      </a>
+                                      {index !== anggotaUser.length - 1 && ", "}
+                                  </span>
+                              ))
+                            : "Tidak ada anggota"}
                     </div>
-
                     <div>
                         <strong>Status:</strong> {pengajuanLomba.status}
                     </div>

@@ -32,7 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/update-pengajuan-lomba', [PengajuanLombaController::class, 'editStatus'])->name('update-pengajuan-lomba');
     Route::put('/pengajuan-lomba/{id}/update-status', [PengajuanLombaController::class, 'updateStatus'])->name('pengajuan-lomba.update-status');
     Route::get('/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
-    Route::get('/pengajuan-lomba/portofolio/{nama}', [PengajuanLombaController::class, 'portofolio']);
+    Route::get('/pengajuan-lomba/portofolio/{id}', [PengajuanLombaController::class, 'portofolio']);
+
 });
 
 // Kategori Lomba
@@ -63,8 +64,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Prestasi
-Route::middleware(['auth', 'verified'])->group(function(){
-    Route::get('/prestasi', [PrestasiController::class,'index'])->name('prestasi.index');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
 });
 
 // Profile
