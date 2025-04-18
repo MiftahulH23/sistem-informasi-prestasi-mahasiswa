@@ -46,7 +46,7 @@ class SocialiteController extends Controller
                 'google_id' => $socialUser->id,
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
-                'role' => $role, // update role
+                // 'role' => $role, // update role
             ]);
 
             Auth::login($registeredUser, true);

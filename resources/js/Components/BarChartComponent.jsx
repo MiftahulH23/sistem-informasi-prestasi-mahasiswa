@@ -4,7 +4,7 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardHeader
+    CardHeader,
 } from "@/components/ui/card";
 import {
     ChartContainer,
@@ -25,10 +25,10 @@ export function BarChartComponent({ chartData }) {
         <Card>
             <CardHeader>
                 <CardDescription>
-                    <p className="text-primary font-semibold">Jumlah Prestasi Prodi</p>
-                    <p className="text-xs">
-                    Tahun {new Date().getFullYear()}
+                    <p className="text-primary font-semibold">
+                        Jumlah Prestasi Prodi
                     </p>
+                    <p className="text-xs">Tahun {new Date().getFullYear()}</p>
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -49,9 +49,30 @@ export function BarChartComponent({ chartData }) {
                         />
                         <ChartTooltip
                             cursor={false}
-                            content={<ChartTooltipContent />}
+                            content={({ active, payload }) => {
+                                if (active && payload && payload.length) {
+                                    const { payload: data } = payload[0];
+                                    return (
+                                        <div className="rounded-md border bg-background p-2 shadow-sm">
+                                            <p className="text-sm font-semibold text-foreground">
+                                                {data.nama_lengkap}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground">
+                                                Jumlah Prestasi: {data.total}
+                                            </p>
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            }}
                         />
-                        <Bar dataKey="total" fill="#2D9CDB" radius={5} className="h-5" />
+
+                        <Bar
+                            dataKey="total"
+                            fill="#2D9CDB"
+                            radius={5}
+                            className="h-5"
+                        />
                     </BarChart>
                 </ChartContainer>
             </CardContent>

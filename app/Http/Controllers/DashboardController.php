@@ -41,19 +41,26 @@ class DashboardController extends Controller
             'Akuntansi' => 'AK',
         ];
 
-        return Prestasi::where('status', 'Diterima')
+        // Ambil data prestasi sesuai filter
+        $dataPrestasi = Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
             ->with('pengajuanlomba')
             ->get()
-            ->groupBy(fn($item) => $item->pengajuanlomba->program_studi)
-            ->map(function ($items, $programStudi) use ($programSingkatan) {
-                return [
-                    'program_studi' => $programSingkatan[$programStudi] ?? $programStudi,
-                    'total' => $items->count(),
-                ];
-            })
-            ->values();
+            ->groupBy(fn($item) => $item->pengajuanlomba->program_studi);
+
+        // Loop semua program studi, isi total kalau ada, kalau nggak set 0
+        $chartData = collect($programSingkatan)->map(function ($singkatan, $namaProdi) use ($dataPrestasi) {
+            return [
+                'program_studi' => $singkatan,
+                'nama_lengkap' => $namaProdi, // Tambahkan ini
+                'total' => isset($dataPrestasi[$namaProdi]) ? $dataPrestasi[$namaProdi]->count() : 0,
+            ];
+        })->sortByDesc('total')->values();
+
+
+        return $chartData;
     }
+
 
     private function getLineChartData()
     {

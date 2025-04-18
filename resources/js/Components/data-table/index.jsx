@@ -158,12 +158,12 @@ export function DataTable(props) {
         <Table className="bg-card">
           <TableHeader className="bg-[#4F94C8] overflow-hidden">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="[&_*]:text-center" key={headerGroup.id}>
+              <TableRow className="[&_*]:text-center hover:bg-[#4F94C8]" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
-                      className="not-has-[*]:w-14 text-foreground has-[*]:min-w-24 text-center text-white font-semibold"
+                      className="not-has-[*]:w-14 text-foreground has-[*]:min-w-24 text-center text-white font-semibold "
                     >
                       {header.isPlaceholder ? null : header.column.getCanSort() &&
                         controls.sorting ? (
