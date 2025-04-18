@@ -24,6 +24,7 @@ export function BarChartVertikal({ TingkatLomba }) {
             color: "hsl(var(--chart-1))",
         },
     };
+
     return (
         <Card>
             <CardHeader>
@@ -39,7 +40,7 @@ export function BarChartVertikal({ TingkatLomba }) {
                     <BarChart
                         accessibilityLayer
                         data={TingkatLomba}
-                        margin={{bottom: 35}}
+                        margin={{ top: 20, right: 5, left: 25, bottom: 35 }} // Menambahkan margin
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
@@ -48,15 +49,22 @@ export function BarChartVertikal({ TingkatLomba }) {
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
-                            className="text-[10px]" // Ukuran font kecil
-                            angle={-45} // Memutar label
-                            textAnchor="end" // Anchor teks
+                            className="text-[10px]"
+                            angle={-45}
+                            textAnchor="end"
+                            padding={{ left: 20, right: 20 }} // Menambah padding di sumbu X
                         />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent />}
                         />
-                        <Bar dataKey="total" fill="#2D9CDB" radius={5} />
+                        <Bar
+                            dataKey="total"
+                            fill="#2D9CDB"
+                            radius={5}
+                            barSize={30}
+                        />{" "}
+                        {/* Adjusting the bar size */}
                     </BarChart>
                 </ChartContainer>
             </CardContent>

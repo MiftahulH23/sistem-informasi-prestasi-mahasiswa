@@ -108,7 +108,7 @@ class DashboardController extends Controller
     {
         $oneYearAgo = Carbon::now()->subYear();
 
-        return Prestasi::where('status', 'Diterima')
+        $data = Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
             ->with('pengajuanlomba')
             ->get()
@@ -118,7 +118,23 @@ class DashboardController extends Controller
                 'total' => $items->count(),
             ])
             ->values();
+
+        // Kategori yang harus selalu ada
+        $requiredCategories = ['Lokal-Wilayah', 'Provinsi', 'Nasional', 'Internasional'];
+
+        // Pastikan kategori-kategori ini ada, meskipun totalnya 0
+        foreach ($requiredCategories as $category) {
+            if (!$data->contains('tingkat_lomba', $category)) {
+                $data->push([
+                    'tingkat_lomba' => $category,
+                    'total' => 0,
+                ]);
+            }
+        }
+
+        return $data;
     }
+
 
     private function getChartDataByKategoriLomba()
     {
