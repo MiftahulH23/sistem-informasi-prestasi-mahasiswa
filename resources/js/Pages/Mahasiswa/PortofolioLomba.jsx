@@ -43,13 +43,20 @@ const PortofolioLomba = () => {
                                 </p>
                                 <div>
                                     <strong>Capaian Prestasi:</strong>
-                                    {capaianPrestasi.length > 0 ? (
+                                    {capaianPrestasi.filter(
+                                        (p) => p.status === "Diterima"
+                                    ).length > 0 ? (
                                         <ul className="list-disc ml-5">
-                                            {capaianPrestasi.map((p) => (
-                                                <li key={p.prestasi_id}>
-                                                    {p.capaian_prestasi}
-                                                </li>
-                                            ))}
+                                            {capaianPrestasi
+                                                .filter(
+                                                    (p) =>
+                                                        p.status === "Diterima"
+                                                ) // Hanya ambil yang statusnya Diterima
+                                                .map((p) => (
+                                                    <li key={p.prestasi_id}>
+                                                        {p.capaian_prestasi}
+                                                    </li>
+                                                ))}
                                         </ul>
                                     ) : (
                                         <p>Belum Dilaporkan</p>
