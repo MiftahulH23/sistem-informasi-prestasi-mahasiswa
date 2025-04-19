@@ -73,10 +73,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Bimbingan
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan.index');
-    Route::get('/bimbingan/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
+    Route::get('/bimbingan/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show']);
     Route::get('/bimbingan/{id}', [BimbinganController::class, 'show']);
     Route::get('/bimbingan/{pengajuanlomba}/create', [BimbinganController::class, 'create']);
     Route::post('/bimbingan/{pengajuanlomba}', [BimbinganController::class, 'store']);
+    Route::get('/bimbingan-dosen', [BimbinganController::class, 'indexDosen'])->name('bimbingan.indexDosen');
+    Route::get('/bimbingan-dosen/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show']);
+    Route::get('/bimbingan-dosen/{id}', [BimbinganController::class, 'showForDosen']);
+    Route::put('/bimbingan-dosen/{id}/update-status', [BimbinganController::class, 'update']);
 });
 
 // Profile

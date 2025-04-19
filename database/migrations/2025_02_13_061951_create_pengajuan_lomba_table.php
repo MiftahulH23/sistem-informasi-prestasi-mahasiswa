@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('tingkat_lomba');
             $table->string('program_studi');
             $table->string('model_pelaksanaan');
-            $table->string('dosen_pembimbing');
+            $table->bigInteger('dosen_pembimbing');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->string('jenis_kepesertaan');

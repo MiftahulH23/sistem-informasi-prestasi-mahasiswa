@@ -105,7 +105,7 @@ const menuDosen = [
     },
     {
         name: "Bimbingan",
-        url: "/bimbingan",
+        url: "/bimbingan-dosen",
         icon: BookOpenText,
     },
 ];

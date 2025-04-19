@@ -23,6 +23,18 @@ class BimbinganController extends Controller
             'pengajuanLomba' => $pengajuanLomba,
         ]);
     }
+    public function indexDosen()
+    {
+        $pengajuanLomba = PengajuanLomba::where('dosen_pembimbing', auth()->user()->id)
+            ->where('status', 'Diterima')
+            ->with('dosen')
+            ->get();
+        // dd($pengajuanLomba->toArray());
+        return Inertia::render('Dosen/Bimbingan', [
+            'pengajuanLomba' => $pengajuanLomba,
+        ]);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -73,7 +85,15 @@ class BimbinganController extends Controller
             'id' => $id
         ]);
     }
-
+    public function showForDosen($id)
+    {
+        $bimbingan = Bimbingan::where('pengajuanlomba_id', $id)->get();
+        // dd($bimbingan->toArray());
+        return Inertia::render('Dosen/DataBimbingan', [
+            'bimbingan' => $bimbingan,
+            'id' => $id
+        ]);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -88,7 +108,14 @@ class BimbinganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:Diterima,Ditolak',
+        ]);
+
+        $bimbingan = Bimbingan::findOrFail($id);
+        $bimbingan->update(['status' => $request->status]);
+
+        return back()->with('success', 'Status berhasil diperbarui.');
     }
 
     /**
