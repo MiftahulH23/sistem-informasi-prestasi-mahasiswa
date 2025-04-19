@@ -66,16 +66,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Prestasi
-Route::middleware(['auth', 'verified'])->group(function(){
-    Route::get('/prestasi', [PrestasiController::class,'index'])->name('prestasi.index');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
 });
 
 // Bimbingan
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan.index');
     Route::get('/bimbingan/pengajuan-lomba/show/{id}', [PengajuanLombaController::class, 'show'])->name('pengajuan-lomba.show');
-    Route::get('/bimbingan/{pengajuanlomba_id}', [BimbinganController::class, 'show']);
-
+    Route::get('/bimbingan/{id}', [BimbinganController::class, 'show']);
+    Route::get('/bimbingan/{pengajuanlomba}/create', [BimbinganController::class, 'create']);
+    Route::post('/bimbingan/{pengajuanlomba}', [BimbinganController::class, 'store']);
 });
 
 // Profile

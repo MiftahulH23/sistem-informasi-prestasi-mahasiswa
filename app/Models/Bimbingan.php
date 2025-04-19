@@ -20,7 +20,8 @@ class Bimbingan extends Model
         'jam_mulai',
         'jam_selesai',
         'materi_bimbingan',
-        'catatan_bimbingan'
+        'catatan_bimbingan',
+        'status',
     ];
 
     protected static function boot()

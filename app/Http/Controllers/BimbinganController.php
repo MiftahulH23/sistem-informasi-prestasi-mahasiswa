@@ -26,28 +26,50 @@ class BimbinganController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($pengajuanlomba_id)
     {
-        //
+        return Inertia::render('Mahasiswa/TambahBimbingan', [
+            'pengajuanlomba_id' => $pengajuanlomba_id
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $pengajuanlomba_id)
     {
-        //
+        $request->validate([
+            'tanggal' => 'required|date',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required',
+            'materi_bimbingan' => 'required|string',
+            'catatan_bimbingan' => 'required|string',
+        ]);
+
+        Bimbingan::create([
+            'pengajuanlomba_id' => $pengajuanlomba_id,
+            'tanggal' => $request->tanggal,
+            'jam_mulai' => $request->jam_mulai,
+            'jam_selesai' => $request->jam_selesai,
+            'materi_bimbingan' => $request->materi_bimbingan,
+            'catatan_bimbingan' => $request->catatan_bimbingan,
+            'status' => 'Diajukan',
+        ]);
+
+        return redirect("/bimbingan/{$pengajuanlomba_id}")->with('success', 'Bimbingan berhasil ditambahkan!');
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($pengajuanlomba_id)
+    public function show($id)
     {
-        $bimbingan = Bimbingan::where('pengajuanlomba_id', $pengajuanlomba_id)->get();
+        $bimbingan = Bimbingan::where('pengajuanlomba_id', $id)->get();
         // dd($bimbingan->toArray());
         return Inertia::render('Mahasiswa/DataBimbingan', [
             'bimbingan' => $bimbingan,
+            'id' => $id
         ]);
     }
 
