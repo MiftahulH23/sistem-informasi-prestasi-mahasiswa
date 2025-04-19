@@ -1,9 +1,6 @@
 import { DataTable, DataTableControls } from "@/Components/data-table";
-import { DataTableFilter } from "@/Components/data-table/filter";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-import { id } from "date-fns/locale";
-import React from "react";
 
 const Bimbingan = ({ pengajuanLomba }) => {
     const DetailPengajuanLomba = (id) => {
@@ -29,7 +26,7 @@ const Bimbingan = ({ pengajuanLomba }) => {
         },
         {
             id: "dosen_pembimbing",
-            accessorKey: "dosen_pembimbing",
+            accessorKey: "dosen.name",
             header: "Pembimbing",
         },
         {

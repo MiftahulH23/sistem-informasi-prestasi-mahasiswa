@@ -5,8 +5,8 @@ import { Label } from "@/Components/ui/label";
 import { Input } from "@/Components/ui/input";
 import Swal from "sweetalert2";
 
-const PengajuanLomba = ({ auth }) => {
-    const { kategoriLomba, judulLomba, users } = usePage().props;
+const PengajuanLomba = ({ auth, dosenList }) => {
+    const { kategoriLomba, judulLomba, mahasiswaList } = usePage().props;
     const { flash } = usePage().props;
     const { data, setData, post, processing, reset, errors } = useForm({
         kategorilomba_id: "",
@@ -345,11 +345,12 @@ const PengajuanLomba = ({ auth }) => {
                                     setData("dosen_pembimbing", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>
-                                    Input Dosen Pembimbing
-                                </option>
-                                <option value="SPA">SPA</option>
-                                <option value="ATD">ATD</option>
+                                <option value="" >Pilih Dosen</option>
+                                {dosenList.map((dosen) => (
+                                    <option key={dosen.id} value={dosen.id}>
+                                        {dosen.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 
@@ -444,7 +445,7 @@ const PengajuanLomba = ({ auth }) => {
                                             <option value="" disabled>
                                                 Pilih Anggota
                                             </option>
-                                            {users.map((user) => (
+                                            {mahasiswaList.map((user) => (
                                                 <option
                                                     key={user.id}
                                                     value={user.id}

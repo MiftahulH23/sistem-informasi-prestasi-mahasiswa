@@ -60,7 +60,8 @@ class PengajuanLombaController extends Controller
         return Inertia::render('Mahasiswa/TambahPengajuanLomba', [
             'kategoriLomba' => KategoriLomba::all(),
             'judulLomba' => JudulLomba::with('kategori')->get(),
-            'users' => User::all()
+            'mahasiswaList' => User::where('role', 'Mahasiswa')->get(),
+            'dosenList' => User::where('role', 'Dosen')->get(),
         ]);
     }
 
@@ -153,7 +154,8 @@ class PengajuanLombaController extends Controller
 
     public function show($id)
     {
-        $pengajuanLomba = PengajuanLomba::with('kategori')->findOrFail($id);
+        $pengajuanLomba = PengajuanLomba::with(['kategori', 'dosen'])->findOrFail($id);
+
 
         // Ambil user berdasarkan ID yang disimpan di anggota_kelompok
         $anggotaUser = [];
@@ -165,6 +167,7 @@ class PengajuanLombaController extends Controller
         return Inertia::render('Mahasiswa/DetailPengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
             'anggotaUser' => $anggotaUser,
+
         ]);
     }
 

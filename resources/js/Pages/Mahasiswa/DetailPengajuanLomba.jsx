@@ -32,7 +32,7 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                     </div>
                     <div>
                         <strong>Dosen Pembimbing:</strong>{" "}
-                        {pengajuanLomba.dosen_pembimbing}
+                        {pengajuanLomba.dosen?.name}
                     </div>
                     <div>
                         <strong>Tanggal Mulai:</strong>{" "}

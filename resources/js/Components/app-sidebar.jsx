@@ -17,7 +17,7 @@ import {
     LayoutList,
     Medal,
     Notebook,
-    BookOpenText
+    BookOpenText,
 } from "lucide-react";
 
 const menuMahasiswa = [
@@ -46,7 +46,6 @@ const menuMahasiswa = [
         url: "/bimbingan",
         icon: BookOpenText,
     },
-    
 ];
 
 const menuKemahasiswaan = [
@@ -93,6 +92,23 @@ const menuEksekutif = [
         icon: BookMarked,
     },
 ];
+const menuDosen = [
+    {
+        name: "Dashboard",
+        url: "/dashboard",
+        icon: LayoutDashboard,
+    },
+    {
+        name: "Prestasi",
+        url: "/prestasi",
+        icon: Medal,
+    },
+    {
+        name: "Bimbingan",
+        url: "/bimbingan",
+        icon: BookOpenText,
+    },
+];
 export function AppSidebar({ ...props }) {
     const user = usePage().props.auth.user;
     const role = user.role;
@@ -100,6 +116,7 @@ export function AppSidebar({ ...props }) {
         Mahasiswa: menuMahasiswa,
         Kemahasiswaan: menuKemahasiswaan,
         eksekutif: menuEksekutif,
+        Dosen: menuDosen,
     };
     console.log("User role:", role);
     return (

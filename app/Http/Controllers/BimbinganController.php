@@ -16,6 +16,7 @@ class BimbinganController extends Controller
     {
         $pengajuanLomba = PengajuanLomba::where('user_id', auth()->user()->id)
             ->where('status', 'Diterima')
+            ->with('dosen')
             ->get();
         // dd($pengajuanLomba->toArray());
         return Inertia::render('Mahasiswa/Bimbingan', [

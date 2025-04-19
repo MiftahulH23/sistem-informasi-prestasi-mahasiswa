@@ -64,6 +64,10 @@ class PengajuanLomba extends Model
     {
         return $this->hasMany(Bimbingan::class, 'pengajuanlomba_id');
     }
+    public function dosen()
+    {
+        return $this->belongsTo(User::class, 'dosen_pembimbing');
+    }
 
 
 
