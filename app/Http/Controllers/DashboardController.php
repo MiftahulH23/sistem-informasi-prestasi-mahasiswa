@@ -39,6 +39,7 @@ class DashboardController extends Controller
             'Teknik Listrik' => 'TL',
             'Teknik Rekayasa Komputer' => 'TRK',
             'Akuntansi' => 'AK',
+            'Teknik Elektronika' => 'TE',
         ];
 
         // Ambil data prestasi sesuai filter

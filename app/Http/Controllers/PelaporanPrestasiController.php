@@ -101,7 +101,7 @@ class PelaporanPrestasiController extends Controller
             'status' => 'Diajukan', // Default status
         ]);
 
-        return redirect()->back()->with('success', 'Laporan Prestasi berhasil ditambahkan!');
+        return redirect("/pelaporan-prestasi")->with('success', 'Laporan Prestasi berhasil ditambahkan!');
     }
 
     /**
