@@ -28,6 +28,11 @@ class PrestasiExport implements FromCollection, WithHeadings
                 $q->whereIn('tingkat_lomba', (array) $this->request->input('tingkat_lomba'));
             });
         }
+        if ($this->request->filled('program_studi')) {
+            $query->whereHas('pengajuanLomba', function ($q) {
+                $q->whereIn('program_studi', (array) $this->request->input('program_studi'));
+            });
+        }
 
         if ($this->request->filled('jenis_lomba')) {
             $query->whereHas('pengajuanLomba', function ($q) {
@@ -53,6 +58,7 @@ class PrestasiExport implements FromCollection, WithHeadings
                 'Judul Lomba' => $item->pengajuanLomba->judul_lomba,
                 'Capaian Prestasi' => $item->capaian_prestasi,
                 'Tingkat Lomba' => $item->pengajuanLomba->tingkat_lomba,
+                'Program Studi' => $item->pengajuanLomba->program_studi,
                 'Kategori' => $item->pengajuanLomba->kategori->kategori_lomba ?? '-',
                 'Jenis Lomba' => $item->pengajuanLomba->jenis_lomba,
                 'Tanggal Mulai' => $item->pengajuanLomba->tanggal_mulai,
@@ -67,6 +73,7 @@ class PrestasiExport implements FromCollection, WithHeadings
             'Judul Lomba',
             'Capaian Prestasi',
             'Tingkat Lomba',
+            'Program Studi',
             'Kategori',
             'Jenis Lomba',
             'Tanggal Mulai',

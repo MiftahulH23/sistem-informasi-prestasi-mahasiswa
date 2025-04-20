@@ -37,6 +37,12 @@ const Prestasi = ({ prestasi }) => {
             filterFn: customFilterFns["checkbox"],
         },
         {
+            id: "program_studi",
+            accessorKey: "pengajuan_lomba.program_studi",
+            header: "Program Studi",
+            filterFn: customFilterFns["checkbox"],
+        },
+        {
             id: "kategori_lomba",
             accessorKey: "pengajuan_lomba.kategori.kategori_lomba", // Akses nama kategori
             header: "Kategori",
@@ -51,7 +57,7 @@ const Prestasi = ({ prestasi }) => {
         {
             id: "tahun",
             accessorKey: "pengajuan_lomba.tanggal_mulai",
-            header: "Tanggal Mulai",
+            header: "Tanggal",
             cell: ({ row: { original: data } }) => {
                 if (!data?.pengajuan_lomba?.tanggal_mulai) {
                     return <span>-</span>; // Tampilkan tanda "-" jika data kosong
