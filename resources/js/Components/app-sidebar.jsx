@@ -1,5 +1,5 @@
 import LogoKemahasiswaan from "@/Assets/images/LogoKemahasiswaan.jpg";
-import { NavProjects } from "@/components/nav-projects";
+import { NavProjects } from "@/Components/nav-projects";
 import {
     Sidebar,
     SidebarContent,
@@ -7,7 +7,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from "@/Components/ui/sidebar";
 import { usePage } from "@inertiajs/react";
 import {
     BookMarked,

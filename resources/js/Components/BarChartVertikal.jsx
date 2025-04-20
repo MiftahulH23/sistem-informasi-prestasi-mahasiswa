@@ -1,21 +1,18 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+    CardHeader
+} from "@/Components/ui/card";
 import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
-} from "@/components/ui/chart";
+} from "@/Components/ui/chart";
 
 export function BarChartVertikal({ TingkatLomba }) {
     const chartConfig = {

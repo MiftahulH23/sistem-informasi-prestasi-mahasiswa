@@ -1,10 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-    RiFacebookFill,
-    RiGithubFill,
-    RiGoogleFill,
-    RiTwitterXFill,
-} from "@remixicon/react";
 import GoogleLogo from "@/Assets/images/search.png";
 export default function FormLogin() {
     return (

@@ -4,7 +4,7 @@ import {
     SidebarInset,
     SidebarProvider,
     SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@/Components/ui/sidebar";
 import { TooltipProvider } from "@/Components/ui/tooltip";
 
 export default function AuthenticatedLayout({children }) {

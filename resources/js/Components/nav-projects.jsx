@@ -5,14 +5,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 import {
   SidebarGroup,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar
-} from "@/components/ui/sidebar";
+} from "@/Components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { Link } from "@inertiajs/react";
 
