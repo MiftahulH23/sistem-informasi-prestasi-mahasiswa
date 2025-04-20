@@ -230,6 +230,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
         "Harapan 1",
         "Harapan 2",
         "Harapan 3",
+        "Peserta",
     ];
     const Status = ["Diajukan", "Diterima", "Ditolak"];
     return (

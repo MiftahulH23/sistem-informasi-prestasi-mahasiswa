@@ -112,6 +112,7 @@ const Prestasi = ({ prestasi }) => {
         "Harapan 1",
         "Harapan 2",
         "Harapan 3",
+        "Peserta",
     ];
     return (
         <AuthenticatedLayout>

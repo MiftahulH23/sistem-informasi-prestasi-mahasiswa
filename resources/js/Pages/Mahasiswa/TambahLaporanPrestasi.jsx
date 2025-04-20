@@ -101,6 +101,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                             <option value="Harapan 1">Harapan 1</option>
                             <option value="Harapan 2">Harapan 2</option>
                             <option value="Harapan 3">Harapan 3</option>
+                            <option value="Peserta">Peserta</option>
                         </select>
                         {errors.capaian_prestasi && <p className="text-red-500">{errors.capaian_prestasi}</p>}
                     </div>

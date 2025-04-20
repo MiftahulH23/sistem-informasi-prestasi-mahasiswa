@@ -19,13 +19,37 @@ class DashboardController extends Controller
      */
     public function index(): Response
     {
+        $totalPengajuanDiterima = PengajuanLomba::where('status', 'Diterima')->count();
+        $totalPrestasiDiterima = Prestasi::where('status', 'Diterima')
+            ->where('capaian_prestasi', '!=', 'Peserta')
+            ->count();
         return Inertia::render('Dashboard', [
             'chartData' => $this->getChartDataByProgramStudi(),
             'lineChartData' => $this->getLineChartData(),
             'TingkatLomba' => $this->getChartDataByTingkatLomba(),
             'KategoriLomba' => $this->getChartDataByKategoriLomba(),
+            'total_pengajuan' => $totalPengajuanDiterima,
+            'total_prestasi' => $totalPrestasiDiterima,
+            'persentase_prestasi' => $this->getPrestasiPercentage(),
         ]);
     }
+    public function getPrestasiPercentage()
+    {
+        $totalPengajuanDiterima = PengajuanLomba::where('status', 'Diterima')->count();
+
+        $totalPrestasiNonPeserta = Prestasi::where('status', 'Diterima')
+            ->whereHas('pengajuanLomba', function ($query) {
+                $query->where('status', 'Diterima');
+            })
+            ->where('capaian_prestasi', '!=', 'Peserta')
+            ->count();
+
+        return $totalPengajuanDiterima > 0
+            ? round(($totalPrestasiNonPeserta / $totalPengajuanDiterima) * 100, 2)
+            : 0;
+    }
+
+
 
     private function getChartDataByProgramStudi()
     {
