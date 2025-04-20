@@ -8,8 +8,7 @@ import {
 } from "@/components/ui/card";
 import {
     ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
+    ChartTooltip
 } from "@/components/ui/chart";
 
 export function BarChartComponent({ chartData }) {
