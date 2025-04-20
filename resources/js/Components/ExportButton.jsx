@@ -26,7 +26,7 @@ const ExportButton = ({ table }) => {
             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 flex items-center"
         >
             <FileSpreadsheet className="mr-2" size={16} />
-            Download Excel
+            Excel
         </button>
     );
 };

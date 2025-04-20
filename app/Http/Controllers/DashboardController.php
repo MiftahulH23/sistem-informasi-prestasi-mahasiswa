@@ -120,10 +120,9 @@ class DashboardController extends Controller
             ])
             ->values();
 
-        // Kategori yang harus selalu ada
         $requiredCategories = ['Lokal-Wilayah', 'Provinsi', 'Nasional', 'Internasional'];
 
-        // Pastikan kategori-kategori ini ada, meskipun totalnya 0
+        // Tambahkan kategori yang tidak ada
         foreach ($requiredCategories as $category) {
             if (!$data->contains('tingkat_lomba', $category)) {
                 $data->push([
@@ -133,8 +132,14 @@ class DashboardController extends Controller
             }
         }
 
+        // Urutkan berdasarkan urutan kategori
+        $data = $data->sortBy(function ($item) use ($requiredCategories) {
+            return array_search($item['tingkat_lomba'], $requiredCategories);
+        })->values();
+
         return $data;
     }
+
 
 
     private function getChartDataByKategoriLomba()
