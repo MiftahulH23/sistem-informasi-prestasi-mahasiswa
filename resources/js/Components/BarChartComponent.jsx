@@ -5,11 +5,11 @@ import {
     CardContent,
     CardDescription,
     CardHeader,
-} from "@/components/ui/card";
+} from "@/Components/ui/card";
 import {
     ChartContainer,
     ChartTooltip
-} from "@/components/ui/chart";
+} from "@/Components/ui/chart";
 
 export function BarChartComponent({ chartData }) {
     // Konfigurasi warna untuk shadcn chart
