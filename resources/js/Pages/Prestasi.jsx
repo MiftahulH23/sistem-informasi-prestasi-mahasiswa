@@ -10,6 +10,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/Components/ui/tooltip";
+import ExportButton from "@/Components/ExportButton";
 
 const Prestasi = ({ prestasi }) => {
     const columns = [
@@ -26,7 +27,7 @@ const Prestasi = ({ prestasi }) => {
         },
         {
             accessorKey: "capaian_prestasi",
-            header: "Pembimbing",
+            header: "Capaian Prestasi",
             filterFn: customFilterFns["checkbox"],
         },
         {
@@ -90,6 +91,7 @@ const Prestasi = ({ prestasi }) => {
             filterFn: customFilterFns["date-year"],
         },
     ];
+
     const tingkatLomba = [
         "Internasional",
         "Nasional",
@@ -148,6 +150,9 @@ const Prestasi = ({ prestasi }) => {
                                     label="Tahun"
                                     standalone
                                 />
+                                <div className="flex w-full items-center justify-end gap-2">
+                                    <ExportButton table={table} />
+                                </div>
                             </DataTableControls>
                         );
                     }}

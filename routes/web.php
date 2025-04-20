@@ -1,9 +1,11 @@
 <?php
 
+use App\Exports\PrestasiExport;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Export\PrestasiExportController;
 use App\Http\Controllers\KategoriLombaController;
 use App\Http\Controllers\JudulLombaController;
 use App\Http\Controllers\PelaporanPrestasiController;
@@ -12,6 +14,8 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 // Authentication Routes
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('register');
@@ -89,6 +93,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Export
+Route::get('/export-prestasi', [PrestasiExportController::class, 'export']);
+
 
 // Notifikasi
 Route::get('/notify', [PengajuanLombaController::class, 'notify'])->name('pengajuan-notif');
