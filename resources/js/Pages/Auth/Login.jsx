@@ -3,7 +3,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import GoogleLogo from '@/Assets/images/googleLogo.png'
 import LogoKemahasiswaan from '@/Assets/images/LogoKemahasiswaanTransparant.png'
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status, canResetPassword, appUrl  }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }) {
                     <p className='text-primary'>Kemahasiswaan PCR</p>
                 </div>
             </div>
-            <a href="auth/redirect" className='w-full bg-background text-sky-500 px-4 py-2 rounded-lg shadow-md font-semibold flex gap-3 items-center justify-center hover:bg-[#009ef7] hover:text-white cursor-pointer'>
+            <a href={`${appUrl}/auth/redirect`} className='w-full bg-background text-sky-500 px-4 py-2 rounded-lg shadow-md font-semibold flex gap-3 items-center justify-center hover:bg-[#009ef7] hover:text-white cursor-pointer'>
                 <div className="w-6 h-6 overflow-hidden">
                     <img src={GoogleLogo} alt="logo google" className='w-full h-full object-cover' />
                 </div>
