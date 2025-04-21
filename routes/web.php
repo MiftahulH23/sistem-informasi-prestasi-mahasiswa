@@ -13,9 +13,17 @@ use App\Http\Controllers\PengajuanLombaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
-
+// Clear the cache
+Route::get('/clear-cache', function() {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:cache');
+    return 'Cache cleared';
+});
 
 // Authentication Routes
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('register');
