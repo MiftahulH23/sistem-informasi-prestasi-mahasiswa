@@ -43,7 +43,7 @@ export default function Login({ status, canResetPassword, appUrl }) {
                 </div>
             </div>
             <a
-                href="https://sistem-informasi-prestasi-mahasi-production.up.railway.app/auth/redirect"
+                href="auth/redirect"
                 className="w-full bg-background text-sky-500 px-4 py-2 rounded-lg shadow-md font-semibold flex gap-3 items-center justify-center hover:bg-[#009ef7] hover:text-white cursor-pointer"
             >
                 <div className="w-6 h-6 overflow-hidden">
