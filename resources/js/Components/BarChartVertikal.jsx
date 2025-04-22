@@ -1,12 +1,12 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 
 import {
     Card,
     CardContent,
     CardDescription,
-    CardHeader
+    CardHeader,
 } from "@/Components/ui/card";
 import {
     ChartContainer,
@@ -60,7 +60,16 @@ export function BarChartVertikal({ TingkatLomba }) {
                             fill="#2D9CDB"
                             radius={5}
                             barSize={30}
-                        />{" "}
+                        >
+                            <LabelList
+                                dataKey="total"
+                                position="top"
+                                style={{
+                                    fill: "var(--foreground)",
+                                    fontSize: 12,
+                                }}
+                            />
+                        </Bar>{" "}
                         {/* Adjusting the bar size */}
                     </BarChart>
                 </ChartContainer>

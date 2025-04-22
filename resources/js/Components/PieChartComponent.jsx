@@ -1,12 +1,12 @@
 "use client";
 
-import { Cell, Pie, PieChart } from "recharts";
+import { Cell, LabelList, Pie, PieChart } from "recharts";
 
 import {
     Card,
     CardContent,
     CardDescription,
-    CardHeader
+    CardHeader,
 } from "@/Components/ui/card";
 import {
     ChartContainer,
@@ -28,16 +28,14 @@ const COLORS = [
     "#FF8042",
     "#AF19FF",
     "#FF1919",
-]; 
+];
 
 export function PieChartComponent({ KategoriLomba }) {
     return (
         <Card className="flex flex-col">
             <CardHeader className="pb-0">
                 <CardDescription>
-                    <p className="text-primary font-semibold">
-                        Kategori Lomba
-                    </p>
+                    <p className="text-primary font-semibold">Kategori Lomba</p>
                     <p className="text-xs">Tahun {new Date().getFullYear()}</p>
                 </CardDescription>
             </CardHeader>
@@ -56,7 +54,6 @@ export function PieChartComponent({ KategoriLomba }) {
                             data={KategoriLomba}
                             dataKey="total"
                             nameKey="kategori_lomba"
-                           
                             fill="#8884d8"
                         >
                             {KategoriLomba.map((entry, index) => (
@@ -65,14 +62,14 @@ export function PieChartComponent({ KategoriLomba }) {
                                     fill={COLORS[index % COLORS.length]}
                                 />
                             ))}
-                            {/* <LabelList
-                                dataKey="kategori_lomba"
+                            <LabelList
+                                dataKey="total"
                                 className="font-semibold"
-                                fill="#FFFFFF" // Warna teks putih
+                                fill="#FFFFFF"
                                 stroke="none"
                                 fontSize={12}
-                                position="inside" // Posisi label di dalam potongan
-                            /> */}
+                                position="inside"
+                            />
                         </Pie>
                     </PieChart>
                 </ChartContainer>

@@ -1,4 +1,4 @@
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, LabelList, XAxis, YAxis } from "recharts";
 
 import {
     Card,
@@ -6,10 +6,7 @@ import {
     CardDescription,
     CardHeader,
 } from "@/Components/ui/card";
-import {
-    ChartContainer,
-    ChartTooltip
-} from "@/Components/ui/chart";
+import { ChartContainer, ChartTooltip } from "@/Components/ui/chart";
 
 export function BarChartComponent({ chartData }) {
     // Konfigurasi warna untuk shadcn chart
@@ -36,7 +33,7 @@ export function BarChartComponent({ chartData }) {
                         accessibilityLayer
                         data={chartData}
                         layout="vertical"
-                        margin={{ left: -20 }}
+                        margin={{ left: -20, right: 25 }}
                     >
                         <XAxis type="number" dataKey="total" hide />
                         <YAxis
@@ -71,7 +68,16 @@ export function BarChartComponent({ chartData }) {
                             fill="#2D9CDB"
                             radius={5}
                             className="h-5"
-                        />
+                        >
+                            <LabelList
+                                dataKey="total"
+                                position="right"
+                                style={{
+                                    fill: "var(--foreground)",
+                                    fontSize: 12,
+                                }}
+                            />
+                        </Bar>
                     </BarChart>
                 </ChartContainer>
             </CardContent>

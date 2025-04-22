@@ -1,4 +1,4 @@
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis, LabelList } from "recharts";
 
 import {
     Card,
@@ -69,14 +69,32 @@ export default function LineChartComponent({ lineChartData }) {
                             stroke="var(--color-Akademik)"
                             strokeWidth={2}
                             dot={false}
-                        />
+                        >
+                            {/* Menampilkan label untuk setiap titik data */}
+                            <LabelList
+                                dataKey="Akademik"
+                                position="bottom"
+                                fontSize={12}
+                                fill="var(--color-Akademik)"
+                                offset={-10}
+                            />
+                        </Line>
                         <Line
                             dataKey="Non-Akademik"
                             type="monotone"
                             stroke="var(--color-NonAkademik)"
                             strokeWidth={2}
                             dot={false}
-                        />
+                        >
+                            {/* Menampilkan label untuk setiap titik data */}
+                            <LabelList
+                                dataKey="Non-Akademik"
+                                position="bottom"
+                                fontSize={12}
+                                fill="var(--color-NonAkademik)"
+                                offset={-10}
+                            />
+                        </Line>
                     </LineChart>
                 </ChartContainer>
             </CardContent>
