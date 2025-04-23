@@ -20,11 +20,14 @@ export default function Profile() {
         .join("");
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="focus-visible:ring-0 focus-visible:outline-none">
-                <Avatar>
-                    <AvatarImage src={user.avatar} alt="Profile image" />
-                    <AvatarFallback>{inisial}</AvatarFallback>
-                </Avatar>
+            <DropdownMenuTrigger asChild>
+                <Button className="focus-visible:ring-0 focus-visible:outline-none pr-2 rounded-full bg-white focus-visible:ring-transparent pl-1 gap-1">
+                    <Avatar>
+                        <AvatarImage src={user.avatar} alt="Profile image" />
+                        <AvatarFallback>{inisial}</AvatarFallback>
+                    </Avatar>
+                    <ChevronDown className="text-black stroke-[1.5] translate-y-px" />
+                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-w-64" align="end">
                 <DropdownMenuLabel className="flex min-w-0 flex-col">
