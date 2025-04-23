@@ -118,53 +118,51 @@ const Prestasi = ({ prestasi }) => {
         <AuthenticatedLayout>
             <Head title="Data Prestasi" />
             <h1>Prestasi Mahasiswa</h1>
-            <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={prestasi}>
-                    {({ table }) => {
-                        return (
-                            <DataTableControls table={table}>
-                                <DataTableFilter
-                                    table={table}
-                                    extend={[
-                                        {
-                                            id: "capaian_prestasi",
-                                            label: "Capaian Prestasi",
-                                            data: capaianPrestasi,
-                                        },
-                                        {
-                                            id: "tingkat_lomba",
-                                            label: "Tingkat Lomba",
-                                            data: tingkatLomba,
-                                        },
-                                        {
-                                            id: "jenis_lomba",
-                                            label: "Jenis Lomba",
-                                            data: jenisLomba,
-                                        },
-                                        {
-                                            id: "kategori_lomba",
-                                            label: "Kategori Lomba",
-                                        },
-                                        {
-                                            id: "tahun",
-                                            detached: true,
-                                        },
-                                    ]}
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="tahun"
-                                    label="Tahun"
-                                    standalone
-                                />
-                                <div className="flex w-full items-center justify-end gap-2">
-                                    <ExportButton table={table} />
-                                </div>
-                            </DataTableControls>
-                        );
-                    }}
-                </DataTable>
-            </div>
+            <DataTable columns={columns} data={prestasi}>
+                {({ table }) => {
+                    return (
+                        <DataTableControls table={table} className="w-full overflow-x-auto">
+                            <DataTableFilter
+                                table={table}
+                                extend={[
+                                    {
+                                        id: "capaian_prestasi",
+                                        label: "Capaian Prestasi",
+                                        data: capaianPrestasi,
+                                    },
+                                    {
+                                        id: "tingkat_lomba",
+                                        label: "Tingkat Lomba",
+                                        data: tingkatLomba,
+                                    },
+                                    {
+                                        id: "jenis_lomba",
+                                        label: "Jenis Lomba",
+                                        data: jenisLomba,
+                                    },
+                                    {
+                                        id: "kategori_lomba",
+                                        label: "Kategori Lomba",
+                                    },
+                                    {
+                                        id: "tahun",
+                                        detached: true,
+                                    },
+                                ]}
+                            />
+                            <DataTableFilter
+                                table={table}
+                                filter="tahun"
+                                label="Tahun"
+                                standalone
+                            />
+                            <div className="flex w-full items-center justify-end gap-2">
+                                <ExportButton table={table} />
+                            </div>
+                        </DataTableControls>
+                    );
+                }}
+            </DataTable>
         </AuthenticatedLayout>
     );
 };

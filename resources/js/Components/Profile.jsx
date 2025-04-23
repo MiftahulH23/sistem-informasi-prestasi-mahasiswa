@@ -6,13 +6,10 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuTrigger
+    DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { Link, usePage } from "@inertiajs/react";
-import {
-    ChevronDown,
-    LogOut
-} from "lucide-react";
+import { ChevronDown, LogOut } from "lucide-react";
 
 export default function Profile() {
     const user = usePage().props.auth.user;
@@ -52,13 +49,13 @@ export default function Profile() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                    <LogOut
-                        size={16}
-                        strokeWidth={2}
-                        className="opacity-60"
-                        aria-hidden="true"
-                    />
-                    <Link method="post" href={route("logout")}>
+                    <Link method="post" href={route("logout")} className="w-full flex items-center justify-start gap-2">
+                        <LogOut
+                            size={16}
+                            strokeWidth={2}
+                            className="opacity-60"
+                            aria-hidden="true"
+                        />
                         Logout
                     </Link>
                 </DropdownMenuItem>

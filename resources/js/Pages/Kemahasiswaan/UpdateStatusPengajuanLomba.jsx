@@ -231,51 +231,49 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
             <h1>Update Pengajuan Lomba</h1>
-            <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={pengajuanLomba}>
-                    {({ table }) => {
-                        console.log("table", table)
-                        return (
-                            <DataTableControls table={table}>
-                                <DataTableFilter
-                                    table={table}
-                                    extend={[
-                                        {
-                                            id: "kategorilomba_id",
-                                            label: "Kategori Lomba",
-                                        },
-                                        {
-                                            id: "tingkat_lomba",
-                                            label: "Tingkat Lomba",
-                                            data: tingkatLomba,
-                                        },
-                                        {
-                                            id: "jenis_lomba",
-                                            label: "Jenis Lomba",
-                                            data: jenisLomba,
-                                        },
-                                        {
-                                            id: "status",
-                                            label: "Status",
-                                            data: statusPengajuan,
-                                        },
-                                        {
-                                            id: "tanggal_mulai",
-                                            detached: true,
-                                        },
-                                    ]}
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="tanggal_mulai"
-                                    label="Tahun"
-                                    standalone
-                                />
-                            </DataTableControls>
-                        );
-                    }}
-                </DataTable>
-            </div>
+            <DataTable columns={columns} data={pengajuanLomba}>
+                {({ table }) => {
+                    console.log("table", table);
+                    return (
+                        <DataTableControls table={table}>
+                            <DataTableFilter
+                                table={table}
+                                extend={[
+                                    {
+                                        id: "kategorilomba_id",
+                                        label: "Kategori Lomba",
+                                    },
+                                    {
+                                        id: "tingkat_lomba",
+                                        label: "Tingkat Lomba",
+                                        data: tingkatLomba,
+                                    },
+                                    {
+                                        id: "jenis_lomba",
+                                        label: "Jenis Lomba",
+                                        data: jenisLomba,
+                                    },
+                                    {
+                                        id: "status",
+                                        label: "Status",
+                                        data: statusPengajuan,
+                                    },
+                                    {
+                                        id: "tanggal_mulai",
+                                        detached: true,
+                                    },
+                                ]}
+                            />
+                            <DataTableFilter
+                                table={table}
+                                filter="tanggal_mulai"
+                                label="Tahun"
+                                standalone
+                            />
+                        </DataTableControls>
+                    );
+                }}
+            </DataTable>
         </AuthenticatedLayout>
     );
 };

@@ -61,25 +61,20 @@ const Bimbingan = ({ pengajuanLomba }) => {
                         </button>
                     </div>
                 );
-            }
-        }
-        
+            },
+        },
     ];
     return (
         <AuthenticatedLayout>
             <Head title="Bimbingan" />
             <h1 className="text-2xl font-bold mb-4">Bimbingan</h1>
-            <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={pengajuanLomba}>
-                    {({ table }) => {
-                        return (
-                            <DataTableControls
-                                table={table}
-                            ></DataTableControls>
-                        );
-                    }}
-                </DataTable>
-            </div>
+            <DataTable columns={columns} data={pengajuanLomba}>
+                {({ table }) => {
+                    return (
+                        <DataTableControls table={table}></DataTableControls>
+                    );
+                }}
+            </DataTable>
         </AuthenticatedLayout>
     );
 };

@@ -165,63 +165,61 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
         <AuthenticatedLayout>
             <Head title="Data Pengajuan Lomba" />
             <h1>Data Pengajuan Lomba</h1>
-            <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={pengajuanLomba}>
-                    {({ table }) => {
-                        return (
-                            <DataTableControls table={table}>
-                                <DataTableFilter
-                                    table={table}
-                                    extend={[
-                                        {
-                                            id: "status",
-                                            label: "Status",
-                                            data: statusPengajuan,
-                                        },
-                                        {
-                                            id: "tingkat_lomba",
-                                            label: "Tingkat Lomba",
-                                            data: tingkatLomba,
-                                        },
-                                        {
-                                            id: "jenis_lomba",
-                                            label: "Jenis Lomba",
-                                            data: jenisLomba,
-                                        },
-                                        {
-                                            id: "kategorilomba_id",
-                                            label: "Kategori Lomba",
-                                        },
-                                        {
-                                            id: "kategorilomba_id",
-                                            label: "Kategori Lomba",
-                                            data: kategoriLomba,
-                                        },
-                                        {
-                                            id: "tanggal_mulai",
-                                            detached: true,
-                                        },
-                                    ]}
-                                />
-                                <DataTableFilter
-                                    table={table}
-                                    filter="tanggal_mulai"
-                                    label="Tahun"
-                                    standalone
-                                />
-                                <button
-                                    onClick={() =>
-                                        router.get("/pengajuan-lomba/create")
-                                    }
-                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
-                                >
-                                    Tambah
-                                </button>
-                            </DataTableControls>
-                        );
-                    }}
-                </DataTable>
-            </div>
+            <DataTable columns={columns} data={pengajuanLomba}>
+                {({ table }) => {
+                    return (
+                        <DataTableControls table={table}>
+                            <DataTableFilter
+                                table={table}
+                                extend={[
+                                    {
+                                        id: "status",
+                                        label: "Status",
+                                        data: statusPengajuan,
+                                    },
+                                    {
+                                        id: "tingkat_lomba",
+                                        label: "Tingkat Lomba",
+                                        data: tingkatLomba,
+                                    },
+                                    {
+                                        id: "jenis_lomba",
+                                        label: "Jenis Lomba",
+                                        data: jenisLomba,
+                                    },
+                                    {
+                                        id: "kategorilomba_id",
+                                        label: "Kategori Lomba",
+                                    },
+                                    {
+                                        id: "kategorilomba_id",
+                                        label: "Kategori Lomba",
+                                        data: kategoriLomba,
+                                    },
+                                    {
+                                        id: "tanggal_mulai",
+                                        detached: true,
+                                    },
+                                ]}
+                            />
+                            <DataTableFilter
+                                table={table}
+                                filter="tanggal_mulai"
+                                label="Tahun"
+                                standalone
+                            />
+                            <button
+                                onClick={() =>
+                                    router.get("/pengajuan-lomba/create")
+                                }
+                                className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
+                            >
+                                Tambah
+                            </button>
+                        </DataTableControls>
+                    );
+                }}
+            </DataTable>
         </AuthenticatedLayout>
     );
 };

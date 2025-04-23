@@ -156,44 +156,41 @@ const PelaporanPrestasi = ({ prestasi }) => {
         <AuthenticatedLayout>
             <Head title="Pelaporan Prestasi" />
             <h1>Pelaporan Prestasi</h1>
-            <div className="overflow-x-auto p-4">
-                <DataTable columns={columns} data={prestasi} className="">
-                    {({ table }) => {
-                        return (
-                            <DataTableControls table={table}>
-                                <DataTableFilter
-                                    table={table}
-                                    extend={[
-                                        {
-                                            id: "capaian_prestasi",
-                                            label: "Capaian Prestasi",
-                                            data: CapaianPrestasi,
-                                        },
-                                        {
-                                            id: "kategori_lomba",
-                                            label: "Kategori Lomba",
-                                        },
-                                        {
-                                            id: "status",
-                                            label: "Status",
-                                            data: Status,
-                                        }
-
-                                    ]}
-                                />
-                                <button
-                                    onClick={() =>
-                                        router.get("/pelaporan-prestasi/create")
-                                    }
-                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
-                                >
-                                    Tambah
-                                </button>
-                            </DataTableControls>
-                        );
-                    }}
-                </DataTable>
-            </div>
+            <DataTable columns={columns} data={prestasi} className="">
+                {({ table }) => {
+                    return (
+                        <DataTableControls table={table}>
+                            <DataTableFilter
+                                table={table}
+                                extend={[
+                                    {
+                                        id: "capaian_prestasi",
+                                        label: "Capaian Prestasi",
+                                        data: CapaianPrestasi,
+                                    },
+                                    {
+                                        id: "kategori_lomba",
+                                        label: "Kategori Lomba",
+                                    },
+                                    {
+                                        id: "status",
+                                        label: "Status",
+                                        data: Status,
+                                    },
+                                ]}
+                            />
+                            <button
+                                onClick={() =>
+                                    router.get("/pelaporan-prestasi/create")
+                                }
+                                className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
+                            >
+                                Tambah
+                            </button>
+                        </DataTableControls>
+                    );
+                }}
+            </DataTable>
         </AuthenticatedLayout>
     );
 };

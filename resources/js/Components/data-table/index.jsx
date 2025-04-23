@@ -61,7 +61,7 @@ export function DataTableControls(props) {
 
   return (
     <div
-      className={cn("@container flex w-full gap-3", className)}
+      className={cn("@container flex w-full gap-3 overflow-x-auto", className)}
       {...rest}
     >
       {search && (
