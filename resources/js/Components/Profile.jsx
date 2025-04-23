@@ -20,23 +20,11 @@ export default function Profile() {
         .join("");
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    variant="ghost"
-                    className="h-auto p-0 hover:bg-transparent"
-                    tabIndex={-1}
-                >
-                    <Avatar>
-                        <AvatarImage src={user.avatar} alt="Profile image" />
-                        <AvatarFallback>{inisial}</AvatarFallback>
-                    </Avatar>
-                    <ChevronDown
-                        size={16}
-                        strokeWidth={2}
-                        className="ms-2 opacity-60"
-                        aria-hidden="true"
-                    />
-                </Button>
+            <DropdownMenuTrigger className="focus-visible:ring-0 focus-visible:outline-none">
+                <Avatar>
+                    <AvatarImage src={user.avatar} alt="Profile image" />
+                    <AvatarFallback>{inisial}</AvatarFallback>
+                </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-w-64" align="end">
                 <DropdownMenuLabel className="flex min-w-0 flex-col">
@@ -49,7 +37,11 @@ export default function Profile() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                    <Link method="post" href={route("logout")} className="w-full flex items-center justify-start gap-2">
+                    <Link
+                        method="post"
+                        href={route("logout")}
+                        className="w-full flex items-center justify-start gap-2"
+                    >
                         <LogOut
                             size={16}
                             strokeWidth={2}
