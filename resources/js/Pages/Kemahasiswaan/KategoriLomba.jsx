@@ -100,7 +100,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
             id: "kategori_lomba",
             header: "Kategori Lomba",
             accessorKey: "kategori_lomba",
-            filterFn: customFilterFns["checkbox"]
+            filterFn: "checkbox",
         },
         {
             id: "Aksi",

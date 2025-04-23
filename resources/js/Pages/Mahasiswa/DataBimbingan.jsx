@@ -49,7 +49,7 @@ const DataBimbingan = ({ bimbingan }) => {
                     </div>
                 );
             },
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
     ];
     const Status = ["Diajukan", "Diterima", "Ditolak"];

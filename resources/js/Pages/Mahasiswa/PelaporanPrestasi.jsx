@@ -18,13 +18,13 @@ const PelaporanPrestasi = ({ prestasi }) => {
             id: "kategori_lomba",
             accessorKey: "pengajuan_lomba.kategori.kategori_lomba",
             header: "Kategori Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "capaian_prestasi",
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             accessorKey: "sertifikat",
@@ -139,7 +139,7 @@ const PelaporanPrestasi = ({ prestasi }) => {
                     </div>
                 );
             },
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
     ];
     const CapaianPrestasi = [

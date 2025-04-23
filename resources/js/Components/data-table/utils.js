@@ -1,3 +1,23 @@
+/**
+ * @file Define custom filter functions for data table.
+ *
+ * @description
+ * filterFn naming must be consistent with the filter variant.
+ * do not use prefix or suffix for filterFn name.
+ *
+ * filterFn name use `camelCase`.
+ * variant name use `kebab-case`.
+ *
+ * @example
+ * filterFn: dateYear
+ * variant: "date-year"
+ *
+ * define variant name as key in `customFilterFns` with it's filterFn.
+ * export only `customFilterFns`.
+ *
+ * @author hibatillah
+ */
+
 import { isSameYear, isWithinInterval } from "date-fns";
 
 /**
@@ -21,8 +41,8 @@ export const customFilterFns = {
 function checkbox(
   row,
   columnId,
-  filterValue,
-){
+  filterValue
+) {
   if (!filterValue?.length) return true;
   const column = row.getValue(columnId);
   return filterValue.includes(column);

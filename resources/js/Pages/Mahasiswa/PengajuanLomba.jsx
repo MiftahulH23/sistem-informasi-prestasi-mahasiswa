@@ -33,24 +33,24 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 return row.kategori.kategori_lomba;
             },
             header: "Kategori Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "tingkat_lomba",
             accessorKey: "tingkat_lomba",
             header: "Tingkat Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "dosen_pembimbing",
-            accessorKey: "dosen_pembimbing",
+            accessorFn: (row) => row.dosen?.name ?? "-",
             header: "Pembimbing",
         },
         {
             id: "jenis_lomba",
             accessorKey: "jenis_lomba",
             header: "Jenis Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "tanggal_mulai",
@@ -82,7 +82,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </Tooltip>
                 );
             },
-            filterFn: customFilterFns["date-year"],
+            filterFn: "date-year",
         },
         {
             accessorKey: "tanggal_selesai",
@@ -133,7 +133,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </div>
                 );
             },
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             accessorKey: "Detail",

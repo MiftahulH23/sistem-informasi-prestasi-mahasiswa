@@ -114,13 +114,13 @@ const JudulLomba = () => {
             id: "judul_lomba",
             header: "Judul Lomba",
             accessorKey: "judul_lomba",
-            filterFn: customFilterFns["checkbox"]
+            filterFn: "checkbox"
         },
         {
             id: "Kategori Lomba",
             header: "Kategori Lomba",
             accessorKey: "kategori.kategori_lomba",
-            filterFn: customFilterFns["checkbox"]
+            filterFn: "checkbox"
         },
         {
             id: "Aksi",

@@ -52,18 +52,18 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 return row.getValue("kategorilomba_id");
             },
             header: "Kategori Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "tingkat_lomba",
             accessorKey: "tingkat_lomba",
             header: "Tingkat Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             accessorKey: "jenis_lomba",
             header: "Jenis Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             accessorKey: "tanggal_mulai",
@@ -94,7 +94,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </Tooltip>
                 );
             },
-            filterFn: customFilterFns["date-year"],
+            filterFn: "date-year",
         },
         {
             accessorKey: "tanggal_selesai",
@@ -146,7 +146,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     </div>
                 );
             },
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             accessorKey: "Detail",
@@ -234,6 +234,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             <div className="overflow-x-auto p-4">
                 <DataTable columns={columns} data={pengajuanLomba}>
                     {({ table }) => {
+                        console.log("table", table)
                         return (
                             <DataTableControls table={table}>
                                 <DataTableFilter

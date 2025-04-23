@@ -1,7 +1,5 @@
 import { camelToKebab, cn } from "@/lib/utils";
 import { addHours, addMinutes, format, getYear } from "date-fns";
-import React from "react";
-import { customFilterFns } from "./utils";
 import {
   CalendarIcon,
   CalendarRangeIcon,
@@ -18,7 +16,10 @@ import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Separator } from "../ui/separator";
+import { customFilterFns } from "./utils";
 
+// eslint-disable-next-line
+import React from "react";
 // eslint-disable-next-line
 const FilterContext = React.createContext(null);
 
@@ -32,7 +33,7 @@ const FilterContext = React.createContext(null);
  * - `isFilterActive` check if column is filtering
  * - `formatFilterName` format column filter name to match custom `filters`
  */
-function useFilter() {
+export function useFilter() {
   const context = React.useContext(FilterContext);
 
   if (!context) {
@@ -42,10 +43,8 @@ function useFilter() {
   return context;
 }
 
-/**
- * @function FilterContext provider
- */
-function FilterProvider({ children }) {
+/** FilterContext provider */
+export function FilterProvider({ children }) {
   const [state, setState] = React.useState();
 
   // Get all filter variant based on `utils.ts`
@@ -60,9 +59,8 @@ function FilterProvider({ children }) {
 
   // Format column filter name to match custom `filters`
   const formatFilterName = React.useCallback((column) => {
-    const filterFnName = column?.getFilterFn()?.name ?? "unknown";
-    const formatName = camelToKebab(filterFnName);
-    return formatName;
+    const filterFnName = column.columnDef.filterFn;
+    return filterFnName;
   }, []);
 
   // Reset filter value column
@@ -679,7 +677,7 @@ function FilterComponent(props) {
   const { extend } = props;
   const { filter: filterKey, label, data } = props;
 
-  const detachedColumns = extend?.filter((item) => item.detached) ?? [];
+  const detachedColumns = extend?.filter((item) => item.detached === true) ?? [];
   let excludeColumns = ["actions"];
 
   // exclude columns from detached extend data
@@ -689,13 +687,19 @@ function FilterComponent(props) {
     );
   }
 
+  /**
+   * Get all columns from table.
+   * except includes in `excludeColumns` and filter name includes in `filters`
+   */
   const columns = table
     .getAllColumns()
     .filter((column) => !excludeColumns.includes(column.id))
     .filter((column) => {
       const filterKey = formatFilterName(column);
+      console.log("Filter Key: ", filterKey, column);
       return filters.includes(filterKey);
     });
+    
 
   React.useEffect(() => {
     if (!open) setState(undefined); // back to filter list view if popover closed
@@ -736,31 +740,31 @@ function FilterComponent(props) {
   function extendItems(column) {
     return extend?.find((item) => item.id === column.id);
   }
+  console.log("Colums: ", columns);
+  if (columns.length === 0) return null;
 
   return (
-    <Popover
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className={className}
-          {...rest}
-        >
+        <Button variant="outline" className={className} {...rest}>
           <div
             data-active={isFiltering}
             className="after:bg-primary relative after:absolute after:-end-px after:top-px after:size-1.5 after:rounded-full data-[active=false]:after:hidden dark:after:bg-teal-600"
           >
             <ListFilterIcon className="text-muted-foreground" />
           </div>
-          <span className="@2xl:not-sr-only sr-only">Filter</span>
+          <span className="@2xl:not-sr-only text-foreground sr-only">
+            Filter
+          </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="group flex !w-max !min-w-52 flex-col !gap-1 p-3">
+      <PopoverContent
+        align="center"
+        className="group flex !w-max !min-w-52 flex-col !gap-1 p-2"
+      >
         {!state && (
           <>
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center justify-between px-1 pt-0.5">
               <div className="text-foreground/90 text-xs">Pilih Filter</div>
               <button
                 onClick={resetColumnsFilter}
@@ -770,7 +774,7 @@ function FilterComponent(props) {
                 Reset
               </button>
             </div>
-            <Separator className="my-1" />
+            <Separator className="my-0.5" />
           </>
         )}
         {columns.map((column, i) => (

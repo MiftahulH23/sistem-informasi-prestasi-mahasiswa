@@ -19,7 +19,7 @@ class PengajuanLombaController extends Controller
 {
     public function index()
     {
-        $pengajuanLomba = PengajuanLomba::with('kategori') // Ambil data kategori juga
+        $pengajuanLomba = PengajuanLomba::with(['kategori', 'dosen']) // Ambil data kategori juga
             ->where('user_id', Auth::id())
             ->get();
         $kategoriLomba = KategoriLomba::all();

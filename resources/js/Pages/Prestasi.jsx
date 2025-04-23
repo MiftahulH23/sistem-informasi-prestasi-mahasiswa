@@ -28,31 +28,31 @@ const Prestasi = ({ prestasi }) => {
         {
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "tingkat_lomba",
             accessorKey: "pengajuan_lomba.tingkat_lomba",
             header: "Tingkat Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "program_studi",
             accessorKey: "pengajuan_lomba.program_studi",
             header: "Program Studi",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "kategori_lomba",
             accessorKey: "pengajuan_lomba.kategori.kategori_lomba", // Akses nama kategori
             header: "Kategori",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "jenis_lomba",
             accessorKey: "pengajuan_lomba.jenis_lomba",
             header: "Jenis Lomba",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "tahun",
@@ -94,7 +94,7 @@ const Prestasi = ({ prestasi }) => {
                     </Tooltip>
                 );
             },
-            filterFn: customFilterFns["date-year"],
+            filterFn: "date-year",
         },
     ];
 

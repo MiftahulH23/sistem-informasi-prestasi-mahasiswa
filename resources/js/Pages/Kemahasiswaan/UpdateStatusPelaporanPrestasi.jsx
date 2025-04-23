@@ -53,7 +53,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
             id: "capaian_prestasi",
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             accessorKey: "sertifikat",
@@ -168,7 +168,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                     </div>
                 );
             },
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "Aksi",

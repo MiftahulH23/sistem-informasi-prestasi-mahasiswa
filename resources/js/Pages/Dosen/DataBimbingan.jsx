@@ -79,7 +79,7 @@ const DataBimbingan = ({ bimbingan }) => {
                     </div>
                 );
             },
-            filterFn: customFilterFns["checkbox"],
+            filterFn: "checkbox",
         },
         {
             id: "Aksi",
