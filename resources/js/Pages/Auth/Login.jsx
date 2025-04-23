@@ -28,7 +28,7 @@ export default function Login({ status, canResetPassword, appUrl }) {
                 </div>
             )}
             <div className="flex gap-3 items-center mb-4 justify-center">
-                <div className="w-12 h-12 overflow-hidden">
+                <div className="w-12 h-12 flex-none overflow-hidden">
                     <img
                         src={LogoKemahasiswaan}
                         alt="Logo Kemahasiswaan"
