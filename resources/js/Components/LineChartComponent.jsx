@@ -77,6 +77,7 @@ export default function LineChartComponent({ lineChartData }) {
                                 fontSize={12}
                                 fill="var(--color-Akademik)"
                                 offset={-10}
+                                formatter={(value) => value > 0 ? value : ""}
                             />
                         </Line>
                         <Line
@@ -93,6 +94,7 @@ export default function LineChartComponent({ lineChartData }) {
                                 fontSize={12}
                                 fill="var(--color-NonAkademik)"
                                 offset={-10}
+                                formatter={(value) => value > 0 ? value : ""}
                             />
                         </Line>
                     </LineChart>

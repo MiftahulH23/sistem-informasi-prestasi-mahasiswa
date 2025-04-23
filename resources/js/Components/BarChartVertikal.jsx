@@ -68,6 +68,7 @@ export function BarChartVertikal({ TingkatLomba }) {
                                     fill: "var(--foreground)",
                                     fontSize: 12,
                                 }}
+                                formatter={(value) => value > 0 ? value : ""}
                             />
                         </Bar>{" "}
                         {/* Adjusting the bar size */}

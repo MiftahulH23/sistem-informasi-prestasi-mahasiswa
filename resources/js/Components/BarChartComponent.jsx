@@ -76,6 +76,7 @@ export function BarChartComponent({ chartData }) {
                                     fill: "var(--foreground)",
                                     fontSize: 12,
                                 }}
+                                formatter={(value) => value > 0 ? value : ""} // Menyembunyikan label jika nilai 0
                             />
                         </Bar>
                     </BarChart>
@@ -84,3 +85,4 @@ export function BarChartComponent({ chartData }) {
         </Card>
     );
 }
+
