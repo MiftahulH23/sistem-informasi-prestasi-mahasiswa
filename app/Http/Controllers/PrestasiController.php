@@ -1,17 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\PengajuanLomba;
 use App\Models\Prestasi;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PrestasiController extends Controller
 {
     public function index()
     {
-        $prestasi = Prestasi::with(['pengajuanLomba.kategori'])->where('status', 'Diterima')->get();
+        $query = Prestasi::with(['pengajuanLomba.kategori'])
+            ->where('status', 'Diterima');
+
+        if (Auth::user()->role === 'Mahasiswa') {
+            $query->where('user_id', Auth::id())
+                ->where('capaian_prestasi', '!=', 'Peserta');
+        }
+
+        $prestasi = $query->get();
 
         return Inertia::render("Prestasi", ["prestasi" => $prestasi]);
     }

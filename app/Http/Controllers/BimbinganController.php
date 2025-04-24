@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bimbingan;
 use App\Models\PengajuanLomba;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -29,6 +30,19 @@ class BimbinganController extends Controller
             ->where('status', 'Diterima')
             ->with('dosen')
             ->get();
+
+        // Ambil semua user pertama dari anggota_kelompok
+        $firstUserIds = $pengajuanLomba->pluck('anggota_kelompok')->map(fn($arr) => $arr[0] ?? null)->filter()->unique();
+
+        $users = User::whereIn('id', $firstUserIds)->get()->keyBy('id');
+
+        // Tambahkan nama user pertama ke setiap item
+        $pengajuanLomba = $pengajuanLomba->map(function ($item) use ($users) {
+            $firstId = $item->anggota_kelompok[0] ?? null;
+            $item->nama_ketua_tim = $firstId ? ($users[$firstId]->name ?? '-') : '-';
+            return $item;
+        });
+
         // dd($pengajuanLomba->toArray());
         return Inertia::render('Dosen/Bimbingan', [
             'pengajuanLomba' => $pengajuanLomba,
@@ -79,19 +93,27 @@ class BimbinganController extends Controller
     public function show($id)
     {
         $bimbingan = Bimbingan::where('pengajuanlomba_id', $id)->get();
+        $pengajuanLomba = PengajuanLomba::with('bimbingan')
+        ->where('pengajuanlomba_id', $id)
+        ->firstOrFail();
         // dd($bimbingan->toArray());
         return Inertia::render('Mahasiswa/DataBimbingan', [
             'bimbingan' => $bimbingan,
-            'id' => $id
+            'id' => $id,
+            'judul_lomba' => $pengajuanLomba->judul_lomba,
         ]);
     }
     public function showForDosen($id)
     {
         $bimbingan = Bimbingan::where('pengajuanlomba_id', $id)->get();
+        $pengajuanLomba = PengajuanLomba::with('bimbingan')
+        ->where('pengajuanlomba_id', $id)
+        ->firstOrFail();
         // dd($bimbingan->toArray());
         return Inertia::render('Dosen/DataBimbingan', [
             'bimbingan' => $bimbingan,
-            'id' => $id
+            'id' => $id,
+            'judul_lomba' => $pengajuanLomba->judul_lomba,
         ]);
     }
 

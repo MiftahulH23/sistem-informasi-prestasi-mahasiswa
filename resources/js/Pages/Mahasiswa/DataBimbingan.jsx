@@ -5,7 +5,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 
-const DataBimbingan = ({ bimbingan }) => {
+const DataBimbingan = ({ bimbingan, judul_lomba  }) => {
     const { props } = usePage();
     const id = props.id;
     const columns = [
@@ -56,7 +56,7 @@ const DataBimbingan = ({ bimbingan }) => {
     return (
         <AuthenticatedLayout>
             <Head title="Data Bimbingan" />
-            <h1>Data Bimbingan</h1>
+            <h1>Data Bimbingan - {judul_lomba}</h1>
             <DataTable columns={columns} data={bimbingan}>
                 {({ table }) => {
                     return (

@@ -147,22 +147,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                         />
                         {errors.dokumentasi && <p className="text-red-500">{errors.dokumentasi}</p>}
                     </div>
-
-                    {/* Surat Tugas */}
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="surat_tugas">Surat Tugas</Label>
-                        <Input
-                            id="surat_tugas"
-                            name="surat_tugas"
-                            type="file"
-                            accept="application/pdf"
-                            ref={fileInputRefs.surat_tugas}
-                            onChange={handleFileChange}
-                        />
-                        {errors.surat_tugas && <p className="text-red-500">{errors.surat_tugas}</p>}
-                    </div>
                 </div>
-
                 <div className="flex justify-end mt-5 py-3">
                     <button type="submit" className="bg-blue-600 py-2 px-4 text-white rounded-md" disabled={processing}>
                         {processing ? "Memproses..." : "Tambah"}

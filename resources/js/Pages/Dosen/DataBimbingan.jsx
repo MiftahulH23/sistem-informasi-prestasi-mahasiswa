@@ -6,7 +6,7 @@ import { Head, router } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 import { useState } from "react";
 import Swal from "sweetalert2";
-const DataBimbingan = ({ bimbingan }) => {
+const DataBimbingan = ({ bimbingan, judul_lomba }) => {
     const { props } = usePage();
     const id = props.id;
     const [reviewed, setReviewed] = useState(
@@ -138,7 +138,7 @@ const DataBimbingan = ({ bimbingan }) => {
     return (
         <AuthenticatedLayout>
             <Head title="Data Bimbingan" />
-            <h1>Data Bimbingan</h1>
+            <h1>Data Bimbingan - {judul_lomba}</h1>
             <DataTable columns={columns} data={bimbingan}>
                 {({ table }) => {
                     return (

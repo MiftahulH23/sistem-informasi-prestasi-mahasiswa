@@ -25,9 +25,9 @@ const Bimbingan = ({ pengajuanLomba }) => {
             header: "Tingkat Lomba",
         },
         {
-            id: "dosen_pembimbing",
-            accessorKey: "dosen.name",
-            header: "Pembimbing",
+            id: "ketua_tim",
+            accessorKey: "nama_ketua_tim",
+            header: "Ketua Tim",
         },
         {
             accessorKey: "Detail",
@@ -71,7 +71,9 @@ const Bimbingan = ({ pengajuanLomba }) => {
             <DataTable columns={columns} data={pengajuanLomba}>
                 {({ table }) => {
                     return (
-                        <DataTableControls table={table}></DataTableControls>
+                        <DataTableControls table={table}>
+                            
+                        </DataTableControls>
                     );
                 }}
             </DataTable>
