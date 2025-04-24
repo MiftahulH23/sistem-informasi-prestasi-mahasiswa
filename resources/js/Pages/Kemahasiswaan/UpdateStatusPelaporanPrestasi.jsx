@@ -131,10 +131,10 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
             },
         },
         {
-            accessorKey: "surat_tugas",
+            accessorKey: "pengajuan_lomba.surat_tugas",
             header: "Surat Tugas",
             cell: ({ row }) => {
-                const suratTugas = row.original.surat_tugas;
+                const suratTugas = row.original.pengajuan_lomba?.surat_tugas;
                 return suratTugas ? (
                     <a
                         href={`/storage/${suratTugas}`}
@@ -148,7 +148,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                     "Tidak ada file"
                 );
             },
-        },
+        },        
         {
             accessorKey: "status",
             header: "Status",
