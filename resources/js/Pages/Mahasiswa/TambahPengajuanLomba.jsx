@@ -93,7 +93,6 @@ const PengajuanLomba = ({ auth, dosenList }) => {
     };
 
     const handleSubmit = (e) => {
-        console.log("Data sebelum submit:", data);
         e.preventDefault();
         e.target.reset();
 
@@ -137,6 +136,8 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                 reset(); // Reset form ke nilai awal
                 setJenisKepesertaan(""); // Reset jenis kepesertaan
                 setAnggotaKelompok([]); // Reset anggota kelompok
+                setSelectedKategori(""); // Reset kategori
+                setFilteredJudul([]); // Reset judul
                 Swal.fire(
                     "Berhasil!",
                     "Pengajuan berhasil ditambah.",
@@ -345,7 +346,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     setData("dosen_pembimbing", e.target.value)
                                 }
                             >
-                                <option value="" >Pilih Dosen</option>
+                                <option value="">Pilih Dosen</option>
                                 {dosenList.map((dosen) => (
                                     <option key={dosen.id} value={dosen.id}>
                                         {dosen.name}

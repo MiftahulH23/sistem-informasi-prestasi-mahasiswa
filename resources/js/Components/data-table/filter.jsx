@@ -696,7 +696,6 @@ function FilterComponent(props) {
     .filter((column) => !excludeColumns.includes(column.id))
     .filter((column) => {
       const filterKey = formatFilterName(column);
-      console.log("Filter Key: ", filterKey, column);
       return filters.includes(filterKey);
     });
     
@@ -740,7 +739,6 @@ function FilterComponent(props) {
   function extendItems(column) {
     return extend?.find((item) => item.id === column.id);
   }
-  console.log("Colums: ", columns);
   if (columns.length === 0) return null;
 
   return (

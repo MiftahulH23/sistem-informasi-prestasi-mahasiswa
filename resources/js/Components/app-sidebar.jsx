@@ -118,7 +118,6 @@ export function AppSidebar({ ...props }) {
         eksekutif: menuEksekutif,
         Dosen: menuDosen,
     };
-    console.log("User role:", role);
     return (
         <Sidebar variant="inset" {...props} className="z-20">
             <SidebarHeader>
