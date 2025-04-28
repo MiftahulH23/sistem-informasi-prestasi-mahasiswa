@@ -149,7 +149,7 @@ class PengajuanLombaController extends Controller
 
         // Notification::route('mail', $email)
         //     ->notify(new Pengajuan($message));
-        // return redirect("/pengajuan-lomba")->with('success', 'Pengajuan Lomba berhasil ditambahkan!');
+        return redirect("/pengajuan-lomba")->with('success', 'Pengajuan Lomba berhasil ditambahkan!');
     }
 
     public function show($id)

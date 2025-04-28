@@ -40,7 +40,7 @@ export default function LineChartComponent({ lineChartData }) {
                         accessibilityLayer
                         data={lineChartData}
                         className="w-full"
-                        margin={{ left: -20 }}
+                        margin={{ left: -35 }}
                     >
                         <CartesianGrid vertical={false} className="w-full" />
                         <XAxis
