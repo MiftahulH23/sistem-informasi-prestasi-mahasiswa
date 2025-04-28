@@ -6,17 +6,20 @@ import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, useForm, usePage } from "@inertiajs/react";
-import { SquarePen, Trash2, X } from "lucide-react";
+import { SquarePen, Trash2, Plus, X } from "lucide-react";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
 const KategoriLomba = ({ kategoriLomba }) => {
     const { flash } = usePage().props;
+
+    // State form tambah
     const { data, setData, post, processing, reset, errors } = useForm({
         kategori_lomba: "",
     });
+    const [isAddModalOpen, setAddModalOpen] = useState(false);
 
-    // State untuk modal edit
+    // State form edit
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [selectedKategori, setSelectedKategori] = useState(null);
     const {
@@ -35,6 +38,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
         post(route("kategori-lomba.store"), {
             onSuccess: () => {
                 reset();
+                setAddModalOpen(false);
                 Swal.fire(
                     "Berhasil!",
                     "Kategori berhasil ditambah.",
@@ -70,7 +74,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
         });
     };
 
-    // Handle edit kategori (buka modal & set data)
+    // Handle buka modal edit
     const openEditModal = (kategori) => {
         setSelectedKategori(kategori);
         setEditData({
@@ -85,7 +89,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
         put(route("kategori-lomba.update", selectedKategori.kategorilomba_id), {
             onSuccess: () => {
                 setEditModalOpen(false);
-                Swal.fire("Berhasil!", "Kategori telah diperbaru.", "success");
+                Swal.fire("Berhasil!", "Kategori telah diperbarui.", "success");
             },
         });
     };
@@ -106,7 +110,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
             id: "Aksi",
             header: "Aksi",
             cell: (info) => (
-                <div className="flex gap-2 justify-center">
+                <div className="flex gap-2">
                     <SquarePen
                         className="cursor-pointer text-blue-500 size-5"
                         onClick={() => openEditModal(info.row.original)}
@@ -126,36 +130,10 @@ const KategoriLomba = ({ kategoriLomba }) => {
         <AuthenticatedLayout>
             <Head title="Kategori Lomba" />
             <h1 className="text-xl font-bold mb-4">Kategori Lomba</h1>
-            {/* Form Tambah */}
-            <form
-                onSubmit={handleSubmit}
-                className="flex justify-start items-center gap-5"
-            >
-                <div className="flex gap-2 items-center">
-                    <Label className="w-40">Kategori Lomba</Label>
-                    <Input
-                        name="kategori_lomba"
-                        value={data.kategori_lomba}
-                        onChange={(e) =>
-                            setData("kategori_lomba", e.target.value)
-                        }
-                        placeholder="Masukkan kategori"
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-2 py-1 rounded"
-                    disabled={processing}
-                >
-                    {processing ? "Menyimpan..." : "Tambah"}
-                </button>
-            </form>
 
-            {/* Tampilkan error validasi */}
-            {errors.kategori_lomba && (
-                <p className="text-red-500">{errors.kategori_lomba}</p>
-            )}
+            {/* Tombol Tambah (Buka Modal) */}
+
+            {/* Tabel */}
             <DataTable columns={columns} data={kategoriLomba}>
                 {({ table }) => (
                     <DataTableControls table={table}>
@@ -165,12 +143,63 @@ const KategoriLomba = ({ kategoriLomba }) => {
                                 {
                                     id: "kategori_lomba",
                                     label: "Kategori Lomba",
-                                }
+                                },
                             ]}
                         />
+                        <button
+                            onClick={() => setAddModalOpen(true)}
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded flex items-center gap-2 ms-auto"
+                        >Tambah</button>
                     </DataTableControls>
                 )}
             </DataTable>
+
+            {/* Modal Tambah */}
+            <Modal show={isAddModalOpen} onClose={() => setAddModalOpen(false)}>
+                <div className="bg-white p-6 rounded-lg shadow-lg w-full">
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-bold">Tambah Kategori</h2>
+                        <X
+                            className="cursor-pointer text-gray-500"
+                            onClick={() => setAddModalOpen(false)}
+                        />
+                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <Label required>Kategori Lomba</Label>
+                        <Input
+                            name="kategori_lomba"
+                            value={data.kategori_lomba}
+                            onChange={(e) =>
+                                setData("kategori_lomba", e.target.value)
+                            }
+                            placeholder="Masukkan kategori"
+                            required
+                        />
+                        {errors.kategori_lomba && (
+                            <p className="text-red-500 mt-1">
+                                {errors.kategori_lomba}
+                            </p>
+                        )}
+                        <div className="mt-4 flex justify-end gap-2">
+                            <button
+                                type="button"
+                                className="bg-gray-400 text-white px-3 py-1 rounded"
+                                onClick={() => setAddModalOpen(false)}
+                            >
+                                Batal
+                            </button>
+                            <button
+                                type="submit"
+                                className="bg-blue-500 text-white px-3 py-1 rounded"
+                                disabled={processing}
+                            >
+                                {processing ? "Menyimpan..." : "Simpan"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </Modal>
+
             {/* Modal Edit */}
             <Modal
                 show={isEditModalOpen}
@@ -194,7 +223,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
                             }
                         />
                         {editErrors.kategori_lomba && (
-                            <p className="text-red-500">
+                            <p className="text-red-500 mt-1">
                                 {editErrors.kategori_lomba}
                             </p>
                         )}

@@ -178,7 +178,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                 return reviewed[id] ? (
                     <span className="text-gray-500">Sudah Direview</span>
                 ) : (
-                    <div className="flex gap-2 items-center justify-center">
+                    <div className="flex gap-2 items-center">
                         <button
                             onClick={() => updateStatus(id, "Diterima")}
                             className="bg-blue-500 text-white px-1 rounded size-5"

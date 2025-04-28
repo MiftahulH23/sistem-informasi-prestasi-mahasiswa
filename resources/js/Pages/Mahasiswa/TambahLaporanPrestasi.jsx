@@ -70,7 +70,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                 <div className="flex flex-col md:grid md:grid-cols-2 gap-x-8 gap-y-4">
                     {/* Judul Lomba */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="judul_lomba">Judul Lomba</Label>
+                        <Label htmlFor="judul_lomba" data-required>Judul Lomba</Label>
                         <select
                             id="judul_lomba"
                             name="pengajuanlomba_id"
@@ -87,7 +87,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
 
                     {/* Capaian Prestasi */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="capaian_prestasi">Capaian Prestasi</Label>
+                        <Label htmlFor="capaian_prestasi" data-required>Capaian Prestasi</Label>
                         <select
                             id="capaian_prestasi"
                             name="capaian_prestasi"
@@ -108,7 +108,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
 
                     {/* Sertifikat */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="sertifikat">Sertifikat</Label>
+                        <Label htmlFor="sertifikat" data-required>Sertifikat</Label>
                         <Input
                             id="sertifikat"
                             name="sertifikat"
@@ -122,7 +122,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
 
                     {/* URL Media Sosial */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="url_media_sosial">URL Media Sosial</Label>
+                        <Label htmlFor="url_media_sosial" data-required>URL Media Sosial</Label>
                         <Input
                             id="url_media_sosial"
                             name="url_media_sosial"
@@ -135,7 +135,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
 
                     {/* Dokumentasi */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="dokumentasi">Dokumentasi</Label>
+                        <Label htmlFor="dokumentasi" data-required>Dokumentasi</Label>
                         <Input
                             id="dokumentasi"
                             name="dokumentasi"

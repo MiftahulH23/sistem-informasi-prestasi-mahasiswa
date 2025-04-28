@@ -50,7 +50,7 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-3 gap-3">
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="tanggal">Tanggal Bimbingan</Label>
+                        <Label htmlFor="tanggal" data-required>Tanggal Bimbingan</Label>
                         <Input
                             type="date"
                             id="tanggal"
@@ -65,7 +65,7 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="jam_mulai">Jam Mulai</Label>
+                        <Label htmlFor="jam_mulai" data-required>Jam Mulai</Label>
                         <Input
                             type="time"
                             id="jam_mulai"
@@ -82,7 +82,7 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="jam_selesai">Jam Selesai</Label>
+                        <Label htmlFor="jam_selesai" data-required>Jam Selesai</Label>
                         <Input
                             type="time"
                             id="jam_selesai"
@@ -101,7 +101,7 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="materi_bimbingan">
+                        <Label htmlFor="materi_bimbingan" data-required>
                             Materi Bimbingan
                         </Label>
                         <Input
@@ -120,7 +120,7 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
                         )}
                     </div>
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="catatan_bimbingan">
+                        <Label htmlFor="catatan_bimbingan" data-required>
                             Catatan Bimbingan
                         </Label>
                         <Input

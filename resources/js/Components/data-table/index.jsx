@@ -158,19 +158,19 @@ export function DataTable(props) {
         <Table className="bg-card">
           <TableHeader className="bg-[#4F94C8] overflow-hidden">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="[&_*]:text-center hover:bg-[#4F94C8]" key={headerGroup.id}>
+              <TableRow className="hover:bg-[#4F94C8]" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
-                      className="not-has-[*]:w-14 text-foreground has-[*]:min-w-24 text-center text-white font-semibold "
+                      className="not-has-[*]:w-14 text-foreground has-[*]:min-w-24 text-white font-semibold [&_*]:text-nowrap"
                     >
                       {header.isPlaceholder ? null : header.column.getCanSort() &&
                         controls.sorting ? (
                         <div
                           className={cn(
                             header.column.getCanSort() &&
-                              "flex justify-center h-full cursor-pointer select-none items-center gap-2 text-center",
+                              "flex h-full cursor-pointer select-none items-center gap-2",
                           )}
                           onClick={header.column.getToggleSortingHandler()}
                           onKeyDown={(e) => {
@@ -228,7 +228,7 @@ export function DataTable(props) {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-center">
+                    <TableCell key={cell.id} className="text-start">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

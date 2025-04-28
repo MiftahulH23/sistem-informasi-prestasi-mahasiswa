@@ -164,7 +164,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                     <div className="flex flex-col md:grid md:grid-cols-2 gap-x-8 gap-y-4">
                         {/* Kategori Lomba */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="kategori_lomba">
+                            <Label htmlFor="kategori_lomba" data-required>
                                 Kategori Lomba
                             </Label>
                             <select
@@ -189,7 +189,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Judul Lomba */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="judul_lomba">Judul Lomba</Label>
+                            <Label htmlFor="judul_lomba" data-required>Judul Lomba</Label>
                             {kategoriLomba.find(
                                 (k) =>
                                     String(k.kategorilomba_id) ===
@@ -237,7 +237,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Jenis Lomba */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="jenis_lomba">Jenis Lomba</Label>
+                            <Label htmlFor="jenis_lomba" data-required>Jenis Lomba</Label>
                             <select
                                 id="jenis_lomba"
                                 name="jenis_lomba"
@@ -258,7 +258,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Tingkat Lomba */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="tingkat_lomba">Tingkat Lomba</Label>
+                            <Label htmlFor="tingkat_lomba" data-required>Tingkat Lomba</Label>
                             <select
                                 id="tingkat_lomba"
                                 name="tingkat_lomba"
@@ -283,7 +283,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Model Pelaksanan */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="model_pelaksanaan">
+                            <Label htmlFor="model_pelaksanaan" data-required>
                                 Model Pelaksanan
                             </Label>
                             <select
@@ -303,7 +303,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                         </div>
                         {/* Program Studi */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="program_studi">Program Studi</Label>
+                            <Label htmlFor="program_studi" data-required>Program Studi</Label>
                             <select
                                 id="program_studi"
                                 name="program_studi"
@@ -335,7 +335,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Dosen Pembimbing */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="dosen_pembimbing">
+                            <Label htmlFor="dosen_pembimbing" data-required>
                                 Dosen Pembimbing
                             </Label>
                             <select
@@ -357,7 +357,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Tanggal Mulai */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="tanggal_mulai">Tanggal Mulai</Label>
+                            <Label htmlFor="tanggal_mulai" data-required>Tanggal Mulai</Label>
                             <Input
                                 id="tanggal_mulai"
                                 name="tanggal_mulai"
@@ -371,7 +371,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Tanggal Selesai */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="tanggal_selesai">
+                            <Label htmlFor="tanggal_selesai" data-required>
                                 Tanggal Selesai
                             </Label>
                             <Input
@@ -387,7 +387,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Jenis Kepesertaan */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="jenis_kepesertaan">
+                            <Label htmlFor="jenis_kepesertaan" data-required>
                                 Jenis Kepesertaan
                             </Label>
                             <select
@@ -407,7 +407,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Jumlah Peserta */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="jumlah_peserta">
+                            <Label htmlFor="jumlah_peserta" data-required>
                                 Jumlah Peserta
                             </Label>
                             <Input
@@ -427,7 +427,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                         {/* Anggota Kelompok */}
                         {jenisKepesertaan === "kelompok" && (
                             <div className="col-span-2 flex flex-col gap-2">
-                                <Label>Anggota Kelompok</Label>
+                                <Label data-required>Anggota Kelompok</Label>
                                 {anggotaKelompok.map((anggota, index) => (
                                     <div
                                         key={index}
@@ -477,7 +477,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                         {/* Nama Peserta (Individu) */}
                         {jenisKepesertaan === "individu" && (
                             <div className="col-span-2 flex flex-col gap-2">
-                                <Label htmlFor="anggota_kelompok">
+                                <Label htmlFor="anggota_kelompok" data-required>
                                     Nama Peserta
                                 </Label>
                                 <Input
@@ -492,7 +492,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                         )}
                         {/* Surat Tugas (File Upload) */}
                         <div className="flex flex-col gap-2 col-span-2">
-                            <Label htmlFor="surat_tugas">Surat Tugas</Label>
+                            <Label htmlFor="surat_tugas" data-required>Surat Tugas</Label>
                             <Input
                                 id="surat_tugas"
                                 name="surat_tugas"
