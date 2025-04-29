@@ -151,7 +151,7 @@ const JudulLomba = () => {
                         <DataTableFilter table={table} />
                         <button
                             onClick={() => setAddModalOpen(true)}
-                            className="flex items-center gap-2 bg-blue-500 text-white px-3 py-2 rounded ms-auto"
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded flex items-center gap-2 ms-auto"
                         >
                             Tambah Judul
                         </button>
