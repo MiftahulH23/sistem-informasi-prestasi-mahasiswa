@@ -153,7 +153,7 @@ const JudulLomba = () => {
                             onClick={() => setAddModalOpen(true)}
                             className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded flex items-center gap-2 ms-auto"
                         >
-                            Tambah Judul
+                            Tambah
                         </button>
                     </DataTableControls>
                 )}
