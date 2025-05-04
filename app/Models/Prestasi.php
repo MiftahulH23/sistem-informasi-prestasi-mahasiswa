@@ -23,7 +23,8 @@ class Prestasi extends Model
         'dokumentasi',
         'surat_tugas',
         'url_media_sosial',
-        'status'
+        'status',
+        'catatan'
     ];
 
     protected static function boot()

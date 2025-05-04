@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->json('dokumentasi')->nullable(); // Untuk menyimpan hingga 3 foto
             $table->string('url_media_sosial');
             $table->string('status');
+            $table->string('catatan')->nullable(); 
             $table->softDeletes();
             $table->timestamps();
 

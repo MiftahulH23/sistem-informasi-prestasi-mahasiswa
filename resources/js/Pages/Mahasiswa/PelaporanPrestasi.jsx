@@ -141,6 +141,19 @@ const PelaporanPrestasi = ({ prestasi }) => {
             },
             filterFn: "checkbox",
         },
+        {
+            id: "catatan",
+            header: "Catatan",
+            cell: ({ row }) => {
+                const catatan = row.original.catatan;
+                return (
+                    <div className="text-sm text-slate-600">
+                        {catatan ? catatan : "Tidak ada catatan"}
+                    </div>
+                );
+            },
+
+        }
     ];
     const CapaianPrestasi = [
         "Juara 1",

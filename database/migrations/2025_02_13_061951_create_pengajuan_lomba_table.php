@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->date('tanggal_selesai');
             $table->string('jenis_kepesertaan');
             $table->string('status');
+            $table->string('catatan')->nullable();
             $table->integer('jumlah_peserta');
             $table->json('anggota_kelompok')->nullable();
             $table->string('surat_tugas');

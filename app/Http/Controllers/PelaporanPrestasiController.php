@@ -74,7 +74,6 @@ class PelaporanPrestasiController extends Controller
             'sertifikat' => 'nullable|file|mimes:pdf|max:2048',
             'dokumentasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'url_media_sosial' => 'nullable|url',
-            'surat_tugas' => 'nullable|file|mimes:pdf|max:2048',
         ]);
 
         // Upload Sertifikat jika ada
@@ -88,7 +87,6 @@ class PelaporanPrestasiController extends Controller
                 $dokumentasiPaths[] = $path;
             }
         }
-        $suratTugasPath = $request->file('surat_tugas') ? $request->file('surat_tugas')->store('surat_tugas/prestasi', 'public') : null;
         Prestasi::create([
             'prestasi_id' => Str::uuid(), // UUID
             'pengajuanlomba_id' => $request->pengajuanlomba_id,
@@ -97,7 +95,6 @@ class PelaporanPrestasiController extends Controller
             'sertifikat' => $sertifikatPath,
             'dokumentasi' => json_encode($dokumentasiPaths),
             'url_media_sosial' => $request->url_media_sosial,
-            'surat_tugas' => $suratTugasPath,
             'status' => 'Diajukan', // Default status
         ]);
 
@@ -128,10 +125,13 @@ class PelaporanPrestasiController extends Controller
     {
         $request->validate([
             'status' => 'required|in:Diterima,Ditolak',
+            'catatan' => 'nullable|string',
         ]);
 
         $pelaporanPrestasi = Prestasi::findOrFail($id);
         $pelaporanPrestasi->update(['status' => $request->status]);
+        $pelaporanPrestasi->catatan = $request->catatan;
+        $pelaporanPrestasi->save();
 
         return back()->with('success', 'Status berhasil diperbarui.');
     }

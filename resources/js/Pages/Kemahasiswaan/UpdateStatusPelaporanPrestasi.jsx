@@ -1,8 +1,10 @@
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
 import { customFilterFns } from "@/Components/data-table/utils";
+import Modal from "@/Components/Modal";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
+import { X } from "lucide-react";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -16,28 +18,63 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
     );
 
     const updateStatus = (id, status) => {
-        router.put(
-            `/pelaporan-prestasi/${id}/update-status`,
-            { status },
-            {
-                onSuccess: () => {
-                    setReviewed((prev) => ({ ...prev, [id]: true })); // Tandai sebagai sudah direview
-                    Swal.fire(
-                        "Berhasil!",
-                        "Status pengajuan berhasil diubah.",
-                        "success"
-                    );
-                },
-                onError: () => {
-                    Swal.fire(
-                        "Gagal!",
-                        "Terjadi kesalahan, coba lagi nanti.",
-                        "error"
-                    );
-                },
-            }
-        );
+        if (status === "Diterima") {
+            router.put(
+                `/pelaporan-prestasi/${id}/update-status`,
+                { status,
+                    catatan: "Laporan Diterima"
+                 },
+                {
+                    onSuccess: () => {
+                        setReviewed((prev) => ({ ...prev, [id]: true })); // Tandai sebagai sudah direview
+                        Swal.fire(
+                            "Berhasil!",
+                            "Status pengajuan berhasil diubah.",
+                            "success"
+                        );
+                        setReviewed((prev) => ({ ...prev, [id]: true }));
+                    },
+                    
+                }
+            );
+
+        } else if (status === "Ditolak") {
+            setSelectedId(id); // simpan id untuk dipakai saat submit catatan
+            setSelectedStatus(status); // bisa diabaikan kalau tidak perlu
+            setShowModal(true); // tampilkan modal catatan
+        }
     };
+
+    const [showCatatanModal, setShowCatatanModal] = useState(false);
+    const [catatan, setCatatan] = useState("");
+    const [selectedId, setSelectedId] = useState(null);
+
+    const handleTolakClick = (id) => {
+        setSelectedId(id);
+        setShowCatatanModal(true);
+    };
+
+    const kirimPenolakan = () => {
+            router.put(
+                `/pelaporan-prestasi/${selectedId}/update-status`,
+                {
+                    status: "Ditolak",
+                    catatan: catatan,
+                },
+                {
+                    onSuccess: () => {
+                        Swal.fire(
+                            "Ditolak!",
+                            "Pengajuan ditolak dengan catatan.",
+                            "success"
+                        );
+                        setShowCatatanModal(false);
+                        setCatatan("");
+                        setReviewed((prev) => ({ ...prev, [selectedId]: true }));
+                    },
+                }
+            );
+        };
 
     const columns = [
         {
@@ -203,7 +240,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                             </svg>
                         </button>
                         <button
-                            onClick={() => updateStatus(id, "Ditolak")}
+                            onClick={() => handleTolakClick(id)}
                             className="bg-red-500 text-white px-1 rounded size-5"
                         >
                             <svg
@@ -270,6 +307,45 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                     </DataTableControls>
                 )}
             </DataTable>
+            {showCatatanModal && (
+                <Modal
+                    show={showCatatanModal}
+                    onClose={() => setShowCatatanModal(false)}
+                >
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-semibold mb-2">
+                                Catatan Penolakan
+                            </h2>
+                            <X
+                                className="cursor-pointer text-gray-500"
+                                onClick={() => setShowCatatanModal(false)}
+                            />
+                        </div>
+                        <textarea
+                            value={catatan}
+                            onChange={(e) => setCatatan(e.target.value)}
+                            className="w-full border p-2 mb-4"
+                            rows={4}
+                            placeholder="Tulis alasan penolakan..."
+                        ></textarea>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                className="bg-gray-400 text-white px-3 py-1 rounded"
+                                onClick={() => setShowCatatanModal(false)}
+                            >
+                                Batal
+                            </button>
+                            <button
+                                className="bg-red-500 text-white px-3 py-1 rounded"
+                                onClick={kirimPenolakan}
+                            >
+                                Tolak
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </AuthenticatedLayout>
     );
 };
