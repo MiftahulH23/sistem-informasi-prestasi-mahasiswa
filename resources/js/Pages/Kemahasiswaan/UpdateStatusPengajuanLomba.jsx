@@ -1,6 +1,8 @@
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
 import { customFilterFns } from "@/Components/data-table/utils";
+import { SquarePen, Trash2, X } from "lucide-react";
+import Modal from "@/Components/Modal";
 import {
     Tooltip,
     TooltipContent,
@@ -23,22 +25,30 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
 
     const updateStatus = (id, status) => {
         if (status === "Diterima") {
-            router.put(`/pengajuan-lomba/${id}/update-status`, {
-                status: status,
-                catatan: "Silahkan Mengikuti Lomba",
-            }, {
-                onSuccess: () => {
-                    Swal.fire("Berhasil!", "Status pengajuan berhasil diubah.", "success");
-                    setReviewed((prev) => ({ ...prev, [id]: true }));
+            router.put(
+                `/pengajuan-lomba/${id}/update-status`,
+                {
+                    status: status,
+                    catatan: "Silahkan Mengikuti Lomba",
                 },
-            });
+                {
+                    onSuccess: () => {
+                        Swal.fire(
+                            "Berhasil!",
+                            "Status pengajuan berhasil diubah.",
+                            "success"
+                        );
+                        setReviewed((prev) => ({ ...prev, [id]: true }));
+                    },
+                }
+            );
         } else if (status === "Ditolak") {
             setSelectedId(id); // simpan id untuk dipakai saat submit catatan
             setSelectedStatus(status); // bisa diabaikan kalau tidak perlu
             setShowModal(true); // tampilkan modal catatan
         }
     };
-    
+
     const DetailPengajuanLomba = (id) => {
         router.get(`/update-pengajuan-lomba/show/${id}`);
     };
@@ -318,11 +328,20 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 }}
             </DataTable>
             {showCatatanModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-4 rounded shadow w-96">
-                        <h2 className="text-lg font-semibold mb-2">
-                            Catatan Penolakan
-                        </h2>
+                <Modal
+                    show={showCatatanModal}
+                    onClose={() => setShowCatatanModal(false)}
+                >
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-semibold mb-2">
+                                Catatan Penolakan
+                            </h2>
+                            <X
+                                className="cursor-pointer text-gray-500"
+                                onClick={() => setShowCatatanModal(false)}
+                            />
+                        </div>
                         <textarea
                             value={catatan}
                             onChange={(e) => setCatatan(e.target.value)}
@@ -345,7 +364,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </Modal>
             )}
         </AuthenticatedLayout>
     );

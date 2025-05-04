@@ -1,13 +1,13 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router, useForm, usePage } from "@inertiajs/react";
-import React, { useState } from "react";
-import { Label } from "@/Components/ui/label";
-import { Input } from "@/Components/ui/input";
-import Swal from "sweetalert2";
-import { Trash2, SquarePen, X, Plus } from "lucide-react";
 import Modal from "@/Components/Modal";
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { SquarePen, Trash2, X } from "lucide-react";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 const JudulLomba = () => {
     const { kategoriLomba, judulLomba } = usePage().props;
