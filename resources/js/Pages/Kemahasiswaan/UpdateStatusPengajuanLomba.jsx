@@ -96,14 +96,13 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             header: "Judul Lomba",
         },
         {
+            id: "user_id",
+            accessorKey: "user.name",
+            header: "Ketua Tim",
+        },
+        {
             id: "kategorilomba_id",
-            accessorFn: (row) => {
-                return row.kategori.kategori_lomba;
-            },
-            cell: ({ row }) => {
-                const kategori = row.original.kategori.kategori_lomba;
-                return row.getValue("kategorilomba_id");
-            },
+            accessorKey: "kategori.kategori_lomba",
             header: "Kategori Lomba",
             filterFn: "checkbox",
         },

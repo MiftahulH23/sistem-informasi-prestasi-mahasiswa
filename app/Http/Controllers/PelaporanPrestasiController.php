@@ -117,8 +117,8 @@ class PelaporanPrestasiController extends Controller
      */
     public function editStatus()
     {
-        $prestasi = Prestasi::with('pengajuanLomba')->get();
-        // dd($pelaporanPrestasi->toArray());
+        $prestasi = Prestasi::with('pengajuanLomba.user')->get();
+        // dd($prestasi->toArray());
         return Inertia::render('Kemahasiswaan/UpdateStatusPelaporanPrestasi', [
             'prestasi' => $prestasi,
         ]);

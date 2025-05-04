@@ -31,7 +31,7 @@ class PengajuanLombaController extends Controller
     }
     public function editStatus()
     {
-        $pengajuanLomba = PengajuanLomba::with('kategori') // Ambil data kategori juga
+        $pengajuanLomba = PengajuanLomba::with(['kategori', 'user']) // Ambil data kategori juga
             ->get();
         $kategoriLomba = KategoriLomba::all();
         // dd($pengajuanLomba->toArray());

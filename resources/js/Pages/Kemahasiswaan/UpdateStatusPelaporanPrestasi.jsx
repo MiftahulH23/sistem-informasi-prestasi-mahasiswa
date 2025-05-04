@@ -46,6 +46,10 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
             cell: (info) => info.row.index + 1,
         },
         {
+            accessorKey: "pengajuan_lomba.user.name",
+            header: "Ketua Tim",
+        },
+        {
             accessorKey: "pengajuan_lomba.judul_lomba",
             header: "Judul Lomba",
         },
