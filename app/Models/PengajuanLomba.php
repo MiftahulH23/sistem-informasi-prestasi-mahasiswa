@@ -29,6 +29,7 @@ class PengajuanLomba extends Model
         'tanggal_selesai',
         'jenis_kepesertaan',
         'jumlah_peserta',
+        'catatan',
         'anggota_kelompok',
         'surat_tugas',
         'status',

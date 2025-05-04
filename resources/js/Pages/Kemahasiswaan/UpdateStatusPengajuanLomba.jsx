@@ -22,12 +22,55 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     );
 
     const updateStatus = (id, status) => {
-        router.put(`/pengajuan-lomba/${id}/update-status`, { status });
-        Swal.fire("Berhasil!", "Status pengajuan berhasil diubah.", "success");
-        setReviewed((prev) => ({ ...prev, [id]: true }));
+        if (status === "Diterima") {
+            router.put(`/pengajuan-lomba/${id}/update-status`, {
+                status: status,
+                catatan: "Silahkan Mengikuti Lomba",
+            }, {
+                onSuccess: () => {
+                    Swal.fire("Berhasil!", "Status pengajuan berhasil diubah.", "success");
+                    setReviewed((prev) => ({ ...prev, [id]: true }));
+                },
+            });
+        } else if (status === "Ditolak") {
+            setSelectedId(id); // simpan id untuk dipakai saat submit catatan
+            setSelectedStatus(status); // bisa diabaikan kalau tidak perlu
+            setShowModal(true); // tampilkan modal catatan
+        }
     };
+    
     const DetailPengajuanLomba = (id) => {
         router.get(`/update-pengajuan-lomba/show/${id}`);
+    };
+    const [showCatatanModal, setShowCatatanModal] = useState(false);
+    const [catatan, setCatatan] = useState("");
+    const [selectedId, setSelectedId] = useState(null);
+
+    const handleTolakClick = (id) => {
+        setSelectedId(id);
+        setShowCatatanModal(true);
+    };
+
+    const kirimPenolakan = () => {
+        router.put(
+            `/pengajuan-lomba/${selectedId}/update-status`,
+            {
+                status: "Ditolak",
+                catatan: catatan,
+            },
+            {
+                onSuccess: () => {
+                    Swal.fire(
+                        "Ditolak!",
+                        "Pengajuan ditolak dengan catatan.",
+                        "success"
+                    );
+                    setShowCatatanModal(false);
+                    setCatatan("");
+                    setReviewed((prev) => ({ ...prev, [selectedId]: true }));
+                },
+            }
+        );
     };
 
     const columns = [
@@ -194,7 +237,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                             </svg>
                         </button>
                         <button
-                            onClick={() => updateStatus(id, "Ditolak")}
+                            onClick={() => handleTolakClick(id)}
                             className="bg-red-500 text-white px-1 rounded size-5"
                         >
                             <svg
@@ -274,6 +317,36 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                     );
                 }}
             </DataTable>
+            {showCatatanModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-4 rounded shadow w-96">
+                        <h2 className="text-lg font-semibold mb-2">
+                            Catatan Penolakan
+                        </h2>
+                        <textarea
+                            value={catatan}
+                            onChange={(e) => setCatatan(e.target.value)}
+                            className="w-full border p-2 mb-4"
+                            rows={4}
+                            placeholder="Tulis alasan penolakan..."
+                        ></textarea>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                className="bg-gray-400 text-white px-3 py-1 rounded"
+                                onClick={() => setShowCatatanModal(false)}
+                            >
+                                Batal
+                            </button>
+                            <button
+                                className="bg-red-500 text-white px-3 py-1 rounded"
+                                onClick={kirimPenolakan}
+                            >
+                                Tolak
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 };

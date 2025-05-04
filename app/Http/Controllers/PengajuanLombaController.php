@@ -46,13 +46,17 @@ class PengajuanLombaController extends Controller
     {
         $request->validate([
             'status' => 'required|in:Diterima,Ditolak',
+            'catatan' => 'nullable|string',
         ]);
 
-        $pengajuanLomba = PengajuanLomba::findOrFail($id);
-        $pengajuanLomba->update(['status' => $request->status]);
+        $pengajuan = PengajuanLomba::findOrFail($id);
+        $pengajuan->status = $request->status;
+        $pengajuan->catatan = $request->catatan; // simpan catatan juga
+        $pengajuan->save();
 
-        return back()->with('success', 'Status berhasil diperbarui.');
+        return back()->with('success', 'Status pengajuan berhasil diperbarui.');
     }
+
 
 
     public function create()

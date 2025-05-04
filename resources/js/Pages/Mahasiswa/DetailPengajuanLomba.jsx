@@ -74,20 +74,23 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                     <div>
                         <strong>Status:</strong> {pengajuanLomba.status}
                     </div>
-                </div>
-                <div className="mt-4">
-                    <strong>Surat Tugas:</strong>{" "}
-                    {pengajuanLomba.surat_tugas ? (
-                        <a
-                            href={`/storage/${pengajuanLomba.surat_tugas}`}
-                            target="_blank"
-                            className="text-blue-500 hover:underline"
-                        >
-                            Lihat Surat Tugas
-                        </a>
-                    ) : (
-                        "Tidak ada file"
-                    )}
+                    <div className="">
+                        <strong>Surat Tugas:</strong>{" "}
+                        {pengajuanLomba.surat_tugas ? (
+                            <a
+                                href={`/storage/${pengajuanLomba.surat_tugas}`}
+                                target="_blank"
+                                className="text-blue-500 hover:underline"
+                            >
+                                Lihat Surat Tugas
+                            </a>
+                        ) : (
+                            "Tidak ada file"
+                        )}
+                    </div>
+                    <div>
+                        <strong>Catatan:</strong> {pengajuanLomba.catatan}
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>
