@@ -26,13 +26,5 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
         Vite::prefetch(concurrency: 3);
-
-        if (app()->environment('production')) {
-            // Cek dan buat symbolic link jika belum ada
-            $publicStorage = public_path('storage');
-            if (!is_link($publicStorage)) {
-                Artisan::call('storage:link');
-            }
-        }
     }
 }
