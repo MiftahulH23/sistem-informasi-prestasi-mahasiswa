@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->string('surat_tugas');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('kategorilomba_id')->references('kategorilomba_id')->on('kategori_lomba')->onDelete('cascade');
+            $table->foreign('kategorilomba_id')->references('kategorilomba_id')->on('kategori_lomba');
         });
     }
 

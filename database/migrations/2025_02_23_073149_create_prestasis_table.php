@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->timestamps();
 
             // Set Foreign Key ke pengajuan_lomba (harus pakai UUID)
-            $table->foreign('pengajuanlomba_id')->references('pengajuanlomba_id')->on('pengajuan_lomba')->onDelete('cascade');
+            $table->foreign('pengajuanlomba_id')->references('pengajuanlomba_id')->on('pengajuan_lomba');
         });
     }
 
