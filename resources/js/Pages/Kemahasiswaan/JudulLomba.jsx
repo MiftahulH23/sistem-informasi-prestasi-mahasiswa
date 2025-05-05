@@ -136,9 +136,15 @@ const JudulLomba = () => {
             ),
         },
     ];
+    const breadcrumb = [
+        {
+            title: "Judul Lomba",
+            href : "/judul-lomba",
+        }
+    ]
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Judul Lomba" />
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">Judul Lomba</h1>

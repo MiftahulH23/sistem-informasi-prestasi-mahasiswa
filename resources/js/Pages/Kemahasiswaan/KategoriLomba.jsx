@@ -125,9 +125,14 @@ const KategoriLomba = ({ kategoriLomba }) => {
             ),
         },
     ];
-
+    const breadcrumb = [
+        {
+            title: "Kategori Lomba",
+            href : "/kategori-lomba",
+        }
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Kategori Lomba" />
             <h1 className="text-xl font-bold mb-4">Kategori Lomba</h1>
 

@@ -2,8 +2,18 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 
 const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
+    const breadcrumb = [
+        {
+            title: "Pengajuan Lomba",
+            href: "/pengajuan-lomba",
+        },
+        {
+            title: "Detail",
+            href: "/pengajuan-lomba/show/{id}",
+        }
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Detail Pengajuan Lomba" />
             <h1 className="text-2xl font-bold mb-4">Detail Pengajuan Lomba</h1>
             <div className="p-6 w-full bg-white rounded-lg shadow-md">
@@ -60,7 +70,7 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                                           className="text-blue-500 hover:underline"
                                           onClick={() =>
                                               router.get(
-                                                  `/update-pengajuan-lomba/portofolio/${anggota.id}`
+                                                  `/pengajuan-lomba/update/portofolio/${anggota.id}`
                                               )
                                           }
                                       >

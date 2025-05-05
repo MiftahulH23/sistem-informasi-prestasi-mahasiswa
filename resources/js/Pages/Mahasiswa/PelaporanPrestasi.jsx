@@ -165,8 +165,14 @@ const PelaporanPrestasi = ({ prestasi }) => {
         "Peserta",
     ];
     const Status = ["Diajukan", "Diterima", "Ditolak"];
+    const breadcrumb = [
+        {
+            title: "Pelaporan Prestasi",
+            href: "/pelaporan-prestasi",
+        }
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Pelaporan Prestasi" />
             <h1>Pelaporan Prestasi</h1>
             <DataTable columns={columns} data={prestasi} className="">

@@ -25,7 +25,7 @@ export function NavProjects({
     (<SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarMenu>
         {projects.map((item) => {
-          const currentPath = window.location.pathname; 
+          const currentPath = window.location.pathname;
           const active = currentPath.startsWith(item.url);
 
           return (

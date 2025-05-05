@@ -9,3 +9,8 @@ export function camelToKebab(str) {
     ? str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
     : "";
 }
+
+export function getPathname() {
+  const pathname = window.location.pathname;
+  return pathname;
+}

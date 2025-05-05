@@ -61,9 +61,19 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
             }
         });
     };
+    const breadcrumb = [
+        {
+            title: "Pelaporan Prestasi",
+            href: "/pelaporan-prestasi",
+        },
+        {
+            title: "Tambah",
+            href: "/pelaporan-prestasi/create",
+        }
+    ]
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Tambah Laporan Prestasi" />
             <h1>Laporan Prestasi</h1>
             <form onSubmit={handleSubmit}>

@@ -50,7 +50,7 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     };
 
     const DetailPengajuanLomba = (id) => {
-        router.get(`/update-pengajuan-lomba/show/${id}`);
+        router.get(`/pengajuan-lomba/update/show/${id}`);
     };
     const [showCatatanModal, setShowCatatanModal] = useState(false);
     const [catatan, setCatatan] = useState("");
@@ -279,10 +279,16 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
         "Lokal-Wilayah",
     ];
     const jenisLomba = ["Akademik", "Non-Akademik"];
+    const breadcrumb = [
+        {
+            title: "Pengajuan Lomba",
+            href: "/pengajuan-lomba/update",
+        }
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Pengajuan Lomba" />
-            <h1>Update Pengajuan Lomba</h1>
+            <h1>Pengajuan Lomba</h1>
             <DataTable columns={columns} data={pengajuanLomba}>
                 {({ table }) => {
                     console.log("table", table);

@@ -5,7 +5,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 
-const DataBimbingan = ({ bimbingan, judul_lomba  }) => {
+const DataBimbingan = ({ bimbingan, judul_lomba }) => {
     const { props } = usePage();
     const id = props.id;
     const columns = [
@@ -53,8 +53,18 @@ const DataBimbingan = ({ bimbingan, judul_lomba  }) => {
         },
     ];
     const Status = ["Diajukan", "Diterima", "Ditolak"];
+    const breadcrumb = [
+        {
+            title: "Bimbingan",
+            href: "/bimbingan",
+        },
+        {
+            title: "Detail",
+            href: `/bimbingan/${id}`,
+        }
+    ];
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Bimbingan" />
             <h1>Data Bimbingan - {judul_lomba}</h1>
             <DataTable columns={columns} data={bimbingan}>

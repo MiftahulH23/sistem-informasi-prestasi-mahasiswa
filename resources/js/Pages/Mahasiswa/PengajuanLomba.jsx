@@ -161,8 +161,14 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
         "Lokal-Wilayah",
     ];
     const jenisLomba = ["Akademik", "Non-Akademik"];
+    const breadcrumb = [
+        {
+            title : "Pengajuan Lomba",
+            href : "/pengajuan-lomba",
+        },
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Pengajuan Lomba" />
             <h1>Data Pengajuan Lomba</h1>
             <DataTable columns={columns} data={pengajuanLomba}>

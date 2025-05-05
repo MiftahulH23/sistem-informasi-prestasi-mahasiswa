@@ -28,31 +28,14 @@ const Bimbingan = ({ pengajuanLomba }) => {
             id: "ketua_tim",
             accessorKey: "nama_ketua_tim",
             header: "Ketua Tim",
-        },
-        {
-            accessorKey: "Detail",
-            header: "Detail",
-            cell: ({ row }) => {
-                const id = row.original.pengajuanlomba_id;
-                return (
-                    <div className="flex gap-2 items-center justify-center">
-                        <button
-                            onClick={() => DetailPengajuanLomba(id)}
-                            className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition"
-                        >
-                            Detail
-                        </button>
-                    </div>
-                );
-            },
-        },
+        },  
         {
             id: "bimbingan",
             header: "Bimbingan",
             cell: ({ row }) => {
                 const id = row.original.pengajuanlomba_id;
                 return (
-                    <div className="flex gap-2 items-center justify-center">
+                    <div className="flex gap-2 items-center">
                         <button
                             onClick={() => router.get(`/bimbingan-dosen/${id}`)}
                             className="bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 transition"
@@ -64,8 +47,14 @@ const Bimbingan = ({ pengajuanLomba }) => {
             },
         },
     ];
+    const breadcrumb = [
+        {
+            title: "Bimbingan",
+            href: "/bimbingan-dosen",
+        }
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Bimbingan" />
             <h1 className="text-2xl font-bold mb-4">Bimbingan</h1>
             <DataTable columns={columns} data={pengajuanLomba}>

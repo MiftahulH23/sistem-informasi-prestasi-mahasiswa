@@ -4,6 +4,7 @@ import React from "react";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import Swal from "sweetalert2";
+import { getPathname } from "@/lib/utils";
 
 const TambahBimbingan = ({ pengajuanlomba_id }) => {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -42,9 +43,24 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
             },
         });
     };
-
+    const pathname = getPathname();
+    const id  = pathname.split("/")[2]
+    const breadcrumb = [
+        {
+            title: "Bimbingan",
+            href: "/bimbingan",
+        },
+        {
+            title: "Detail",
+            href: `/bimbingan/${id}`,
+        },
+        {
+            title: "Tambah",
+            href: `/bimbingan/${id}/create`,
+        },
+    ];
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Tambah Bimbingan" />
             <h1>Tambah Bimbingan</h1>
             <form onSubmit={handleSubmit} className="space-y-4">

@@ -150,8 +150,18 @@ const PengajuanLomba = ({ auth, dosenList }) => {
             },
         });
     };
+    const breadcrumb = [
+        {
+            title : "Pengajuan Lomba",
+            href : "/pengajuan-lomba",
+        },
+        {
+            title : "Tambah",
+            href : "/pengajuan-lomba/create",
+        }
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <div className="flex flex-col gap-7">
                 <Head title="Pengajuan Lomba" />
                 <h1 className="text-2xl font-bold">Pengajuan Lomba</h1>

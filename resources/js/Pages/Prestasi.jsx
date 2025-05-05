@@ -114,8 +114,14 @@ const Prestasi = ({ prestasi }) => {
         "Harapan 3",
         "Peserta",
     ];
+    const breadcrumb = [
+        {
+            title: "Prestasi",
+            href: "/prestasi",
+        },
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Prestasi" />
             <h1>Prestasi Mahasiswa</h1>
             <DataTable columns={columns} data={prestasi}>

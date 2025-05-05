@@ -5,7 +5,7 @@ const PortofolioLomba = () => {
     const { nama, pengajuans, prestasi = [] } = usePage().props; // Berikan default array kosong
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={[]}>
             <Head title={`Portofolio ${nama}`} />
             <h1 className="text-2xl font-bold mb-4">
                 Portofolio Lomba: {nama}

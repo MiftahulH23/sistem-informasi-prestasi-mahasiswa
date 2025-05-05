@@ -3,6 +3,7 @@ import { NavProjects } from "@/Components/nav-projects";
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
@@ -70,13 +71,13 @@ const menuKemahasiswaan = [
         icon: LayoutList,
     },
     {
-        name: "Udpate Pengajuan Lomba",
-        url: "/update-pengajuan-lomba",
+        name: "Pengajuan Lomba",
+        url: "/pengajuan-lomba/update",
         icon: Medal,
     },
     {
-        name: "Update Pelaporan Prestasi",
-        url: "/update-pelaporan-prestasi",
+        name: "Pelaporan Prestasi",
+        url: "/pelaporan-prestasi/update",
         icon: FileBadge,
     },
 ];
@@ -140,7 +141,7 @@ export function AppSidebar({ ...props }) {
                                         Sistem Informasi Prestasi
                                     </span>
                                     <span className="truncate text-xs">
-                                        Kemahaiswaan PCR
+                                        Kemahasiswaan PCR
                                     </span>
                                 </div>
                             </a>
@@ -152,6 +153,9 @@ export function AppSidebar({ ...props }) {
                 {/* <NavMain items={data.navMain} /> */}
                 <NavProjects projects={menu[role]} />
             </SidebarContent>
+            <SidebarFooter>
+                <p className="text-xs text-zinc-400">&copy; {new Date().getFullYear()} PCR</p>
+            </SidebarFooter>
         </Sidebar>
     );
 }

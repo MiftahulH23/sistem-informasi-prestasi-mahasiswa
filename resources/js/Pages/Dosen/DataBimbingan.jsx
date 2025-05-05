@@ -135,8 +135,18 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
         },
     ];
     const Status = ["Diajukan", "Diterima", "Ditolak"];
+    const breadcrumb = [
+        {
+            title: "Bimbingan",
+            href: "/bimbingan-dosen",
+        },
+        {
+            title: "Detail",
+            href: `/bimbingan-dosen/${id}`,
+        }
+    ]
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Bimbingan" />
             <h1>Data Bimbingan - {judul_lomba}</h1>
             <DataTable columns={columns} data={bimbingan}>
@@ -153,14 +163,7 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
                                     },
                                 ]}
                             />
-                            <button
-                                onClick={() =>
-                                    router.get(`/bimbingan/${id}/create`)
-                                }
-                                className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
-                            >
-                                Tambah
-                            </button>
+                           
                         </DataTableControls>
                     );
                 }}
