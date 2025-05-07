@@ -325,20 +325,41 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 <option value="" disabled selected>
                                     Pilih Program Studi
                                 </option>
-                                <option value="Teknik Informatika">
-                                    Teknik Informatika
-                                </option>
-                                <option value="Sistem Informasi">
-                                    Sistem Informasi
-                                </option>
-                                <option value="Teknik Elektronika">
-                                    Teknik Elektronika
+                                <option value="Teknik Elektronika Telekomunikasi">
+                                    Teknik Elektronika Telekomunikasi
                                 </option>
                                 <option value="Teknik Listrik">
                                     Teknik Listrik
                                 </option>
                                 <option value="Teknik Mesin">
                                     Teknik Mesin
+                                </option>
+                                <option value="Teknologi Rekayasa Jaringan Telekomunikasi">
+                                    Teknologi Rekayasa Jaringan Telekomunikasi
+                                </option>
+                                <option value="Teknologi Rekayasa Sistem Elektronika">
+                                    Teknologi Rekayasa Sistem Elektronika 
+                                </option>
+                                <option value="Teknologi Rekayasa Mekatronika">
+                                    Teknologi Rekayasa Mekatronika 
+                                </option>
+                                <option value="Teknik Informatika">
+                                    Teknik Informatika 
+                                </option>
+                                <option value="Sistem Informasi">
+                                    Sistem Informasi 
+                                </option>
+                                <option value="Teknologi Rekayasa Komputer">
+                                    Teknologi Rekayasa Komputer 
+                                </option>
+                                <option value="Akuntansi Perpajakan">
+                                    Akuntansi Perpajakan 
+                                </option>
+                                <option value="Hubungan Masyarakat dan Komunikasi Digital">
+                                    Hubungan Masyarakat dan Komunikasi Digital 
+                                </option>
+                                <option value="Bisnis Digital">
+                                    Bisnis Digital 
                                 </option>
                             </select>
                         </div>
@@ -356,7 +377,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     setData("dosen_pembimbing", e.target.value)
                                 }
                             >
-                                <option value="">Pilih Dosen</option>
+                                <option value="" disabled selected>Pilih Dosen</option>
                                 {dosenList.map((dosen) => (
                                     <option key={dosen.id} value={dosen.id}>
                                         {dosen.name}

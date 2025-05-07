@@ -42,6 +42,8 @@ export function BarChartComponent({ chartData }) {
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
+                            width={70}
+                            
                         />
                         <ChartTooltip
                             cursor={false}

@@ -56,14 +56,18 @@ class DashboardController extends Controller
         $oneYearAgo = Carbon::now()->subYear();
 
         $programSingkatan = [
-            'Sistem Informasi' => 'SI',
-            'Teknik Informatika' => 'TI',
-            'Teknologi Rekayasa Mekatronika' => 'TRM',
-            'Teknik Mesin' => 'TM',
+            'Teknik Elektronika Telekomunikasi' => 'TET',
             'Teknik Listrik' => 'TL',
-            'Teknik Rekayasa Komputer' => 'TRK',
-            'Akuntansi' => 'AK',
-            'Teknik Elektronika' => 'TE',
+            'Teknik Mesin' => 'TMS',
+            'Teknologi Rekayasa Jaringan Telekomunikasi' => 'TRJT',
+            'Teknologi Rekayasa Sistem Elektronika' => 'TRSE',
+            'Teknologi Rekayasa Mekatronika' => 'TRM',
+            'Teknik Informatika' => 'TI',
+            'Sistem Informasi' => 'SI',
+            'Teknologi Rekayasa Komputer' => 'TRK',
+            'Akuntansi Perpajakan' => 'AktP',
+            'Hubungan Masyarakat dan Komunikasi Digital' => 'HMKD',
+            'Bisnis Digital' => 'BD',
         ];
 
         // Ambil data prestasi sesuai filter
