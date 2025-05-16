@@ -25,7 +25,7 @@ export default function AuthenticatedLayout({ children, breadcrumbs }) {
                     </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4 pt-0 bg-background">
-                    <TooltipProvider>{children}</TooltipProvider>
+                    <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
                 </div>
                 
             </SidebarInset>

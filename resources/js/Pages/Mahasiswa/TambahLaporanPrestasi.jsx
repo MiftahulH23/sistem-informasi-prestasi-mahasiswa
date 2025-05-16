@@ -1,7 +1,13 @@
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/Components/ui/tooltip";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
+import { CircleHelp } from "lucide-react";
 import React, { useRef } from "react";
 import Swal from "sweetalert2";
 
@@ -113,9 +119,25 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
 
                     {/* Capaian Prestasi */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="capaian_prestasi" data-required>
-                            Capaian Prestasi
-                        </Label>
+                        <div className="flex items-center gap-1">
+                            <Label htmlFor="capaian_prestasi" data-required>
+                                Capaian Prestasi
+                            </Label>
+                            <Tooltip>
+                                <TooltipTrigger type="button">
+                                    <CircleHelp
+                                        size={14}
+                                        aria-hidden="true"
+                                        className="text-muted-foreground"
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
+                                    Pilih "Penghargaan Apresiatif" jika menerima
+                                    penghargaan tanpa peringkat juara. Contoh
+                                    "Best Speaker" atau "Best Peserta"
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
                         <select
                             id="capaian_prestasi"
                             name="capaian_prestasi"
@@ -134,6 +156,9 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                             <option value="Harapan 2">Harapan 2</option>
                             <option value="Harapan 3">Harapan 3</option>
                             <option value="Peserta">Peserta</option>
+                            <option value="Penghargaan Apresiatif">
+                                Penghargaan Apresiatif
+                            </option>
                         </select>
                         {errors.capaian_prestasi && (
                             <p className="text-red-500">
@@ -144,9 +169,23 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
 
                     {/* Sertifikat */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="sertifikat" data-required>
-                            Sertifikat
-                        </Label>
+                        <div className="flex items-center gap-1">
+                            <Label htmlFor="sertifikat" data-required>
+                                Sertifikat
+                            </Label>
+                            <Tooltip>
+                                <TooltipTrigger type="button">
+                                    <CircleHelp
+                                        size={14}
+                                        aria-hidden="true"
+                                        className="text-muted-foreground"
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
+                                    Unggah dalam format PDF, ukuran maksimal 5MB
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
                         <Input
                             id="sertifikat"
                             name="sertifikat"
@@ -162,9 +201,24 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
 
                     {/* URL Media Sosial */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="url_media_sosial" data-required>
-                            URL Media Sosial
-                        </Label>
+                        <div className="flex items-center gap-1">
+                            <Label htmlFor="url_media_sosial" data-required>
+                                URL Media Sosial
+                            </Label>
+                            <Tooltip>
+                                <TooltipTrigger type="button">
+                                    <CircleHelp
+                                        size={14}
+                                        aria-hidden="true"
+                                        className="text-muted-foreground"
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
+                                    Tautan unggahan lomba dari akun resmi
+                                    penyelenggara
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
                         <Input
                             id="url_media_sosial"
                             name="url_media_sosial"
@@ -183,9 +237,23 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
 
                     {/* Dokumentasi */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="dokumentasi" data-required>
-                            Dokumentasi
-                        </Label>
+                        <div className="flex items-center gap-1">
+                            <Label htmlFor="dokumentasi" data-required>
+                                Dokumentasi
+                            </Label>
+                            <Tooltip>
+                                <TooltipTrigger type="button">
+                                    <CircleHelp
+                                        size={14}
+                                        aria-hidden="true"
+                                        className="text-muted-foreground"
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
+                                Unggah gambar (maks. 5MB per file), dapat lebih dari satu, maksimal 3 file
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
                         <Input
                             id="dokumentasi"
                             name="dokumentasi"
