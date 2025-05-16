@@ -71,8 +71,8 @@ class PelaporanPrestasiController extends Controller
         $validated=$request->validate([
             'pengajuanlomba_id' => 'required|exists:pengajuan_lomba,pengajuanlomba_id',
             'capaian_prestasi' => 'required|string',
-            'sertifikat' => 'nullable|file|mimes:pdf|max:2048',
-            'dokumentasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sertifikat' => 'required|file|mimes:pdf|max:5120',
+            'dokumentasi.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
             'url_media_sosial' => 'nullable|url',
         ], [
             'pengajuanlomba_id.required' => 'Pengajuan lomba harus dipilih.',
@@ -83,11 +83,11 @@ class PelaporanPrestasiController extends Controller
 
             'sertifikat.file' => 'Sertifikat harus berupa file.',
             'sertifikat.mimes' => 'Sertifikat harus berupa file PDF.',
-            'sertifikat.max' => 'Ukuran sertifikat tidak boleh lebih dari 2MB.',
+            'sertifikat.max' => 'Ukuran sertifikat tidak boleh lebih dari 5MB.',
 
             'dokumentasi.*.image' => 'Setiap dokumentasi harus berupa gambar.',
             'dokumentasi.*.mimes' => 'Format gambar dokumentasi harus jpeg, png, jpg, atau gif.',
-            'dokumentasi.*.max' => 'Ukuran masing-masing dokumentasi tidak boleh lebih dari 2MB.',
+            'dokumentasi.*.max' => 'Ukuran masing-masing dokumentasi tidak boleh lebih dari 5MB.',
 
             'url_media_sosial.url' => 'Link media sosial tidak valid.',
         ]);

@@ -4,8 +4,9 @@ import { customFilterFns } from "@/Components/data-table/utils";
 import Modal from "@/Components/Modal";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
-import { X } from "lucide-react";
+import { FileImage, Link, X } from "lucide-react";
 import { useState } from "react";
+import { FaRegFilePdf } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
 const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
@@ -21,9 +22,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
         if (status === "Diterima") {
             router.put(
                 `/pelaporan-prestasi/${id}/update-status`,
-                { status,
-                    catatan: "Laporan Diterima"
-                 },
+                { status, catatan: "Laporan Diterima" },
                 {
                     onSuccess: () => {
                         setReviewed((prev) => ({ ...prev, [id]: true })); // Tandai sebagai sudah direview
@@ -34,10 +33,8 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                         );
                         setReviewed((prev) => ({ ...prev, [id]: true }));
                     },
-                    
                 }
             );
-
         } else if (status === "Ditolak") {
             setSelectedId(id); // simpan id untuk dipakai saat submit catatan
             setSelectedStatus(status); // bisa diabaikan kalau tidak perlu
@@ -55,26 +52,26 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
     };
 
     const kirimPenolakan = () => {
-            router.put(
-                `/pelaporan-prestasi/${selectedId}/update-status`,
-                {
-                    status: "Ditolak",
-                    catatan: catatan,
+        router.put(
+            `/pelaporan-prestasi/${selectedId}/update-status`,
+            {
+                status: "Ditolak",
+                catatan: catatan,
+            },
+            {
+                onSuccess: () => {
+                    Swal.fire(
+                        "Ditolak!",
+                        "Pengajuan ditolak dengan catatan.",
+                        "success"
+                    );
+                    setShowCatatanModal(false);
+                    setCatatan("");
+                    setReviewed((prev) => ({ ...prev, [selectedId]: true }));
                 },
-                {
-                    onSuccess: () => {
-                        Swal.fire(
-                            "Ditolak!",
-                            "Pengajuan ditolak dengan catatan.",
-                            "success"
-                        );
-                        setShowCatatanModal(false);
-                        setCatatan("");
-                        setReviewed((prev) => ({ ...prev, [selectedId]: true }));
-                    },
-                }
-            );
-        };
+            }
+        );
+    };
 
     const columns = [
         {
@@ -108,7 +105,10 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
                     >
-                        Lihat Sertifikat
+                        <div className="inline-flex items-center gap-1 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                            <FaRegFilePdf className="w-4 h-4" />
+                            <span>Buka</span>
+                        </div>
                     </a>
                 ) : (
                     "Tidak ada file"
@@ -127,7 +127,10 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
                     >
-                        Kunjungi
+                        <div className="inline-flex items-center gap-1 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                            <Link size={14} />
+                            <span>Kunjungi</span>
+                        </div>
                     </a>
                 ) : (
                     "Tidak ada URL"
@@ -155,7 +158,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                 }
 
                 return (
-                    <div className="flex gap-2 justify-center">
+                    <div className="grid grid-cols-2 gap-2">
                         {dokumentasi.map((file, index) => (
                             <a
                                 key={index}
@@ -164,7 +167,10 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                                 rel="noopener noreferrer"
                                 className="text-blue-600 underline"
                             >
-                                Gambar {index + 1}
+                                <div className="inline-flex items-center gap-1 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                                    <FileImage size={14} />
+                                    <span>{index + 1}</span>{" "}
+                                </div>
                             </a>
                         ))}
                     </div>
@@ -183,13 +189,16 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
                     >
-                        Lihat Surat
+                        <div className="inline-flex items-center gap-1 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                            <FaRegFilePdf className="w-4 h-4" />
+                            <span>Buka</span>
+                        </div>
                     </a>
                 ) : (
                     "Tidak ada file"
                 );
             },
-        },        
+        },
         {
             accessorKey: "status",
             header: "Status",
@@ -302,14 +311,6 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                                 },
                             ]}
                         />
-                        <button
-                            onClick={() =>
-                                router.get("/pelaporan-prestasi/create")
-                            }
-                            className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
-                        >
-                            Tambah
-                        </button>
                     </DataTableControls>
                 )}
             </DataTable>

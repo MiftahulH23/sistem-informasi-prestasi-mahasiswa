@@ -1,8 +1,9 @@
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
-import { customFilterFns } from "@/Components/data-table/utils";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
+import { FileImage, Link } from "lucide-react";
+import { FaRegFilePdf } from "react-icons/fa6";
 const PelaporanPrestasi = ({ prestasi }) => {
     const columns = [
         {
@@ -38,7 +39,10 @@ const PelaporanPrestasi = ({ prestasi }) => {
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
                     >
-                        Lihat Sertifikat
+                        <div className="inline-flex items-center gap-1 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                            <FaRegFilePdf className="w-4 h-4" />
+                            <span>Buka</span>
+                        </div>
                     </a>
                 ) : (
                     "Tidak ada file"
@@ -57,7 +61,10 @@ const PelaporanPrestasi = ({ prestasi }) => {
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
                     >
-                        Kunjungi
+                        <div className="inline-flex items-center gap-1 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                            <Link size={14} />
+                            <span>Kunjungi</span>
+                        </div>
                     </a>
                 ) : (
                     "Tidak ada URL"
@@ -85,7 +92,7 @@ const PelaporanPrestasi = ({ prestasi }) => {
                 }
 
                 return (
-                    <div className="flex gap-2">
+                    <div className="gap-2 grid grid-cols-2">
                         {dokumentasi.map((file, index) => (
                             <a
                                 key={index}
@@ -94,7 +101,11 @@ const PelaporanPrestasi = ({ prestasi }) => {
                                 rel="noopener noreferrer"
                                 className="text-blue-600 underline"
                             >
-                                Gambar {index + 1}
+                                <div className="inline-flex items-center gap-1 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                                    <FileImage size={14} />
+                                    <span>{index + 1}</span>
+                                </div>
+                                
                             </a>
                         ))}
                     </div>
@@ -113,13 +124,16 @@ const PelaporanPrestasi = ({ prestasi }) => {
                         rel="noopener noreferrer"
                         className="text-blue-600 underline"
                     >
-                        Lihat Surat
+                        <div className="inline-flex items-center gap-1 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                            <FaRegFilePdf className="w-4 h-4" />
+                            <span>Buka</span>
+                        </div>
                     </a>
                 ) : (
                     "Tidak ada file"
                 );
             },
-        },     
+        },
         {
             accessorKey: "status",
             header: "Status",
@@ -152,8 +166,7 @@ const PelaporanPrestasi = ({ prestasi }) => {
                     </div>
                 );
             },
-
-        }
+        },
     ];
     const CapaianPrestasi = [
         "Juara 1",
@@ -169,8 +182,8 @@ const PelaporanPrestasi = ({ prestasi }) => {
         {
             title: "Pelaporan Prestasi",
             href: "/pelaporan-prestasi",
-        }
-    ]
+        },
+    ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Pelaporan Prestasi" />

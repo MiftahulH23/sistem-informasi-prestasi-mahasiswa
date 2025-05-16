@@ -1,5 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
+import { FaRegFilePdf } from "react-icons/fa6";
 
 const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
     const breadcrumb = [
@@ -10,8 +11,8 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
         {
             title: "Detail",
             href: "/pengajuan-lomba/show/{id}",
-        }
-    ]
+        },
+    ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Detail Pengajuan Lomba" />
@@ -84,15 +85,18 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                     <div>
                         <strong>Status:</strong> {pengajuanLomba.status}
                     </div>
-                    <div className="">
+                    <div className="flex items-center gap-2">
                         <strong>Surat Tugas:</strong>{" "}
                         {pengajuanLomba.surat_tugas ? (
                             <a
                                 href={`/storage/${pengajuanLomba.surat_tugas}`}
                                 target="_blank"
-                                className="text-blue-500 hover:underline"
+                                className=""
                             >
-                                Lihat Surat Tugas
+                                <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-xl text-sm hover:bg-blue-200 cursor-pointer transition">
+                                    <FaRegFilePdf className="w-4 h-4" />
+                                    <span>Lihat File</span>
+                                </div>
                             </a>
                         ) : (
                             "Tidak ada file"
