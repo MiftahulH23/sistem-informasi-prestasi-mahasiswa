@@ -30,11 +30,11 @@ class JudulLombaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $request->validate([
+        $validated=$request->validate([
             'judul_lomba' => 'required|string',
             'kategorilomba_id' => 'required|exists:kategori_lomba,kategorilomba_id',
         ]);
-        JudulLomba::create($request->all());
+        JudulLomba::create($validated);
         return redirect()->route('judul-lomba');
     }
 

@@ -39,7 +39,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                     title: "Berhasil!",
                     text: "Laporan prestasi berhasil ditambah.",
                     icon: "success",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
                 }).then(() => {
                     reset();
                     setData({
@@ -52,13 +52,17 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                     });
 
                     // Reset input file secara manual
-                    Object.values(fileInputRefs).forEach(ref => {
+                    Object.values(fileInputRefs).forEach((ref) => {
                         if (ref.current) {
                             ref.current.value = "";
                         }
                     });
                 });
-            }
+            },
+            onError: (errors) => {
+                const message = Object.values(errors)[0];
+                Swal.fire("Gagal!", message, "error");
+            },
         });
     };
     const breadcrumb = [
@@ -69,8 +73,8 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
         {
             title: "Tambah",
             href: "/pelaporan-prestasi/create",
-        }
-    ]
+        },
+    ];
 
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
@@ -80,31 +84,49 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                 <div className="flex flex-col md:grid md:grid-cols-2 gap-x-8 gap-y-4">
                     {/* Judul Lomba */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="judul_lomba" data-required>Judul Lomba</Label>
+                        <Label htmlFor="judul_lomba" data-required>
+                            Judul Lomba
+                        </Label>
                         <select
                             id="judul_lomba"
                             name="pengajuanlomba_id"
                             value={data.pengajuanlomba_id}
-                            onChange={(e) => setData("pengajuanlomba_id", e.target.value)}
+                            onChange={(e) =>
+                                setData("pengajuanlomba_id", e.target.value)
+                            }
                         >
-                            <option value="" disabled hidden>Pilih Judul Lomba</option>
+                            <option value="" disabled hidden>
+                                Pilih Judul Lomba
+                            </option>
                             {Object.entries(lombaOptions).map(([id, judul]) => (
-                                <option key={id} value={id}>{judul}</option>
+                                <option key={id} value={id}>
+                                    {judul}
+                                </option>
                             ))}
                         </select>
-                        {errors.pengajuanlomba_id && <p className="text-red-500">{errors.pengajuanlomba_id}</p>}
+                        {errors.pengajuanlomba_id && (
+                            <p className="text-red-500">
+                                {errors.pengajuanlomba_id}
+                            </p>
+                        )}
                     </div>
 
                     {/* Capaian Prestasi */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="capaian_prestasi" data-required>Capaian Prestasi</Label>
+                        <Label htmlFor="capaian_prestasi" data-required>
+                            Capaian Prestasi
+                        </Label>
                         <select
                             id="capaian_prestasi"
                             name="capaian_prestasi"
                             value={data.capaian_prestasi}
-                            onChange={(e) => setData("capaian_prestasi", e.target.value)}
+                            onChange={(e) =>
+                                setData("capaian_prestasi", e.target.value)
+                            }
                         >
-                            <option value="" disabled hidden>Pilih Capaian Prestasi</option>
+                            <option value="" disabled hidden>
+                                Pilih Capaian Prestasi
+                            </option>
                             <option value="Juara 1">Juara 1</option>
                             <option value="Juara 2">Juara 2</option>
                             <option value="Juara 3">Juara 3</option>
@@ -113,12 +135,18 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                             <option value="Harapan 3">Harapan 3</option>
                             <option value="Peserta">Peserta</option>
                         </select>
-                        {errors.capaian_prestasi && <p className="text-red-500">{errors.capaian_prestasi}</p>}
+                        {errors.capaian_prestasi && (
+                            <p className="text-red-500">
+                                {errors.capaian_prestasi}
+                            </p>
+                        )}
                     </div>
 
                     {/* Sertifikat */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="sertifikat" data-required>Sertifikat</Label>
+                        <Label htmlFor="sertifikat" data-required>
+                            Sertifikat
+                        </Label>
                         <Input
                             id="sertifikat"
                             name="sertifikat"
@@ -127,25 +155,37 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                             ref={fileInputRefs.sertifikat}
                             onChange={handleFileChange}
                         />
-                        {errors.sertifikat && <p className="text-red-500">{errors.sertifikat}</p>}
+                        {errors.sertifikat && (
+                            <p className="text-red-500">{errors.sertifikat}</p>
+                        )}
                     </div>
 
                     {/* URL Media Sosial */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="url_media_sosial" data-required>URL Media Sosial</Label>
+                        <Label htmlFor="url_media_sosial" data-required>
+                            URL Media Sosial
+                        </Label>
                         <Input
                             id="url_media_sosial"
                             name="url_media_sosial"
                             type="text"
                             value={data.url_media_sosial}
-                            onChange={(e) => setData("url_media_sosial", e.target.value)}
+                            onChange={(e) =>
+                                setData("url_media_sosial", e.target.value)
+                            }
                         />
-                        {errors.url_media_sosial && <p className="text-red-500">{errors.url_media_sosial}</p>}
+                        {errors.url_media_sosial && (
+                            <p className="text-red-500">
+                                {errors.url_media_sosial}
+                            </p>
+                        )}
                     </div>
 
                     {/* Dokumentasi */}
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="dokumentasi" data-required>Dokumentasi</Label>
+                        <Label htmlFor="dokumentasi" data-required>
+                            Dokumentasi
+                        </Label>
                         <Input
                             id="dokumentasi"
                             name="dokumentasi"
@@ -155,11 +195,17 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                             ref={fileInputRefs.dokumentasi}
                             onChange={handleFileChange}
                         />
-                        {errors.dokumentasi && <p className="text-red-500">{errors.dokumentasi}</p>}
+                        {errors.dokumentasi && (
+                            <p className="text-red-500">{errors.dokumentasi}</p>
+                        )}
                     </div>
                 </div>
                 <div className="flex justify-end mt-5 py-3">
-                    <button type="submit" className="bg-blue-600 py-2 px-4 text-white rounded-md" disabled={processing}>
+                    <button
+                        type="submit"
+                        className="bg-blue-600 py-2 px-4 text-white rounded-md"
+                        disabled={processing}
+                    >
                         {processing ? "Memproses..." : "Tambah"}
                     </button>
                 </div>

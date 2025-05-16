@@ -71,7 +71,7 @@ class PengajuanLombaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated=$request->validate([
             'kategorilomba_id' => 'required',
             'judul_lomba' => 'required|string',
             'jenis_lomba' => 'required|string',
@@ -130,23 +130,12 @@ class PengajuanLombaController extends Controller
 
         $surat_tugas_path = $request->file('surat_tugas')->store('surat_tugas', 'public');
         // Simpan data ke database
-        $pengajuan = PengajuanLomba::create([
-            'user_id' => $user->id, // ID user yang login tetap sebagai pemilik pengajuan
-            'kategorilomba_id' => $request->kategorilomba_id,
-            'judul_lomba' => $request->judul_lomba,
-            'jenis_lomba' => $request->jenis_lomba,
-            'tingkat_lomba' => $request->tingkat_lomba,
-            'model_pelaksanaan' => $request->model_pelaksanaan,
-            'dosen_pembimbing' => $request->dosen_pembimbing,
-            'program_studi' => $request->program_studi,
-            'status' => 'Diajukan',
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
-            'jenis_kepesertaan' => $request->jenis_kepesertaan,
-            'jumlah_peserta' => $jumlah_peserta, // Jumlah peserta dihitung dengan benar
-            'anggota_kelompok' => $anggota_kelompok, // Sudah termasuk user yang login jika kelompok
-            'surat_tugas' => $surat_tugas_path,
-        ]);
+        $validated['user_id'] = $user->id; // ID user yang login
+        $validated['anggota_kelompok'] = json_encode($anggota_kelompok); // Simpan anggota kelompok sebagai JSON
+        $validated['jumlah_peserta'] = $jumlah_peserta; // Simpan jumlah peserta
+        $validated['surat_tugas'] = $surat_tugas_path; // Simpan path surat tugas
+        $validated['status'] = 'Diajukan'; // Status awal adalah Diajukan
+        PengajuanLomba::create($validated);
         // $user = Auth::user();
         // $email = "miftahul21si@mahasiswa.pcr.ac.id";
         // $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";

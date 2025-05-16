@@ -34,14 +34,14 @@ class KategoriLombaController extends Controller
     public function store(Request $request)
     {
         // Validasi input
-        $request->validate([
+        $validated=$request->validate([
             'kategori_lomba' => 'required|string|max:255|',
         ]);
 
+
+
         // Simpan ke database
-        KategoriLomba::create([
-            'kategori_lomba' => $request->kategori_lomba,
-        ]);
+        KategoriLomba::create($validated);
 
         // Redirect dengan pesan sukses
         return redirect()->back()->with('success', 'Kategori Lomba berhasil ditambahkan!');

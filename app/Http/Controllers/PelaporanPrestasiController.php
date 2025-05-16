@@ -40,7 +40,7 @@ class PelaporanPrestasiController extends Controller
 
         // Filter hanya yang belum ada prestasi atau semua prestasinya Ditolak
         $filtered = $pengajuans->filter(function ($pengajuan) {
-            $prestasi = $pengajuan->prestasi; 
+            $prestasi = $pengajuan->prestasi;
 
             if ($prestasi->isEmpty()) {
                 return true; // belum ada prestasi sama sekali
@@ -68,13 +68,30 @@ class PelaporanPrestasiController extends Controller
     public function store(Request $request)
     {
         // Validasi input
-        $request->validate([
+        $validated=$request->validate([
             'pengajuanlomba_id' => 'required|exists:pengajuan_lomba,pengajuanlomba_id',
             'capaian_prestasi' => 'required|string',
             'sertifikat' => 'nullable|file|mimes:pdf|max:2048',
             'dokumentasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'url_media_sosial' => 'nullable|url',
+        ], [
+            'pengajuanlomba_id.required' => 'Pengajuan lomba harus dipilih.',
+            'pengajuanlomba_id.exists' => 'Pengajuan lomba yang dipilih tidak valid.',
+
+            'capaian_prestasi.required' => 'Capaian prestasi harus diisi.',
+            'capaian_prestasi.string' => 'Capaian prestasi harus berupa teks.',
+
+            'sertifikat.file' => 'Sertifikat harus berupa file.',
+            'sertifikat.mimes' => 'Sertifikat harus berupa file PDF.',
+            'sertifikat.max' => 'Ukuran sertifikat tidak boleh lebih dari 2MB.',
+
+            'dokumentasi.*.image' => 'Setiap dokumentasi harus berupa gambar.',
+            'dokumentasi.*.mimes' => 'Format gambar dokumentasi harus jpeg, png, jpg, atau gif.',
+            'dokumentasi.*.max' => 'Ukuran masing-masing dokumentasi tidak boleh lebih dari 2MB.',
+
+            'url_media_sosial.url' => 'Link media sosial tidak valid.',
         ]);
+
 
         // Upload Sertifikat jika ada
         $sertifikatPath = $request->file('sertifikat') ? $request->file('sertifikat')->store('sertifikat', 'public') : null;
@@ -87,16 +104,22 @@ class PelaporanPrestasiController extends Controller
                 $dokumentasiPaths[] = $path;
             }
         }
-        Prestasi::create([
-            'prestasi_id' => Str::uuid(), // UUID
-            'pengajuanlomba_id' => $request->pengajuanlomba_id,
-            'user_id' => Auth::id(),
-            'capaian_prestasi' => $request->capaian_prestasi,
-            'sertifikat' => $sertifikatPath,
-            'dokumentasi' => json_encode($dokumentasiPaths),
-            'url_media_sosial' => $request->url_media_sosial,
-            'status' => 'Diajukan', // Default status
-        ]);
+
+        $validated['sertifikat'] = $sertifikatPath;
+        $validated['dokumentasi'] = json_encode($dokumentasiPaths);
+        $validated['user_id'] = Auth::id();
+        $validated['status'] = 'Diajukan'; // Default status
+        Prestasi::create($validated);
+        // Prestasi::create([
+        //     'prestasi_id' => Str::uuid(), // UUID
+        //     'pengajuanlomba_id' => $request->pengajuanlomba_id,
+        //     'user_id' => Auth::id(),
+        //     'capaian_prestasi' => $request->capaian_prestasi,
+        //     'sertifikat' => $sertifikatPath,
+        //     'dokumentasi' => json_encode($dokumentasiPaths),
+        //     'url_media_sosial' => $request->url_media_sosial,
+        //     'status' => 'Diajukan', // Default status
+        // ]);
 
         return redirect("/pelaporan-prestasi")->with('success', 'Laporan Prestasi berhasil ditambahkan!');
     }
