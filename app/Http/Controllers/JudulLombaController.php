@@ -11,7 +11,8 @@ class JudulLombaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() {
+    public function index()
+    {
         return Inertia::render('Kemahasiswaan/JudulLomba', [
             'kategoriLomba' => KategoriLomba::all(),
             'judulLomba' => JudulLomba::with('kategori')->get()
@@ -29,8 +30,9 @@ class JudulLombaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
-        $validated=$request->validate([
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
             'judul_lomba' => 'required|string',
             'kategorilomba_id' => 'required|exists:kategori_lomba,kategorilomba_id',
         ]);
@@ -74,8 +76,9 @@ class JudulLombaController extends Controller
 
     public function destroy(JudulLomba $judulLomba)
     {
-        $judulLomba->delete();
+        $judulLomba->forceDelete();
 
         return back()->with('success', 'Judul Lomba berhasil dihapus.');
     }
+
 }

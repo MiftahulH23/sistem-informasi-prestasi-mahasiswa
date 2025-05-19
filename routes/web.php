@@ -64,8 +64,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/judul-lomba/store', [JudulLombaController::class, 'store'])->name('judul-lomba.store');
     Route::put('/judul-lomba/{judulLomba}', [JudulLombaController::class, 'update'])->name('judul-lomba.update');
     Route::delete('/judul-lomba/{judulLomba}', [JudulLombaController::class, 'destroy'])->name('judul-lomba.destroy');
-
-
 });
 
 // Pelaporan Prestasi

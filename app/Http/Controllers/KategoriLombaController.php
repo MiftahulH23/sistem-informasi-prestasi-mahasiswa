@@ -14,10 +14,12 @@ class KategoriLombaController extends Controller
     public function index()
     {
         $kategoriLomba = KategoriLomba::all();
+        // dd($kategoriLomba->toArray());
         return Inertia::render('Kemahasiswaan/KategoriLomba', [
             'flash' => session('success' ? 'success' : 'error'),
             'kategoriLomba' => $kategoriLomba,
         ]);
+
     }
 
     /**
@@ -34,17 +36,16 @@ class KategoriLombaController extends Controller
     public function store(Request $request)
     {
         // Validasi input
-        $validated=$request->validate([
+        $validated = $request->validate([
             'kategori_lomba' => 'required|string|max:255|',
         ]);
-
-
 
         // Simpan ke database
         KategoriLomba::create($validated);
 
         // Redirect dengan pesan sukses
-        return redirect()->back()->with('success', 'Kategori Lomba berhasil ditambahkan!');
+        return redirect()->route('kategori-lomba')->with('success', 'Kategori Lomba berhasil ditambahkan!');
+
     }
 
     /**
@@ -88,7 +89,7 @@ class KategoriLombaController extends Controller
     // Hapus kategori
     public function destroy(KategoriLomba $kategoriLomba)
     {
-        $kategoriLomba->delete();
+        $kategoriLomba->forceDelete();
 
         return redirect()->route('kategori-lomba')->with('success', 'Kategori berhasil dihapus.');
     }

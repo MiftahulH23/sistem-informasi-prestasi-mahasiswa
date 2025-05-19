@@ -110,16 +110,6 @@ class PelaporanPrestasiController extends Controller
         $validated['user_id'] = Auth::id();
         $validated['status'] = 'Diajukan'; // Default status
         Prestasi::create($validated);
-        // Prestasi::create([
-        //     'prestasi_id' => Str::uuid(), // UUID
-        //     'pengajuanlomba_id' => $request->pengajuanlomba_id,
-        //     'user_id' => Auth::id(),
-        //     'capaian_prestasi' => $request->capaian_prestasi,
-        //     'sertifikat' => $sertifikatPath,
-        //     'dokumentasi' => json_encode($dokumentasiPaths),
-        //     'url_media_sosial' => $request->url_media_sosial,
-        //     'status' => 'Diajukan', // Default status
-        // ]);
 
         return redirect("/pelaporan-prestasi")->with('success', 'Laporan Prestasi berhasil ditambahkan!');
     }
