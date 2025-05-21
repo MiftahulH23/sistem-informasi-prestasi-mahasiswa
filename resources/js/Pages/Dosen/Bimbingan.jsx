@@ -6,6 +6,7 @@ const Bimbingan = ({ pengajuanLomba }) => {
     const DetailPengajuanLomba = (id) => {
         router.get(`/bimbingan-dosen/pengajuan-lomba/show/${id}`);
     };
+    console.log(pengajuanLomba);
     const columns = [
         {
             id: "Nomor",

@@ -16,7 +16,6 @@ class BimbinganController extends Controller
     public function index()
     {
         $pengajuanLomba = PengajuanLomba::where('user_id', auth()->user()->id)
-            ->where('status', 'Diterima')
             ->with('dosen')
             ->get();
         // dd($pengajuanLomba->toArray());
@@ -27,27 +26,35 @@ class BimbinganController extends Controller
     public function indexDosen()
     {
         $pengajuanLomba = PengajuanLomba::where('dosen_pembimbing', auth()->user()->id)
-            ->where('status', 'Diterima')
             ->with('dosen')
             ->get();
 
-        // Ambil semua user pertama dari anggota_kelompok
-        $firstUserIds = $pengajuanLomba->pluck('anggota_kelompok')->map(fn($arr) => $arr[0] ?? null)->filter()->unique();
+        // Ambil semua ID dari anggota_kelompok, flatten dan unik
+        $firstUserId = $pengajuanLomba->pluck('anggota_kelompok')
+            ->map(fn($json) => array_map('intval', json_decode($json, true)))
+            ->flatten()
+            ->unique()
+            ->values();
 
-        $users = User::whereIn('id', $firstUserIds)->get()->keyBy('id');
+        $users = User::whereIn('id', $firstUserId)->get()->keyBy('id');
 
-        // Tambahkan nama user pertama ke setiap item
+        // Tambahkan nama_ketua_tim ke setiap item
         $pengajuanLomba = $pengajuanLomba->map(function ($item) use ($users) {
-            $firstId = $item->anggota_kelompok[0] ?? null;
-            $item->nama_ketua_tim = $firstId ? ($users[$firstId]->name ?? '-') : '-';
+            $anggota = json_decode($item->anggota_kelompok, true);
+            $firstId = $anggota[0] ?? null;
+
+            $item->nama_ketua_tim = $firstId && isset($users[$firstId])
+                ? $users[$firstId]->name
+                : '-';
+
             return $item;
         });
 
-        // dd($pengajuanLomba->toArray());
         return Inertia::render('Dosen/Bimbingan', [
-            'pengajuanLomba' => $pengajuanLomba,
+            'pengajuanLomba' => $pengajuanLomba->toArray(),
         ]);
     }
+
 
 
     /**
@@ -94,8 +101,8 @@ class BimbinganController extends Controller
     {
         $bimbingan = Bimbingan::where('pengajuanlomba_id', $id)->get();
         $pengajuanLomba = PengajuanLomba::with('bimbingan')
-        ->where('pengajuanlomba_id', $id)
-        ->firstOrFail();
+            ->where('pengajuanlomba_id', $id)
+            ->firstOrFail();
         // dd($bimbingan->toArray());
         return Inertia::render('Mahasiswa/DataBimbingan', [
             'bimbingan' => $bimbingan,
@@ -107,8 +114,8 @@ class BimbinganController extends Controller
     {
         $bimbingan = Bimbingan::where('pengajuanlomba_id', $id)->get();
         $pengajuanLomba = PengajuanLomba::with('bimbingan')
-        ->where('pengajuanlomba_id', $id)
-        ->firstOrFail();
+            ->where('pengajuanlomba_id', $id)
+            ->firstOrFail();
         // dd($bimbingan->toArray());
         return Inertia::render('Dosen/DataBimbingan', [
             'bimbingan' => $bimbingan,

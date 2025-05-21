@@ -102,7 +102,6 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        e.target.reset();
 
         const formData = new FormData();
 
@@ -235,25 +234,21 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     name="judul_lomba"
                                     className="h-10"
                                     onChange={(e) =>
-                                        setData({
-                                            ...data,
-                                            judul_lomba: e.target.value,
-                                        })
+                                        setData(
+                                            "judul_lomba", e.target.value,
+                                        )
                                     }
                                     placeholder="Masukkan Judul Lomba"
-                                    value={data.judul_lomba}
                                 />
                             ) : (
                                 <select
                                     id="judul_lomba"
                                     name="judul_lomba"
                                     onChange={(e) =>
-                                        setData({
-                                            ...data,
-                                            judul_lomba: e.target.value,
-                                        })
+                                        setData(
+                                            "judul_lomba", e.target.value,
+                                        )
                                     }
-                                    value={data.judul_lomba}
                                 >
                                     <option value="" disabled selected>
                                         Pilih Judul

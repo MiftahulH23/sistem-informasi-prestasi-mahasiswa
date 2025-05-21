@@ -163,10 +163,10 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
     const jenisLomba = ["Akademik", "Non-Akademik"];
     const breadcrumb = [
         {
-            title : "Pengajuan Lomba",
-            href : "/pengajuan-lomba",
+            title: "Pengajuan Lomba",
+            href: "/pengajuan-lomba",
         },
-    ]
+    ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Pengajuan Lomba" />
@@ -174,7 +174,19 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             <DataTable columns={columns} data={pengajuanLomba}>
                 {({ table }) => {
                     return (
-                        <DataTableControls table={table}>
+                        <DataTableControls
+                            table={table}
+                            action={
+                                <button
+                                    onClick={() =>
+                                        router.get("/pengajuan-lomba/create")
+                                    }
+                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
+                                >
+                                    Tambah
+                                </button>
+                            }
+                        >
                             <DataTableFilter
                                 table={table}
                                 extend={[
@@ -214,14 +226,6 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                                 label="Tahun"
                                 standalone
                             />
-                            <button
-                                onClick={() =>
-                                    router.get("/pengajuan-lomba/create")
-                                }
-                                className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
-                            >
-                                Tambah
-                            </button>
                         </DataTableControls>
                     );
                 }}

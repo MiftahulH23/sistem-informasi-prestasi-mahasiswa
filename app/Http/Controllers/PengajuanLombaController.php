@@ -123,7 +123,7 @@ class PengajuanLombaController extends Controller
             }
         } else {
             // Kalau individu, hanya user ID yang login
-            $anggota_kelompok = $user->id;
+            $anggota_kelompok = [$user->id];
         }
         $jumlah_peserta = ($request->jenis_kepesertaan === 'Individu') ? 1 : count($anggota_kelompok);
 
