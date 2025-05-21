@@ -61,7 +61,7 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
         {
             title: "Detail",
             href: `/bimbingan/${id}`,
-        }
+        },
     ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
@@ -70,7 +70,19 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
             <DataTable columns={columns} data={bimbingan}>
                 {({ table }) => {
                     return (
-                        <DataTableControls table={table}>
+                        <DataTableControls
+                            table={table}
+                            action={
+                                <button
+                                    onClick={() =>
+                                        router.get(`/bimbingan/${id}/create`)
+                                    }
+                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
+                                >
+                                    Tambah
+                                </button>
+                            }
+                        >
                             <DataTableFilter
                                 table={table}
                                 extend={[
@@ -81,14 +93,6 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
                                     },
                                 ]}
                             />
-                            <button
-                                onClick={() =>
-                                    router.get(`/bimbingan/${id}/create`)
-                                }
-                                className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
-                            >
-                                Tambah
-                            </button>
                         </DataTableControls>
                     );
                 }}

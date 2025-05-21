@@ -15,7 +15,7 @@ class BimbinganController extends Controller
      */
     public function index()
     {
-        $pengajuanLomba = PengajuanLomba::where('user_id', auth()->user()->id)
+        $pengajuanLomba = PengajuanLomba::whereJsonContains('anggota_kelompok', auth()->id())
             ->with('dosen')
             ->get();
         // dd($pengajuanLomba->toArray());
@@ -31,16 +31,21 @@ class BimbinganController extends Controller
 
         // Ambil semua ID dari anggota_kelompok, flatten dan unik
         $firstUserId = $pengajuanLomba->pluck('anggota_kelompok')
-            ->map(fn($json) => array_map('intval', json_decode($json, true)))
+            ->map(function ($item) {
+                return is_string($item) ? json_decode($item, true) : $item;
+            })
             ->flatten()
+            ->filter(fn($id) => is_numeric($id)) // pastikan hanya angka
+            ->map(fn($id) => (int) $id)          // konversi ke int
             ->unique()
             ->values();
+
 
         $users = User::whereIn('id', $firstUserId)->get()->keyBy('id');
 
         // Tambahkan nama_ketua_tim ke setiap item
         $pengajuanLomba = $pengajuanLomba->map(function ($item) use ($users) {
-            $anggota = json_decode($item->anggota_kelompok, true);
+            $anggota = $item->anggota_kelompok; // sudah berupa array
             $firstId = $anggota[0] ?? null;
 
             $item->nama_ketua_tim = $firstId && isset($users[$firstId])
@@ -53,6 +58,7 @@ class BimbinganController extends Controller
         return Inertia::render('Dosen/Bimbingan', [
             'pengajuanLomba' => $pengajuanLomba->toArray(),
         ]);
+
     }
 
 

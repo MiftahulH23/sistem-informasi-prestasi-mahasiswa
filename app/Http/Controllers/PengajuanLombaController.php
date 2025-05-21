@@ -71,7 +71,7 @@ class PengajuanLombaController extends Controller
 
     public function store(Request $request)
     {
-        $validated=$request->validate([
+        $validated = $request->validate([
             'kategorilomba_id' => 'required',
             'judul_lomba' => 'required|string',
             'jenis_lomba' => 'required|string',
@@ -116,22 +116,27 @@ class PengajuanLombaController extends Controller
         $user = Auth::user();
         $anggota_kelompok = $request->anggota_kelompok ?? [];
 
+        // Convert isi array jadi integer, hilangkan null/kosong
+        $anggota_kelompok = array_filter(array_map('intval', $anggota_kelompok));
+
+        // Tambahkan user login ke dalam kelompok jika belum ada
         if ($request->jenis_kepesertaan === 'Kelompok') {
-            // Masukkan user login jika belum ada
             if (!in_array($user->id, $anggota_kelompok)) {
                 array_unshift($anggota_kelompok, $user->id);
             }
         } else {
-            // Kalau individu, hanya user ID yang login
-            $anggota_kelompok = [$user->id];
+            $anggota_kelompok = [$user->id]; // jika individu
         }
+
+        // Hapus duplikat
+        $anggota_kelompok = array_values(array_unique($anggota_kelompok));
         $jumlah_peserta = ($request->jenis_kepesertaan === 'Individu') ? 1 : count($anggota_kelompok);
 
 
         $surat_tugas_path = $request->file('surat_tugas')->store('surat_tugas', 'public');
         // Simpan data ke database
         $validated['user_id'] = $user->id; // ID user yang login
-        $validated['anggota_kelompok'] = json_encode($anggota_kelompok); // Simpan anggota kelompok sebagai JSON
+        $validated['anggota_kelompok'] = $anggota_kelompok; // Simpan anggota kelompok sebagai JSON
         $validated['jumlah_peserta'] = $jumlah_peserta; // Simpan jumlah peserta
         $validated['surat_tugas'] = $surat_tugas_path; // Simpan path surat tugas
         $validated['status'] = 'Diajukan'; // Status awal adalah Diajukan

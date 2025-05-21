@@ -95,7 +95,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
     const handleAnggotaChange = (index, value) => {
         const newAnggota = [...anggotaKelompok];
-        newAnggota[index] = value;
+        newAnggota[index] = parseInt(value); // pastikan ID berupa angka
         setAnggotaKelompok(newAnggota);
         setData("anggota_kelompok", newAnggota);
     };
@@ -234,21 +234,22 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     name="judul_lomba"
                                     className="h-10"
                                     onChange={(e) =>
-                                        setData(
-                                            "judul_lomba", e.target.value,
-                                        )
+                                        setData("judul_lomba", e.target.value)
                                     }
+                                    value={data.judul_lomba}
                                     placeholder="Masukkan Judul Lomba"
+                                    required
                                 />
                             ) : (
                                 <select
                                     id="judul_lomba"
                                     name="judul_lomba"
                                     onChange={(e) =>
-                                        setData(
-                                            "judul_lomba", e.target.value,
-                                        )
+                                        setData("judul_lomba", e.target.value)
                                     }
+                                    value={data.judul_lomba}
+                                    required
+
                                 >
                                     <option value="" disabled selected>
                                         Pilih Judul

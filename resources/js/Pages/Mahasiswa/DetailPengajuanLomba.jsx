@@ -1,12 +1,15 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { FaRegFilePdf } from "react-icons/fa6";
 
 const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
+    const { auth } = usePage().props;
+
+    const isKemahasiswaan = auth.user.role === "Kemahasiswaan";
     const breadcrumb = [
         {
             title: "Pengajuan Lomba",
-            href: "/pengajuan-lomba",
+            href: isKemahasiswaan ? "/pengajuan-lomba/update" : "/pengajuan-lomba",
         },
         {
             title: "Detail",
