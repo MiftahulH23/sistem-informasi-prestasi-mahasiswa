@@ -127,7 +127,11 @@ const Prestasi = ({ prestasi }) => {
             <DataTable columns={columns} data={prestasi}>
                 {({ table }) => {
                     return (
-                        <DataTableControls table={table} className="w-full overflow-x-auto">
+                        <DataTableControls table={table} className="w-full overflow-x-auto" action={
+                            <div className="flex w-full items-center justify-end gap-2">
+                                <ExportButton table={table} />
+                            </div>
+                        }>
                             <DataTableFilter
                                 table={table}
                                 extend={[
@@ -162,9 +166,7 @@ const Prestasi = ({ prestasi }) => {
                                 label="Tahun"
                                 standalone
                             />
-                            <div className="flex w-full items-center justify-end gap-2">
-                                <ExportButton table={table} />
-                            </div>
+                            
                         </DataTableControls>
                     );
                 }}

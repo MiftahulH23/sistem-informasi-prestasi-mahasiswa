@@ -291,7 +291,6 @@ const UpdateStatusPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             <h1>Pengajuan Lomba</h1>
             <DataTable columns={columns} data={pengajuanLomba}>
                 {({ table }) => {
-                    console.log("table", table);
                     return (
                         <DataTableControls table={table}>
                             <DataTableFilter
