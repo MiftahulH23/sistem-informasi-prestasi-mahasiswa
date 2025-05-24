@@ -19,19 +19,17 @@ class PengajuanLombaController extends Controller
 {
     public function index()
     {
-        $pengajuanLomba = PengajuanLomba::with(['kategori', 'dosen']) // Ambil data kategori juga
-            ->where('user_id', Auth::id())
+        $pengajuanLomba = PengajuanLomba::whereJsonContains('anggota_kelompok', auth()->id())->with(['kategori', 'dosen'])
             ->get();
-        $kategoriLomba = KategoriLomba::all();
+        // dd($pengajuanLomba->toArray());
         return Inertia::render('Mahasiswa/PengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
-            'kategoriLomba' => $kategoriLomba,
         ]);
 
     }
     public function editStatus()
     {
-        $pengajuanLomba = PengajuanLomba::with(['kategori', 'user']) // Ambil data kategori juga
+        $pengajuanLomba = PengajuanLomba::with(['kategori', 'user'])
             ->get();
         $kategoriLomba = KategoriLomba::all();
         // dd($pengajuanLomba->toArray());
