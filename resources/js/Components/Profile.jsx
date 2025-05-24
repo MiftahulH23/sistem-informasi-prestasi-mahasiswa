@@ -43,6 +43,7 @@ export default function Profile() {
                     <Link
                         method="post"
                         href={route("logout")}
+                        as="button"
                         className="w-full flex items-center justify-start gap-2"
                     >
                         <LogOut
