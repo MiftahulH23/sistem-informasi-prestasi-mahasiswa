@@ -162,7 +162,7 @@ const PelaporanPrestasi = ({ prestasi }) => {
                 const catatan = row.original.catatan;
                 return (
                     <div className="text-sm text-slate-600">
-                        {catatan ? catatan : "Tidak ada catatan"}
+                        {catatan ? catatan : "Pelaporan sedang diproses"}
                     </div>
                 );
             },

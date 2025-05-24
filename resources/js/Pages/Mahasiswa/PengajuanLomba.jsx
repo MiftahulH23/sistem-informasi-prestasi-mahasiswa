@@ -115,6 +115,23 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
             },
         },
         {
+            accessorKey: "Detail",
+            header: "Detail",
+            cell: ({ row }) => {
+                const id = row.original.pengajuanlomba_id;
+                return (
+                    <div className="flex gap-2 items-center">
+                        <button
+                            onClick={() => DetailPengajuanLomba(id)}
+                            className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition"
+                        >
+                            Detail
+                        </button>
+                    </div>
+                );
+            },
+        },
+        {
             accessorKey: "status",
             header: "Status",
             cell: ({ row }) => {
@@ -134,23 +151,6 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                 );
             },
             filterFn: "checkbox",
-        },
-        {
-            accessorKey: "Detail",
-            header: "Detail",
-            cell: ({ row }) => {
-                const id = row.original.pengajuanlomba_id;
-                return (
-                    <div className="flex gap-2 items-center justify-center">
-                        <button
-                            onClick={() => DetailPengajuanLomba(id)}
-                            className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition"
-                        >
-                            Detail
-                        </button>
-                    </div>
-                );
-            },
         },
     ];
     const statusPengajuan = ["Diajukan", "Diterima", "Ditolak"];

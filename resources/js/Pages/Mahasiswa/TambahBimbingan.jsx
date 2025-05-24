@@ -64,7 +64,7 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
             <Head title="Tambah Bimbingan" />
             <h1>Tambah Bimbingan</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div className="flex flex-col gap-2">
                         <Label htmlFor="tanggal" data-required>Tanggal Bimbingan</Label>
                         <Input
@@ -115,14 +115,15 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
                         )}
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
                         <Label htmlFor="materi_bimbingan" data-required>
                             Materi Bimbingan
                         </Label>
-                        <Input
+                        <textarea
                             type="text"
                             id="materi_bimbingan"
+                            className="h-24 resize-none p-2 border rounded-md bg-transparent"
                             name="materi_bimbingan"
                             value={data.materi_bimbingan}
                             onChange={(e) =>
@@ -139,7 +140,8 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
                         <Label htmlFor="catatan_bimbingan" data-required>
                             Catatan Bimbingan
                         </Label>
-                        <Input
+                        <textarea
+                            className="h-24 resize-none p-2 border rounded-md bg-transparent"
                             type="text"
                             id="catatan_bimbingan"
                             name="catatan_bimbingan"

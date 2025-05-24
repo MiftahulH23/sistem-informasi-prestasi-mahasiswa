@@ -14,6 +14,8 @@ import { Button } from "@/Components/ui/button";
 import { CircleHelp, PlusIcon } from "lucide-react";
 
 const PengajuanLomba = ({ auth, dosenList }) => {
+    //  cuurrentUserId = auth.user.id; // Ambil ID user yang sedang login
+    const currentUserId = auth.user.id; // Ambil ID user yang sedang login
     const { kategoriLomba, judulLomba, mahasiswaList } = usePage().props;
     const { flash } = usePage().props;
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -249,7 +251,6 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     }
                                     value={data.judul_lomba}
                                     required
-
                                 >
                                     <option value="" disabled selected>
                                         Pilih Judul
@@ -429,6 +430,9 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     </option>
                                 ))}
                             </select>
+                            <p className="text-muted-foreground text-sm">
+                                Catatan: Nama dosen dipilih secara random saja
+                            </p>
                         </div>
 
                         {/* Tanggal Mulai */}
@@ -538,18 +542,42 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                                 )
                                             }
                                         >
-                                            <option value="" disabled>
+                                            <option value="">
                                                 Pilih Anggota
                                             </option>
-                                            {mahasiswaList.map((user) => (
-                                                <option
-                                                    key={user.id}
-                                                    value={user.id}
-                                                >
-                                                    {user.name}
-                                                </option>
-                                            ))}
+
+                                            {/* Tetap tampilkan anggota yang sedang dipilih meskipun sudah masuk anggotaKelompok */}
+                                            {anggota &&
+                                                !mahasiswaList.find(
+                                                    (user) =>
+                                                        user.id === anggota
+                                                ) && (
+                                                    <option value={anggota}>
+                                                        {`(Data Tidak Ditemukan)`}{" "}
+                                                        {/* fallback kalau datanya tidak ada */}
+                                                    </option>
+                                                )}
+
+                                            {mahasiswaList
+                                                .filter(
+                                                    (user) =>
+                                                        user.id !==
+                                                            currentUserId &&
+                                                        (!anggotaKelompok.includes(
+                                                            user.id
+                                                        ) ||
+                                                            user.id === anggota)
+                                                )
+                                                .map((user) => (
+                                                    <option
+                                                        key={user.id}
+                                                        value={user.id}
+                                                    >
+                                                        {user.name}
+                                                    </option>
+                                                ))}
                                         </select>
+
                                         <button
                                             type="button"
                                             className="bg-red-500 text-white px-3 py-1 rounded-md"
