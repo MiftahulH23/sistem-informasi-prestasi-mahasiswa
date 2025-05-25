@@ -35,7 +35,7 @@ class PelaporanPrestasiController extends Controller
 
         // Ambil semua pengajuan lomba milik user yang statusnya Diterima
         $pengajuans = PengajuanLomba::where('status', 'Diterima')
-            ->where('user_id', $userId)
+            ->whereJsonContains('anggota_kelompok', auth()->id())
             ->get();
 
         // Filter hanya yang belum ada prestasi atau semua prestasinya Ditolak

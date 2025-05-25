@@ -13,10 +13,16 @@ class PrestasiController extends Controller
         $query = Prestasi::with(['pengajuanLomba.kategori'])
             ->where('status', 'Diterima');
 
+        $query = Prestasi::with(['pengajuanLomba.kategori']);
+
         if (Auth::user()->role === 'Mahasiswa') {
-            $query->where('user_id', Auth::id())
-                ->where('capaian_prestasi', '!=', 'Peserta');
+            $query->whereHas('pengajuanLomba', function ($q) {
+                $q->whereJsonContains('anggota_kelompok', Auth::id());
+            })->where('capaian_prestasi', '!=', 'Peserta');
         }
+
+        $prestasi = $query->get();
+
 
         $prestasi = $query->get();
 
