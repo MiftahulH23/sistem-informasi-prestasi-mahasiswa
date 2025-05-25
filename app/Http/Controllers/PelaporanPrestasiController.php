@@ -108,7 +108,7 @@ class PelaporanPrestasiController extends Controller
         $validated['sertifikat'] = $sertifikatPath;
         $validated['dokumentasi'] = json_encode($dokumentasiPaths);
         $validated['user_id'] = Auth::id();
-        $validated['status'] = 'Diajukan'; // Default status
+        $validated['status'] = 'Diterima'; // Default status
         Prestasi::create($validated);
 
         return redirect("/pelaporan-prestasi")->with('success', 'Laporan Prestasi berhasil ditambahkan!');
