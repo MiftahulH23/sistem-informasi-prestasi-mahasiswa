@@ -530,60 +530,64 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 {anggotaKelompok.map((anggota, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-2"
+                                        className="flex gap-2 justify-center"
                                     >
-                                        <select
-                                            className="h-10 flex-1 border rounded-md px-3"
-                                            value={anggota}
-                                            onChange={(e) =>
-                                                handleAnggotaChange(
-                                                    index,
-                                                    e.target.value
-                                                )
-                                            }
-                                        >
-                                            <option value="">
-                                                Pilih Anggota
-                                            </option>
+                                        <div className="flex-1">
+                                            <select
+                                                className="h-10 flex-1 border rounded-md px-3"
+                                                value={anggota}
+                                                onChange={(e) =>
+                                                    handleAnggotaChange(
+                                                        index,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <option value="">
+                                                    Pilih Anggota
+                                                </option>
 
-                                            {/* Tetap tampilkan anggota yang sedang dipilih meskipun sudah masuk anggotaKelompok */}
-                                            {anggota &&
-                                                !mahasiswaList.find(
-                                                    (user) =>
-                                                        user.id === anggota
-                                                ) && (
-                                                    <option value={anggota}>
-                                                        {`(Data Tidak Ditemukan)`}{" "}
-                                                        {/* fallback kalau datanya tidak ada */}
-                                                    </option>
-                                                )}
+                                                {/* Tetap tampilkan anggota yang sedang dipilih meskipun sudah masuk anggotaKelompok */}
+                                                {anggota &&
+                                                    !mahasiswaList.find(
+                                                        (user) =>
+                                                            user.id === anggota
+                                                    ) && (
+                                                        <option value={anggota}>
+                                                            {`(Data Tidak Ditemukan)`}{" "}
+                                                            {/* fallback kalau datanya tidak ada */}
+                                                        </option>
+                                                    )}
 
-                                            {mahasiswaList
-                                                .filter(
-                                                    (user) =>
-                                                        user.id !==
-                                                            currentUserId &&
-                                                        (!anggotaKelompok.includes(
-                                                            user.id
-                                                        ) ||
-                                                            user.id === anggota)
-                                                )
-                                                .map((user) => (
-                                                    <option
-                                                        key={user.id}
-                                                        value={user.id}
-                                                    >
-                                                        {user.name}
-                                                    </option>
-                                                ))}
-                                        </select>
-<p className="text-muted-foreground text-sm">
-                                Catatan: Nama anggota kelompok dipilih secara random saja
-                            </p>
+                                                {mahasiswaList
+                                                    .filter(
+                                                        (user) =>
+                                                            user.id !==
+                                                                currentUserId &&
+                                                            (!anggotaKelompok.includes(
+                                                                user.id
+                                                            ) ||
+                                                                user.id ===
+                                                                    anggota)
+                                                    )
+                                                    .map((user) => (
+                                                        <option
+                                                            key={user.id}
+                                                            value={user.id}
+                                                        >
+                                                            {user.name}
+                                                        </option>
+                                                    ))}
+                                            </select>
+                                            <p className="text-muted-foreground text-sm">
+                                                Catatan: Nama anggota kelompok
+                                                dipilih secara random saja
+                                            </p>
+                                        </div>
 
                                         <button
                                             type="button"
-                                            className="bg-red-500 text-white px-3 py-1 rounded-md"
+                                            className="bg-red-500 text-white px-3 py-1 h-fit mt-1 rounded-md"
                                             onClick={() => removeAnggota(index)}
                                         >
                                             Hapus
