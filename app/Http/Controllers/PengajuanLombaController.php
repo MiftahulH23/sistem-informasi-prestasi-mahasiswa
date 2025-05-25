@@ -137,7 +137,7 @@ class PengajuanLombaController extends Controller
         $validated['anggota_kelompok'] = $anggota_kelompok; // Simpan anggota kelompok sebagai JSON
         $validated['jumlah_peserta'] = $jumlah_peserta; // Simpan jumlah peserta
         $validated['surat_tugas'] = $surat_tugas_path; // Simpan path surat tugas
-        $validated['status'] = 'Diajukan'; // Status awal adalah Diajukan
+        $validated['status'] = 'Diterima'; // Status awal adalah Diajukan
         PengajuanLomba::create($validated);
         // $user = Auth::user();
         // $email = "miftahul21si@mahasiswa.pcr.ac.id";
