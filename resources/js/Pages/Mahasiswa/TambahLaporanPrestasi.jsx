@@ -224,7 +224,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                             name="url_media_sosial"
                             type="text"
                             value={data.url_media_sosial}
-placeholder="Url Medsos Penyelenggara lomba"
+placeholder="Cth:https://www.instagram.com"
                             onChange={(e) =>
                                 setData("url_media_sosial", e.target.value)
                             }
