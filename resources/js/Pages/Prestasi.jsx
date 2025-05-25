@@ -25,6 +25,18 @@ const Prestasi = ({ prestasi }) => {
             accessorKey: "pengajuan_lomba.judul_lomba",
             header: "Judul Lomba",
         },
+        // {
+        //     accessorKey: "pengajuan_lomba.anggota_nama",
+        //     header: "Nama Peserta",
+        //     cell: ({ row }) => {
+        //         const anggota =
+        //             row.original.pengajuan_lomba?.anggota_nama ?? [];
+        //         return anggota.length > 0
+        //             ? anggota.join(", ")
+        //             : "Tidak ada anggota";
+        //     },
+        // },
+
         {
             accessorKey: "capaian_prestasi",
             header: "Capaian Prestasi",
@@ -119,7 +131,7 @@ const Prestasi = ({ prestasi }) => {
             title: "Prestasi",
             href: "/prestasi",
         },
-    ]
+    ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Prestasi" />
@@ -127,11 +139,15 @@ const Prestasi = ({ prestasi }) => {
             <DataTable columns={columns} data={prestasi}>
                 {({ table }) => {
                     return (
-                        <DataTableControls table={table} className="w-full overflow-x-auto" action={
-                            <div className="flex w-full items-center justify-end gap-2">
-                                <ExportButton table={table} />
-                            </div>
-                        }>
+                        <DataTableControls
+                            table={table}
+                            className="w-full overflow-x-auto"
+                            action={
+                                <div className="flex w-full items-center justify-end gap-2">
+                                    <ExportButton table={table} />
+                                </div>
+                            }
+                        >
                             <DataTableFilter
                                 table={table}
                                 extend={[
@@ -166,7 +182,6 @@ const Prestasi = ({ prestasi }) => {
                                 label="Tahun"
                                 standalone
                             />
-                            
                         </DataTableControls>
                     );
                 }}

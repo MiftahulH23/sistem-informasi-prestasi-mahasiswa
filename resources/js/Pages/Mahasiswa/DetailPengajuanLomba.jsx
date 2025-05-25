@@ -9,7 +9,9 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
     const breadcrumb = [
         {
             title: "Pengajuan Lomba",
-            href: isKemahasiswaan ? "/pengajuan-lomba/update" : "/pengajuan-lomba",
+            href: isKemahasiswaan
+                ? "/pengajuan-lomba/update"
+                : "/pengajuan-lomba",
         },
         {
             title: "Detail",
@@ -69,17 +71,21 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                         {anggotaUser.length > 0
                             ? anggotaUser.map((anggota, index) => (
                                   <span key={anggota.id}>
-                                      <a
-                                          href="#"
-                                          className="text-blue-500 hover:underline"
-                                          onClick={() =>
-                                              router.get(
-                                                  `/pengajuan-lomba/update/portofolio/${anggota.id}`
-                                              )
-                                          }
-                                      >
-                                          {anggota.name}
-                                      </a>
+                                      {isKemahasiswaan ? (
+                                          <a
+                                              href="#"
+                                              className="text-blue-500 hover:underline"
+                                              onClick={() =>
+                                                  router.get(
+                                                      `/pengajuan-lomba/update/portofolio/${anggota.id}`
+                                                  )
+                                              }
+                                          >
+                                              {anggota.name}
+                                          </a>
+                                      ) : (
+                                          <span>{anggota.name}</span>
+                                      )}
                                       {index !== anggotaUser.length - 1 && ", "}
                                   </span>
                               ))
