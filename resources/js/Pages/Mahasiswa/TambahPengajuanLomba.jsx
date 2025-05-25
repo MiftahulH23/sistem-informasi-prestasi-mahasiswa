@@ -577,6 +577,9 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                                     </option>
                                                 ))}
                                         </select>
+<p className="text-muted-foreground text-sm">
+                                Catatan: Nama anggota kelompok dipilih secara random saja
+                            </p>
 
                                         <button
                                             type="button"
