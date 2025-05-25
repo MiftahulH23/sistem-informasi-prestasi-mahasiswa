@@ -542,6 +542,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                                         e.target.value
                                                     )
                                                 }
+                                                required
                                             >
                                                 <option value="">
                                                     Pilih Anggota
