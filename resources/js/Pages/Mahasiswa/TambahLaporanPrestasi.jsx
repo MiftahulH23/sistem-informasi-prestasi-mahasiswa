@@ -104,12 +104,22 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                             <option value="" disabled hidden>
                                 Pilih Judul Lomba
                             </option>
-                            {Object.entries(lombaOptions).map(([id, judul]) => (
-                                <option key={id} value={id}>
-                                    {judul}
+
+                            {Object.keys(lombaOptions).length > 0 ? (
+                                Object.entries(lombaOptions).map(
+                                    ([id, judul]) => (
+                                        <option key={id} value={id}>
+                                            {judul}
+                                        </option>
+                                    )
+                                )
+                            ) : (
+                                <option value="" disabled>
+                                    Anda belum memiliki pengajuan lomba
                                 </option>
-                            ))}
+                            )}
                         </select>
+
                         {errors.pengajuanlomba_id && (
                             <p className="text-red-500">
                                 {errors.pengajuanlomba_id}
@@ -224,7 +234,7 @@ const TambahLaporanPrestasi = ({ lombaOptions }) => {
                             name="url_media_sosial"
                             type="text"
                             value={data.url_media_sosial}
-placeholder="Cth:https://www.instagram.com"
+                            placeholder="Cth:https://www.instagram.com"
                             onChange={(e) =>
                                 setData("url_media_sosial", e.target.value)
                             }
@@ -251,7 +261,8 @@ placeholder="Cth:https://www.instagram.com"
                                     />
                                 </TooltipTrigger>
                                 <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
-                                Unggah gambar (maks. 5MB per file), dapat lebih dari satu, maksimal 3 file
+                                    Unggah gambar (maks. 5MB per file), dapat
+                                    lebih dari satu, maksimal 3 file
                                 </TooltipContent>
                             </Tooltip>
                         </div>
