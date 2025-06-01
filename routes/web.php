@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\SitemapController;
 // Clear the cache
+
+
 Route::get('/clear-cache', function() {
     Artisan::call('config:clear');
     Artisan::call('cache:clear');
@@ -24,6 +27,11 @@ Route::get('/clear-cache', function() {
     Artisan::call('config:cache');
     return 'Cache cleared';
 });
+
+
+
+Route::get('/generate-sitemap', [SitemapController::class, 'index']);
+
 
 // Authentication Routes
 Route::get('/', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('register');
