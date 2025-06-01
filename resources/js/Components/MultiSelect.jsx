@@ -1,4 +1,4 @@
-import { Label } from "@/components/ui/label"
+import { Label } from "@/Components/ui/label"
 import MultipleSelector from "@/components/ui/multiselect";
 
 export default function MultiSelect({value, onChange, data, placeholder, notFoundText}) {
