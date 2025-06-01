@@ -31,9 +31,9 @@ export default function Login({ status, canResetPassword, appUrl }) {
                         />
                     </div>
                     <div>
-                        <p className="text-primary font-bold text-xl">
+                        <h1 className="text-primary font-bold text-xl">
                             Sistem Informasi Prestasi Mahasiswa
-                        </p>
+                        </h1>
                         <p className="text-primary">Kemahasiswaan PCR</p>
                     </div>
                 </div>
