@@ -4,12 +4,12 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
         document
             .getElementById('screenshot-container')
-            ?.classList.add('!hidden');
-        document.getElementById('docs-card')?.classList.add('!row-span-1');
+            ?.classList.add('hidden!');
+        document.getElementById('docs-card')?.classList.add('row-span-1!');
         document
             .getElementById('docs-card-content')
-            ?.classList.add('!flex-row');
-        document.getElementById('background')?.classList.add('!hidden');
+            ?.classList.add('flex-row!');
+        document.getElementById('background')?.classList.add('hidden!');
     };
 
     return (
@@ -86,7 +86,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                             alt="Laravel documentation screenshot"
                                             className="hidden aspect-video h-full w-full flex-1 rounded-[10px] object-cover object-top drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block"
                                         />
-                                        <div className="absolute -bottom-16 -left-16 h-40 w-[calc(100%+8rem)] bg-gradient-to-b from-transparent via-white to-white dark:via-zinc-900 dark:to-zinc-900"></div>
+                                        <div className="absolute -bottom-16 -left-16 h-40 w-[calc(100%+8rem)] bg-linear-to-b from-transparent via-white to-white dark:via-zinc-900 dark:to-zinc-900"></div>
                                     </div>
 
                                     <div className="relative flex items-center gap-6 lg:items-end">

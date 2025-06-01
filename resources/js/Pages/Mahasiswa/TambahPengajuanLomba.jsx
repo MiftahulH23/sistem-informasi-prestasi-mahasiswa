@@ -1,20 +1,18 @@
-import React, { use, useState, useEffect } from "react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import { Label } from "@/Components/ui/label";
+import MultiSelect from "@/Components/MultiSelect";
 import { Input } from "@/Components/ui/input";
-import Swal from "sweetalert2";
+import { Label } from "@/Components/ui/label";
 import {
     Tooltip,
     TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
+    TooltipTrigger
 } from "@/Components/ui/tooltip";
-import { Button } from "@/Components/ui/button";
-import { CircleHelp, PlusIcon } from "lucide-react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, useForm, usePage } from "@inertiajs/react";
+import { CircleHelp } from "lucide-react";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const PengajuanLomba = ({ auth, dosenList }) => {
-    //  cuurrentUserId = auth.user.id; // Ambil ID user yang sedang login
     const currentUserId = auth.user.id; // Ambil ID user yang sedang login
     const { kategoriLomba, judulLomba, mahasiswaList } = usePage().props;
     const { flash } = usePage().props;
@@ -84,24 +82,6 @@ const PengajuanLomba = ({ auth, dosenList }) => {
         }
     };
 
-    const addAnggota = () => {
-        setAnggotaKelompok([...anggotaKelompok, ""]);
-    };
-
-    const removeAnggota = (index) => {
-        const newAnggota = anggotaKelompok.filter((_, i) => i !== index);
-        setAnggotaKelompok(newAnggota);
-        setData("anggota_kelompok", newAnggota);
-        setData("jumlah_peserta", newAnggota.length + 1); // Update jumlah peserta
-    };
-
-    const handleAnggotaChange = (index, value) => {
-        const newAnggota = [...anggotaKelompok];
-        newAnggota[index] = parseInt(value); // pastikan ID berupa angka
-        setAnggotaKelompok(newAnggota);
-        setData("anggota_kelompok", newAnggota);
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -169,11 +149,21 @@ const PengajuanLomba = ({ auth, dosenList }) => {
             href: "/pengajuan-lomba/create",
         },
     ];
+    const [select, setSelect] = useState([]);
+    const dataDosen = dosenList.map((dosen) => ({
+        value: dosen.id,
+        label: dosen.name,
+    }));
+    const dataMahasiswa = mahasiswaList.map((mahasiswa) => ({
+        value: mahasiswa.id,
+        label: mahasiswa.name,
+    }));
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <div className="flex flex-col gap-7">
                 <Head title="Pengajuan Lomba" />
                 <h1 className="text-2xl font-bold">Pengajuan Lomba</h1>
+
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <input
                         type="hidden"
@@ -207,7 +197,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 onChange={handleKategoriChange}
                                 value={selectedKategori}
                             >
-                                <option value="" disabled selected>
+                                <option value="" disabled>
                                     Pilih Kategori
                                 </option>
                                 {kategoriLomba.map((kategori) => (
@@ -252,7 +242,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     value={data.judul_lomba}
                                     required
                                 >
-                                    <option value="" disabled selected>
+                                    <option value="" disabled>
                                         Pilih Judul
                                     </option>
                                     {filteredJudul.map((judul) => (
@@ -296,7 +286,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     setData("jenis_lomba", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>
+                                <option value="" disabled>
                                     Pilih Jenis Lomba
                                 </option>
                                 <option value="Akademik">Akademik</option>
@@ -319,7 +309,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     setData("tingkat_lomba", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>
+                                <option value="" disabled>
                                     Pilih Tingkat Lomba
                                 </option>
                                 <option value="Internasional">
@@ -346,7 +336,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     setData("model_pelaksanaan", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>
+                                <option value="" disabled>
                                     Pilih Model Pelaksanan
                                 </option>
                                 <option value="offline">Offline</option>
@@ -366,7 +356,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     setData("program_studi", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>
+                                <option value="" disabled>
                                     Pilih Program Studi
                                 </option>
                                 <option value="Teknik Elektronika Telekomunikasi">
@@ -421,7 +411,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     setData("dosen_pembimbing", e.target.value)
                                 }
                             >
-                                <option value="" disabled selected>
+                                <option value="" disabled>
                                     Pilih Dosen
                                 </option>
                                 {dosenList.map((dosen) => (
@@ -479,7 +469,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 value={jenisKepesertaan}
                                 onChange={handleKepesertaanChange}
                             >
-                                <option value="" disabled selected>
+                                <option value="" disabled>
                                     Pilih Jenis Kepesertaan
                                 </option>
                                 <option value="individu">Individu</option>
@@ -527,81 +517,21 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                         </TooltipContent>
                                     </Tooltip>
                                 </div>
-                                {anggotaKelompok.map((anggota, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex gap-2 justify-center"
-                                    >
-                                        <div className="flex-1">
-                                            <select
-                                                className="h-10 flex-1 border rounded-md px-3"
-                                                value={anggota}
-                                                onChange={(e) =>
-                                                    handleAnggotaChange(
-                                                        index,
-                                                        e.target.value
-                                                    )
-                                                }
-                                                required
-                                            >
-                                                <option value="">
-                                                    Pilih Anggota
-                                                </option>
-
-                                                {/* Tetap tampilkan anggota yang sedang dipilih meskipun sudah masuk anggotaKelompok */}
-                                                {anggota &&
-                                                    !mahasiswaList.find(
-                                                        (user) =>
-                                                            user.id === anggota
-                                                    ) && (
-                                                        <option value={anggota}>
-                                                            {`(Data Tidak Ditemukan)`}{" "}
-                                                            {/* fallback kalau datanya tidak ada */}
-                                                        </option>
-                                                    )}
-
-                                                {mahasiswaList
-                                                    .filter(
-                                                        (user) =>
-                                                            user.id !==
-                                                                currentUserId &&
-                                                            (!anggotaKelompok.includes(
-                                                                user.id
-                                                            ) ||
-                                                                user.id ===
-                                                                    anggota)
-                                                    )
-                                                    .map((user) => (
-                                                        <option
-                                                            key={user.id}
-                                                            value={user.id}
-                                                        >
-                                                            {user.name}
-                                                        </option>
-                                                    ))}
-                                            </select>
-                                            <p className="text-muted-foreground text-sm">
-                                                Catatan: Nama anggota kelompok
-                                                dipilih secara random saja
-                                            </p>
-                                        </div>
-
-                                        <button
-                                            type="button"
-                                            className="bg-red-500 text-white px-3 py-1 h-fit mt-1 rounded-md"
-                                            onClick={() => removeAnggota(index)}
-                                        >
-                                            Hapus
-                                        </button>
-                                    </div>
-                                ))}
-                                <button
-                                    type="button"
-                                    className="mt-2 text-primary font-semibold"
-                                    onClick={addAnggota}
-                                >
-                                    + Tambah Anggota
-                                </button>
+                                <div className="flex-1">
+                                    <MultiSelect
+                                        placeholder="Pilih Anggota Kelompok"
+                                        notFoundText="Nama mahasiswa tidak ditemukan"
+                                        value={anggotaKelompok}
+                                        onChange={(e) => {
+                                            setAnggotaKelompok(e);
+                                            setData(
+                                                "anggota_kelompok",
+                                                e.map((item) => item.value)
+                                            );
+                                        }}
+                                        data={dataMahasiswa}
+                                    />
+                                </div>
                             </div>
                         )}
 

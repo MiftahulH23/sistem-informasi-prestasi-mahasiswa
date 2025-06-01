@@ -179,7 +179,7 @@ function CheckboxFilter(props) {
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className="group !w-fit !min-w-32 !gap-2 p-3"
+          className="group w-fit! min-w-32! gap-2! p-3"
         >
           <div className="flex items-center justify-between">
             <span className="text-foreground/90 text-xs">Filter</span>
@@ -207,7 +207,7 @@ function CheckboxFilter(props) {
         <Button
           variant="ghost"
           size="sm"
-          className="h-fit gap-1 rounded-sm py-0.5 !pe-2 !ps-0.5"
+          className="h-fit gap-1 rounded-sm py-0.5 pe-2! ps-0.5!"
           onClick={() => setState(undefined)}
         >
           <ChevronLeftIcon className="size-3" />
@@ -295,7 +295,7 @@ function RadioFilter(props) {
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className="group !w-fit !min-w-32 !gap-2 p-3"
+          className="group w-fit! min-w-32! gap-2! p-3"
         >
           <div className="flex items-center justify-between">
             <span className="text-foreground/90 text-xs">Filter</span>
@@ -323,7 +323,7 @@ function RadioFilter(props) {
         <Button
           variant="ghost"
           size="sm"
-          className="h-fit gap-1 rounded-sm py-0.5 !pe-2 !ps-0.5"
+          className="h-fit gap-1 rounded-sm py-0.5 pe-2! ps-0.5!"
           onClick={() => setState(undefined)}
         >
           <ChevronLeftIcon className="size-3" />
@@ -439,7 +439,7 @@ function DateRangeFilter(props) {
         <Button
           variant="ghost"
           size="sm"
-          className="h-fit gap-1 rounded-sm py-0.5 !pe-2 !ps-0.5"
+          className="h-fit gap-1 rounded-sm py-0.5 pe-2! ps-0.5!"
           onClick={() => setState(undefined)}
         >
           <ChevronLeftIcon className="size-3" />
@@ -537,7 +537,7 @@ function DateYearFilter(props) {
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className="group !w-fit !min-w-32 !gap-2 p-3"
+          className="group w-fit! min-w-32! gap-2! p-3"
         >
           <div className="flex items-center justify-between">
             <span className="text-foreground/90 text-xs">Filter</span>
@@ -565,7 +565,7 @@ function DateYearFilter(props) {
         <Button
           variant="ghost"
           size="sm"
-          className="h-fit gap-1 rounded-sm py-0.5 !pe-2 !ps-0.5"
+          className="h-fit gap-1 rounded-sm py-0.5 pe-2! ps-0.5!"
           onClick={() => setState(undefined)}
         >
           <ChevronLeftIcon className="size-3" />
@@ -649,7 +649,7 @@ function FilterList(props) {
     <Button
       size="sm"
       variant="ghost"
-      className="h-7 justify-start !ps-2 text-sm"
+      className="h-7 justify-start ps-2! text-sm"
       onClick={() => setState(column.id)}
     >
       <Icon className="text-muted-foreground size-4" />
@@ -758,7 +758,7 @@ function FilterComponent(props) {
       </PopoverTrigger>
       <PopoverContent
         align="center"
-        className="group flex !w-max !min-w-52 flex-col !gap-1 p-2"
+        className="group flex w-max! min-w-52! flex-col gap-1! p-2"
       >
         {!state && (
           <>
