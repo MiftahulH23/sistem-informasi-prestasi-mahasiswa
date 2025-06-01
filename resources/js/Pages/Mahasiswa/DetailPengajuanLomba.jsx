@@ -112,7 +112,7 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                         )}
                     </div>
                     <div>
-                        <strong>Catatan:</strong> {pengajuanLomba.catatan}
+                        <strong>Catatan:</strong> {pengajuanLomba.catatan ? pengajuanLomba.catatan : "Pengajuan dalam proses"}
                     </div>
                 </div>
             </div>
