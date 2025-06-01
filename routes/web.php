@@ -46,7 +46,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 // Pengajuan Lomba
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:Kemahasiswaan'])->group(function () {
     Route::get('/pengajuan-lomba/create', [PengajuanLombaController::class, 'create'])->name('pengajuan-lomba.create');
     Route::post('/pengajuan-lomba/store', [PengajuanLombaController::class, 'store'])->name('pengajuan-lomba.store');
     Route::get('/pengajuan-lomba', [PengajuanLombaController::class, 'index'])->name('pengajuan-lomba.index');

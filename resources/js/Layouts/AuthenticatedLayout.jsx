@@ -8,9 +8,12 @@ import {
     SidebarTrigger,
 } from "@/Components/ui/sidebar";
 import { TooltipProvider } from "@/Components/ui/tooltip";
+import { usePage } from "@inertiajs/react";
 import { ChevronsLeft } from "lucide-react";
+import Swal from "sweetalert2";
 
 export default function AuthenticatedLayout({ children, breadcrumbs }) {
+
     const currentPath = window.location.pathname;
     const isInMainMenu = currentPath.split("/").length <= 2;
     return (
@@ -25,9 +28,10 @@ export default function AuthenticatedLayout({ children, breadcrumbs }) {
                     </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4 pt-0 bg-background">
-                    <TooltipProvider delayDuration={0}>{children}</TooltipProvider>
+                    <TooltipProvider delayDuration={0}>
+                        {children}
+                    </TooltipProvider>
                 </div>
-                
             </SidebarInset>
         </SidebarProvider>
     );

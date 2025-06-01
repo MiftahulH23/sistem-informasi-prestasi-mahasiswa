@@ -10,7 +10,9 @@
     <meta name="description"
         content="SIPRESMA adalah sistem informasi prestasi mahasiswa Politeknik Caltex Riau." />
     <meta name="keywords" content="sipresma pcr, politeknik, caltex, riau, politeknik caltex, pcr, mahasiswa, sipresma,"/>
-    <menta property="og:site_name" content="Sistem Informasi Prestasi Mahasiswa PCR" />
+    <meta property="og:site_name" content="Sistem Informasi Prestasi Mahasiswa PCR" />
+    <meta property="google-site-verification" content="XazmPdrKVRB5VlJijgnjPkW2ExIL-55HcQ6oE21LSlU" />
+
     <meta property="og:url" content="https://sipresma.pocari.id" />
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
