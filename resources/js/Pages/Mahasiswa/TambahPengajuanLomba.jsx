@@ -51,7 +51,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
             setData("judul_lomba", "");
         } else {
             setFilteredJudul([]);
-            setData("judul_lomba", "");
+            // setData("judul_lomba", "");
         }
     }, [selectedKategori, judulLomba]);
 
