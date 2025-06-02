@@ -83,62 +83,56 @@ const PengajuanLomba = ({ auth, dosenList }) => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        const formData = new FormData();
+    const formData = new FormData();
 
-        // Pastikan `jenis_kepesertaan` sudah tersimpan dengan benar
-        formData.append("jenis_kepesertaan", data.jenis_kepesertaan);
-
-        // Perbaiki jumlah peserta agar dikirim ke backend
-        formData.append(
-            "jumlah_peserta",
-            data.jenis_kepesertaan === "Individu"
-                ? 1
-                : data.anggota_kelompok.length
-        );
-
-        // Kirim array anggota dalam format JSON
-        formData.append(
-            "anggota_kelompok",
-            JSON.stringify(data.anggota_kelompok)
-        );
-
-        // Tambahkan data lainnya
-        Object.keys(data).forEach((key) => {
-            if (
-                ![
-                    "jenis_kepesertaan",
-                    "jumlah_peserta",
-                    "anggota_kelompok",
-                ].includes(key)
-            ) {
+    // Tambahkan semua field dari 'data'
+    Object.keys(data).forEach((key) => {
+        if (key === "anggota_kelompok") {
+            formData.append(key, JSON.stringify(data[key] || []));
+        } else if (key === "surat_tugas") {
+            if (data[key]) {
                 formData.append(key, data[key]);
             }
-        });
+        } else {
+            formData.append(key, data[key] ?? "");
+        }
+    });
 
-        // Kirim data dengan Inertia
-        post(route("pengajuan-lomba.store"), {
-            body: formData,
-            headers: { "Content-Type": "multipart/form-data" },
-            onSuccess: () => {
-                reset(); // Reset form ke nilai awal
-                setJenisKepesertaan(""); // Reset jenis kepesertaan
-                setAnggotaKelompok([]); // Reset anggota kelompok
-                setSelectedKategori(""); // Reset kategori
-                setFilteredJudul([]); // Reset judul
-                Swal.fire(
-                    "Berhasil!",
-                    "Pengajuan berhasil ditambah.",
-                    "success"
-                );
-            },
-            onError: (errors) => {
-                const message = Object.values(errors)[0];
-                Swal.fire("Gagal!", message, "error");
-            },
-        });
-    };
+    // Hitung ulang jumlah peserta
+    const jumlahPeserta =
+        data.jenis_kepesertaan === "Individu"
+            ? 1
+            : (data.anggota_kelompok || []).length + 1;
+
+    formData.set("jumlah_peserta", jumlahPeserta);
+
+    // Debug log (opsional)
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ":", pair[1]);
+    }
+
+    post(route("pengajuan-lomba.store"), {
+        body: formData,
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        onSuccess: () => {
+            reset();
+            setJenisKepesertaan("");
+            setAnggotaKelompok([]);
+            setSelectedKategori("");
+            setFilteredJudul([]);
+            Swal.fire("Berhasil!", "Pengajuan berhasil ditambah.", "success");
+        },
+        onError: (errors) => {
+            const message = Object.values(errors)[0];
+            Swal.fire("Gagal!", message, "error");
+        },
+    });
+};
+
     const breadcrumb = [
         {
             title: "Pengajuan Lomba",
@@ -195,6 +189,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 id="kategorilomba_id"
                                 name="kategorilomba_id"
                                 onChange={handleKategoriChange}
+                                value={data.kategorilomba_id}
                                 value={selectedKategori}
                             >
                                 <option value="" disabled>
@@ -285,6 +280,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 onChange={(e) =>
                                     setData("jenis_lomba", e.target.value)
                                 }
+                                value={data.jenis_lomba}
                             >
                                 <option value="" disabled>
                                     Pilih Jenis Lomba
@@ -308,6 +304,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 onChange={(e) =>
                                     setData("tingkat_lomba", e.target.value)
                                 }
+                                value={data.tingkat_lomba}
                             >
                                 <option value="" disabled>
                                     Pilih Tingkat Lomba
@@ -335,6 +332,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 onChange={(e) =>
                                     setData("model_pelaksanaan", e.target.value)
                                 }
+                                value={data.model_pelaksanaan}
                             >
                                 <option value="" disabled>
                                     Pilih Model Pelaksanan
@@ -355,6 +353,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 onChange={(e) =>
                                     setData("program_studi", e.target.value)
                                 }
+                                value={data.program_studi}
                             >
                                 <option value="" disabled>
                                     Pilih Program Studi
@@ -410,6 +409,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 onChange={(e) =>
                                     setData("dosen_pembimbing", e.target.value)
                                 }
+                                value={data.dosen_pembimbing}
                             >
                                 <option value="" disabled>
                                     Pilih Dosen
@@ -438,6 +438,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 onChange={(e) =>
                                     setData("tanggal_mulai", e.target.value)
                                 }
+                                value={data.tanggal_mulai}
                             />
                         </div>
 
@@ -454,6 +455,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 onChange={(e) =>
                                     setData("tanggal_selesai", e.target.value)
                                 }
+                                value={data.tanggal_selesai}
                             />
                         </div>
 
@@ -572,15 +574,14 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 </Tooltip>
                             </div>
                             <Input
-                                id="surat_tugas"
-                                name="surat_tugas"
-                                type="file"
-                                className="h-10"
-                                accept="application/pdf"
-                                onChange={(e) =>
-                                    setData("surat_tugas", e.target.files[0])
-                                }
-                            />
+    id="surat_tugas"
+    name="surat_tugas"
+    type="file"
+    className="h-10"
+    accept="application/pdf"
+    onChange={(e) => setData("surat_tugas", e.target.files[0])}
+    required
+/>
                         </div>
                     </div>
                     <div className="flex justify-end mt-5 py-3">
