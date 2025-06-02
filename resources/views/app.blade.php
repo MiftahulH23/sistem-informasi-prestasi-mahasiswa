@@ -7,12 +7,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Sistem Informasi Prestasi Mahasiswa Politeknik Caltex Riau" />
     <meta property="og:title" content="SIPRESMA PCR" />
-    <meta name="description"
-        content="SIPRESMA adalah sistem informasi prestasi mahasiswa Politeknik Caltex Riau." />
-    <meta name="keywords" content="sipresma pcr, politeknik, caltex, riau, politeknik caltex, pcr, mahasiswa, sipresma,"/>
+    <meta name="description" content="SIPRESMA adalah sistem informasi prestasi mahasiswa Politeknik Caltex Riau." />
+    <meta name="keywords"
+        content="sipresma pcr, politeknik, caltex, riau, politeknik caltex, pcr, mahasiswa, sipresma," />
     <meta property="og:site_name" content="Sistem Informasi Prestasi Mahasiswa PCR" />
-    <meta property="google-site-verification" content="XazmPdrKVRB5VlJijgnjPkW2ExIL-55HcQ6oE21LSlU" />
-
+    {{-- <meta property="google-site-verification" content="XazmPdrKVRB5VlJijgnjPkW2ExIL-55HcQ6oE21LSlU" /> --}}
+    <meta name="google-site-verification" content="2xTG-E5JkeHfd1oO97PZ7CDtUEciuB0VMJv7U0N-Fco" />
     <meta property="og:url" content="https://sipresma.pocari.id" />
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
