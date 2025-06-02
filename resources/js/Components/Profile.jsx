@@ -21,7 +21,7 @@ export default function Profile() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button className="focus-visible:ring-0 focus-visible:outline-none pr-2 rounded-full bg-white focus-visible:ring-transparent pl-1 gap-1 ms-auto">
+                <Button className="focus-visible:ring-0 focus-visible:outline-none pr-2 rounded-full bg-white focus-visible:ring-transparent pl-1 gap-1 ms-auto cursor-pointer hover:bg-white">
                     <Avatar>
                         <AvatarImage src={user.avatar} alt="Profile image" />
                         <AvatarFallback>{inisial}</AvatarFallback>
