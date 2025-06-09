@@ -20,26 +20,7 @@ export default function Login({ status, canResetPassword, appUrl }) {
 
     return (
         <GuestLayout>
-            <Head>
-                <title>Login</title>
-                <meta
-                    name="description"
-                    content="Masuk ke SIPRESMA PCR untuk mengelola data prestasi mahasiswa Politeknik Caltex Riau."
-                />
-                <meta
-                    name="keywords"
-                    content="sipresma, login, mahasiswa, prestasi, politeknik caltex riau, pcr"
-                />
-                <meta property="og:title" content="Login - SIPRESMA PCR" />
-                <meta
-                    property="og:description"
-                    content="Login ke sistem informasi prestasi mahasiswa Politeknik Caltex Riau."
-                />
-                <meta
-                    property="og:url"
-                    content="https://sipresma.pocari.id/login"
-                />
-            </Head>
+           <Head title="Sign in" />
             <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl overflow-hidden px-6 py-8 shadow-md rounded-lg bg-white">
                 <div className="flex gap-3 items-center mb-4 justify-center">
                     <div className="w-12 h-12 flex-none overflow-hidden">
