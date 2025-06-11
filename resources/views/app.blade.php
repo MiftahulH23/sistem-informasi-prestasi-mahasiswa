@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta property="og:title" content="SIPRESMA PCR" />
+    <meta name="description" content="Sistem Informasi Prestasi Mahasiswa Politeknik Caltex Riau" />
     <meta name="description" content="SIPRESMA adalah sistem informasi prestasi mahasiswa Politeknik Caltex Riau." />
     <meta name="keywords"
         content="sipresma pcr, politeknik, caltex, riau, politeknik caltex, pcr, mahasiswa, sipresma," />
