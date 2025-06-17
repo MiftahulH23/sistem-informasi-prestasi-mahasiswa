@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 import React from "react";
-import { NotFound, Illustration } from "@/components/ui/not-found"
+import { NotFound, Illustration } from "@/Components/ui/not-found"
 
 const NotFoundPage = () => {
     return (

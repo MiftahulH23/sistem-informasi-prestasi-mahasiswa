@@ -1,6 +1,5 @@
-import { Search, ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/Components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
 export function Illustration(props) {
     return (
