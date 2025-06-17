@@ -20,7 +20,12 @@ export default function Login({ status, canResetPassword, appUrl }) {
 
     return (
         <GuestLayout>
-           <Head title="Sign in" />
+            <Head title="Sign in">
+                <meta
+                    name="description"
+                    content="Sistem Informasi Prestasi Mahasiswa Politeknik Caltex Riau"
+                />
+            </Head>
             <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl overflow-hidden px-6 py-8 shadow-md rounded-lg bg-white">
                 <div className="flex gap-3 items-center mb-4 justify-center">
                     <div className="w-12 h-12 flex-none overflow-hidden">
