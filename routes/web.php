@@ -18,6 +18,7 @@ use App\Http\Controllers\{
     ProfileController
 };
 use App\Http\Controllers\Export\PrestasiExportController;
+use Inertia\Inertia;
 
 // Utility
 Route::get('/clear-cache', function () {
@@ -27,7 +28,9 @@ Route::get('/clear-cache', function () {
     Artisan::call('config:cache');
     return 'Cache cleared';
 });
-
+Route::fallback(function () {
+        return Inertia::render('NotFound');
+    })->name('not-found');
 Route::get('/generate-sitemap', [SitemapController::class, 'index']);
 
 // Auth
