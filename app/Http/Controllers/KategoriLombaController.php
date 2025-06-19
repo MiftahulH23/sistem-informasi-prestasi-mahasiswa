@@ -44,7 +44,7 @@ class KategoriLombaController extends Controller
         KategoriLomba::create($validated);
 
         // Redirect dengan pesan sukses
-        return redirect()->route('kategori-lomba')->with('success', 'Kategori Lomba berhasil ditambahkan!');
+        return redirect()->route('kategori-lomba.index')->with('success', 'Kategori Lomba berhasil ditambahkan!');
 
     }
 
@@ -82,7 +82,7 @@ class KategoriLombaController extends Controller
             'kategori_lomba' => $request->kategori_lomba,
         ]);
 
-        return redirect()->route('kategori-lomba')->with('success', 'Kategori berhasil diperbarui.');
+        return redirect()->route('kategori-lomba.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
 
@@ -91,6 +91,6 @@ class KategoriLombaController extends Controller
     {
         $kategoriLomba->forceDelete();
 
-        return redirect()->route('kategori-lomba')->with('success', 'Kategori berhasil dihapus.');
+        return redirect()->route('kategori-lomba.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

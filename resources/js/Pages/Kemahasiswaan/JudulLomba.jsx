@@ -1,6 +1,7 @@
 import Modal from "@/Components/Modal";
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
+import { Dialog, DialogContent } from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -157,7 +158,7 @@ const JudulLomba = () => {
                         <DataTableFilter table={table} />
                         <button
                             onClick={() => setAddModalOpen(true)}
-                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded flex items-center gap-2 ms-auto"
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded flex items-center gap-2 ms-auto hover:cursor-pointer"
                         >
                             Tambah
                         </button>
@@ -167,19 +168,15 @@ const JudulLomba = () => {
 
             {/* Modal Tambah */}
             {isAddModalOpen && (
-                <Modal
-                    show={isAddModalOpen}
-                    onClose={() => setAddModalOpen(false)}
+                <Dialog
+                    open={isAddModalOpen}
+                    onOpenChange={setAddModalOpen}
                 >
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full">
+                    <DialogContent className="bg-white p-6 rounded-lg shadow-lg w-full">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-bold">
                                 Tambah Judul Lomba
                             </h2>
-                            <X
-                                className="cursor-pointer text-gray-500"
-                                onClick={() => setAddModalOpen(false)}
-                            />
                         </div>
                         <form onSubmit={handleSubmit}>
                             <Label>Judul Lomba</Label>
@@ -218,39 +215,35 @@ const JudulLomba = () => {
                             <div className="mt-4 flex justify-end gap-2">
                                 <button
                                     type="button"
-                                    className="bg-gray-400 text-white px-3 py-1 rounded"
+                                    className="bg-gray-400 text-white px-3 py-1 rounded hover:cursor-pointer"
                                     onClick={() => setAddModalOpen(false)}
                                 >
                                     Batal
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                                    className="bg-blue-500 text-white px-3 py-1 rounded hover:cursor-pointer"
                                     disabled={processing}
                                 >
                                     {processing ? "Menyimpan..." : "Simpan"}
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </Modal>
+                    </DialogContent>
+                </Dialog>
             )}
 
             {/* Modal Edit */}
             {isEditModalOpen && (
-                <Modal
-                    show={isEditModalOpen}
-                    onClose={() => setEditModalOpen(false)}
+                <Dialog
+                    open={isEditModalOpen}
+                    onOpenChange={setEditModalOpen}
                 >
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full">
+                    <DialogContent className="bg-white p-6 rounded-lg shadow-lg w-full">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-bold">
                                 Edit Judul Lomba
                             </h2>
-                            <X
-                                className="cursor-pointer text-gray-500"
-                                onClick={() => setEditModalOpen(false)}
-                            />
                         </div>
                         <form onSubmit={handleEditSubmit}>
                             <Label>Judul Lomba</Label>
@@ -291,22 +284,22 @@ const JudulLomba = () => {
                             <div className="mt-4 flex justify-end gap-2">
                                 <button
                                     type="button"
-                                    className="bg-gray-400 text-white px-3 py-1 rounded"
+                                    className="bg-gray-400 text-white px-3 py-1 rounded hover:cursor-pointer"
                                     onClick={() => setEditModalOpen(false)}
                                 >
                                     Batal
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-blue-500 text-white px-3 py-1 rounded"
+                                    className="bg-blue-500 text-white px-3 py-1 rounded hover:cursor-pointer"
                                     disabled={editProcessing}
                                 >
                                     {editProcessing ? "Menyimpan..." : "Simpan"}
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </Modal>
+                    </DialogContent>
+                </Dialog>
             )}
         </AuthenticatedLayout>
     );

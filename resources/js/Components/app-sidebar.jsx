@@ -154,7 +154,7 @@ export function AppSidebar({ ...props }) {
                 <NavProjects projects={menu[role]} />
             </SidebarContent>
             <SidebarFooter>
-                <p className="text-xs text-zinc-400">&copy; {new Date().getFullYear()} PCR</p>
+                <span className="text-xs text-zinc-400">&copy; {new Date().getFullYear()} PCR</span>
             </SidebarFooter>
         </Sidebar>
     );

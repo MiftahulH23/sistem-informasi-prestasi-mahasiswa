@@ -37,7 +37,7 @@ class JudulLombaController extends Controller
             'kategorilomba_id' => 'required|exists:kategori_lomba,kategorilomba_id',
         ]);
         JudulLomba::create($validated);
-        return redirect()->route('judul-lomba');
+        return redirect()->route('judul-lomba.index');
     }
 
     /**
