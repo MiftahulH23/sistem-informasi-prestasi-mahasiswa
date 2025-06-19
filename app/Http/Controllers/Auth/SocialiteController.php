@@ -37,6 +37,7 @@ class SocialiteController extends Controller
         $registeredUser = User::where('google_id', $socialUser->id)
             ->orWhere('email', $email)
             ->first();
+        
 
         if ($registeredUser) {
             $registeredUser->update([
@@ -51,6 +52,12 @@ class SocialiteController extends Controller
 
             Auth::login($registeredUser, true);
         } else {
+            // Panggil API untuk mendapatkan data user
+            // $mahasiswaData = url
+            // $mahasiswa = array_filter($mahasiswaData, function ($item) use ($email) {
+            //     return $item['email'] === $email;
+            // });
+
             $user = User::create([
                 'name' => $socialUser->name,
                 'email' => $email,
@@ -60,6 +67,9 @@ class SocialiteController extends Controller
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
                 'role' => $role,
+                // 'prodi' => $mahasiswa?->prodi ?? null,
+                // 'nim' => $mahasiswa?->nim ?? null,
+                // 'inisial' => $mahasiswa?->initial ?? null,
             ]);
             Auth::login($user, true);
         }
