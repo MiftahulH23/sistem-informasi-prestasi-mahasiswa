@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Models\PengajuanLomba;
 use App\Models\Prestasi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use App\Models\KategoriLomba;
 use App\Models\JudulLomba;
 use App\Models\User;
 use App\Notifications\Pengajuan;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Hash;
 use Exception;
 
 class PengajuanLombaController extends Controller
@@ -81,7 +85,6 @@ class PengajuanLombaController extends Controller
             'tanggal_selesai' => 'required|date',
             'jenis_kepesertaan' => 'required|in:Individu,Kelompok',
             'anggota_kelompok' => 'nullable|array',
-            'anggota_kelompok.*' => 'string',
             'surat_tugas' => 'required|file|mimes:pdf|max:5120',
         ], [
             'kategorilomba_id.required' => 'Kategori lomba wajib diisi.',
@@ -102,7 +105,6 @@ class PengajuanLombaController extends Controller
             'jenis_kepesertaan.required' => 'Jenis kepesertaan wajib diisi.',
             'jenis_kepesertaan.in' => 'Jenis kepesertaan harus berupa "Individu" atau "Kelompok".',
             'anggota_kelompok.array' => 'Anggota kelompok harus berupa array.',
-            'anggota_kelompok.*.string' => 'Setiap anggota kelompok harus berupa teks.',
             'surat_tugas.required' => 'Surat tugas wajib diunggah.',
             'surat_tugas.file' => 'Surat tugas harus berupa file.',
             'surat_tugas.mimes' => 'Surat tugas harus berformat PDF.',
@@ -113,9 +115,51 @@ class PengajuanLombaController extends Controller
         // Ambil user yang login
         $user = Auth::user();
         $anggota_kelompok = $request->anggota_kelompok ?? [];
-
+        // dd($anggota_kelompok);
         // Convert isi array jadi integer, hilangkan null/kosong
-        $anggota_kelompok = array_filter(array_map('intval', $anggota_kelompok));
+        $userUdahAda = array_map(
+            function ($item) {
+                return $item['value'] ?? null;
+            },
+            array_filter($anggota_kelompok, function ($item) {
+                return isset($item['value']);
+            })
+        );
+
+        $userBelumAda = array_filter($anggota_kelompok, function ($item) {
+            return !isset($item['value']);
+        });
+
+
+        // dd($userBelumAda, $userUdahAda);
+
+        $userBaru = [];
+
+        foreach ($userBelumAda as $item) {
+            $email = trim($item['label'] ?? '');
+
+            $check = SocialiteController::checkEmail($email);
+
+            if (is_string($check)) {
+                throw ValidationException::withMessages([
+                    'anggota_kelompok' => ["Email {$email} tidak ditemukan di database. Pastikan email yang dimasukkan benar."]
+                ]);
+            }
+
+            $addUser = User::create([
+                'name' => $check->name,
+                'email' => $check->email,
+                'role' => 'Mahasiswa',
+                'nim' => $check->nim ?? null,
+                'prodi' => $check->prodi ?? null,
+                'password' => Hash::make('123'),
+            ]);
+
+            $userBaru[] = $addUser->id;
+        }
+
+
+        $anggota_kelompok = array_merge($userUdahAda, $userBaru);
 
         // Tambahkan user login ke dalam kelompok jika belum ada
         if ($request->jenis_kepesertaan === 'Kelompok') {
@@ -126,8 +170,6 @@ class PengajuanLombaController extends Controller
             $anggota_kelompok = [$user->id]; // jika individu
         }
 
-        // Hapus duplikat
-        $anggota_kelompok = array_values(array_unique($anggota_kelompok));
         $jumlah_peserta = ($request->jenis_kepesertaan === 'Individu') ? 1 : count($anggota_kelompok);
 
 
@@ -138,7 +180,7 @@ class PengajuanLombaController extends Controller
         $validated['jumlah_peserta'] = $jumlah_peserta; // Simpan jumlah peserta
         $validated['surat_tugas'] = $surat_tugas_path; // Simpan path surat tugas
         if (Auth::user()->role === 'Kemaghasiswaan') {
-            $validated['status'] = 'Diterima'; 
+            $validated['status'] = 'Diterima';
         } else {
             $validated['status'] = 'Diajukan'; // Status awal adalah Diajukan
         }

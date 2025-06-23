@@ -1,15 +1,9 @@
-import MultiSelect from "@/Components/MultiSelect";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/Components/ui/tooltip";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import { CircleHelp } from "lucide-react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import CreatableSelect from "@/Components/Createable";
 import Swal from "sweetalert2";
 
 const PengajuanLomba = ({ auth, dosenList }) => {
@@ -37,6 +31,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
     const [filteredJudul, setFilteredJudul] = useState([]);
     const [jenisKepesertaan, setJenisKepesertaan] = useState("");
     const [anggotaKelompok, setAnggotaKelompok] = useState([]);
+
 
     useEffect(() => {
         const kategoriTerpilih = kategoriLomba.find(
@@ -83,9 +78,19 @@ const PengajuanLomba = ({ auth, dosenList }) => {
         }
     };
 
+    const addAnggota = () => {
+        setAnggotaKelompok([...anggotaKelompok, ""]);
+    };
+
+    const removeAnggota = (index) => {
+        const newAnggota = anggotaKelompok.filter((_, i) => i !== index);
+        setAnggotaKelompok(newAnggota);
+        setData("anggota_kelompok", newAnggota);
+        setData("jumlah_peserta", newAnggota.length + 1); // Update jumlah peserta
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-
         // Perbarui jumlah_peserta sebelum submit
         const jumlah =
             jenisKepesertaan === "individu" ? 1 : anggotaKelompok.length + 1;
@@ -123,8 +128,13 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
     const dataMahasiswa = mahasiswaList.map((mahasiswa) => ({
         value: mahasiswa.id,
-        label: mahasiswa.name,
+        label: mahasiswa.email,
     }));
+    useEffect(() => {
+        setData("anggota_kelompok", anggotaKelompok);
+        console.log("Anggota Kelompok:", anggotaKelompok);
+    }, [anggotaKelompok]);
+    
 
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
@@ -301,7 +311,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 <option value="" disabled>
                                     Pilih Program Studi
                                 </option>
-                                 <option value="Teknik Elektronika Telekomunikasi">
+                                <option value="Teknik Elektronika Telekomunikasi">
                                     Teknik Elektronika Telekomunikasi
                                 </option>
                                 <option value="Teknik Listrik">
@@ -444,7 +454,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                         </div>
 
                         {/* Anggota Kelompok */}
-                        {jenisKepesertaan === "kelompok" && (
+                        {/* {jenisKepesertaan === "kelompok" && (
                             <div className="col-span-2 flex flex-col gap-2">
                                 <Label data-required>Anggota Kelompok</Label>
                                 <MultiSelect
@@ -459,6 +469,16 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                         );
                                     }}
                                     data={dataMahasiswa}
+                                />
+                            </div>
+                        )} */}
+                        {jenisKepesertaan === "kelompok" && (
+                            <div className="col-span-2 flex flex-col gap-2">
+                                <Label data-required>Anggota Kelompok</Label>
+                                <CreatableSelect
+                                    setValue={setAnggotaKelompok}
+                                    defaulOptions={dataMahasiswa}
+                                    value={anggotaKelompok}
                                 />
                             </div>
                         )}

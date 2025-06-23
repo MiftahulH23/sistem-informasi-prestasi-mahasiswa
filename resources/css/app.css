@@ -107,3 +107,17 @@ input[type="number"] {
 input[type="search"] {
     @apply [&::-webkit-search-cancel-button]:appearance-none;
 }
+
+.react-select__input input {
+    outline: none !important;
+    border: none !important;
+}
+.mycreatable__input input {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+input{
+    @apply focus:ring-0 focus-visible:ring-0
+}
+

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,7 @@ class SocialiteController extends Controller
         $registeredUser = User::where('google_id', $socialUser->id)
             ->orWhere('email', $email)
             ->first();
-        
+
 
         if ($registeredUser) {
             $registeredUser->update([
@@ -57,9 +58,16 @@ class SocialiteController extends Controller
             // $mahasiswa = array_filter($mahasiswaData, function ($item) use ($email) {
             //     return $item['email'] === $email;
             // });
+            if ($role === 'Mahasiswa') {
+                $check = $this->checkEmail($email);
+            } elseif ($role === 'Dosen') {
+                $check = $this->checkEmailDosen($email);
+            } else {
+                $check = null; // Untuk Kemahasiswaan, tidak perlu cek
+            }
 
             $user = User::create([
-                'name' => $socialUser->name,
+                'name' => $check?->name ?? $socialUser->name,
                 'email' => $email,
                 'password' => Hash::make('123'),
                 'avatar' => $socialUser->avatar,
@@ -67,15 +75,72 @@ class SocialiteController extends Controller
                 'google_token' => $socialUser->token,
                 'google_refresh_token' => $socialUser->refreshToken,
                 'role' => $role,
-                // 'prodi' => $mahasiswa?->prodi ?? null,
-                // 'nim' => $mahasiswa?->nim ?? null,
-                // 'inisial' => $mahasiswa?->initial ?? null,
+                'prodi' => $check?->prodi ?? null,
+                'nim' => $check?->nim ?? null,
+                'inisial' => $check?->inisial ?? null,
             ]);
             Auth::login($user, true);
         }
 
         Cookie::queue('user_session', Auth::user()->id, 120);
         return redirect()->intended('/dashboard');
+    }
+
+    public function checkEmailDosen(string $email)
+    {
+        $url = "https://v2.api.pcr.ac.id/api/pegawai?collection=pegawai-aktif";
+        $response = Http::withHeaders([
+            'apikey' => env('API_KEY_PCR'),
+        ])->post($url);
+
+        $data = $response->json();
+        $check = array_filter($data['items'], function ($item) use ($email) {
+            return $item['email'] === $email;
+        });
+
+
+        if (count($check) === 0 || $check['posisi'] !== 'Dosen') {
+            return "Email tidak ditemukan.";
+        }
+
+        $dosen = reset($check);
+
+        return (object) [
+            'prodi' => $dosen['prodi'] ?? null,
+            'inisial' => $dosen['inisial'] ?? null,
+        ];
+    }
+
+    public static function checkEmail(string $email)
+    {
+        $domain = substr(explode('@', $email)[0], -4);
+        $angkatan = substr($domain, 0, 2);
+        $prodi = substr($domain, 2, 2);
+
+        $url = "https://v2.api.pcr.ac.id/api/akademik-mahasiswa?angkatan=20{$angkatan}&prodi={$prodi}&collection=angkatan-prodi";
+
+        $response = Http::withHeaders([
+            'apikey' => env('API_KEY_PCR'),
+        ])->post($url);
+
+        $data = $response->json();
+        $check = array_filter($data['items'], function ($item) use ($email) {
+            return $item['email'] === $email;
+        });
+
+
+        if (count($check) === 0) {
+            return "Email tidak ditemukan.";
+        }
+
+        $mahasiswa = reset($check);
+
+        return (object) [
+            'prodi' => $mahasiswa['prodi'] ?? null,
+            'nim' => $mahasiswa['nim'] ?? null,
+            'name' => $mahasiswa['nama'] ?? null,
+            'email' => $mahasiswa['email'] ?? null,
+        ];
     }
 
 
