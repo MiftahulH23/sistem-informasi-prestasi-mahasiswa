@@ -2,6 +2,7 @@ import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
 import { customFilterFns } from "@/Components/data-table/utils";
 import Modal from "@/Components/Modal";
+import { Dialog, DialogContent } from "@/Components/ui/dialog";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import { FileImage, Link, X } from "lucide-react";
@@ -62,15 +63,36 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                 onSuccess: () => {
                     Swal.fire(
                         "Ditolak!",
-                        "Pengajuan ditolak dengan catatan.",
+                        "Pengajuan ditolak",
                         "success"
                     );
                     setShowCatatanModal(false);
                     setCatatan("");
                     setReviewed((prev) => ({ ...prev, [selectedId]: true }));
                 },
+                onError: (errors) => {
+                    setShowCatatanModal(false);
+                    const message = Object.values(errors)[0];
+                    Swal.fire("Gagal!", message, "error");
+                },
             }
         );
+    };
+    const handleConfirm = (id, status) => {
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: `Status bimbingan akan diubah menjadi ${status}.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, lanjutkan",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updateStatus(id, status);
+            }
+        });
     };
 
     const columns = [
@@ -230,8 +252,8 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                 ) : (
                     <div className="flex gap-2 items-center">
                         <button
-                            onClick={() => updateStatus(id, "Diterima")}
-                            className="bg-blue-500 text-white px-1 rounded size-5"
+                            onClick={() => handleConfirm(id, "Diterima")}
+                            className="bg-blue-500 text-white px-1 rounded size-5 hover:cursor-pointer"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -250,7 +272,7 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                         </button>
                         <button
                             onClick={() => handleTolakClick(id)}
-                            className="bg-red-500 text-white px-1 rounded size-5"
+                            className="bg-red-500 text-white px-1 rounded size-5 hover:cursor-pointer"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -315,19 +337,15 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                 )}
             </DataTable>
             {showCatatanModal && (
-                <Modal
-                    show={showCatatanModal}
-                    onClose={() => setShowCatatanModal(false)}
+                <Dialog
+                    open={showCatatanModal}
+                    onOpenChange={() => setShowCatatanModal(false)}
                 >
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full">
+                    <DialogContent className="bg-white p-6 rounded-lg shadow-lg w-full">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-semibold mb-2">
                                 Catatan Penolakan
                             </h2>
-                            <X
-                                className="cursor-pointer text-gray-500"
-                                onClick={() => setShowCatatanModal(false)}
-                            />
                         </div>
                         <textarea
                             value={catatan}
@@ -338,20 +356,20 @@ const UpdateStatusPelaporanPrestasi = ({ prestasi }) => {
                         ></textarea>
                         <div className="flex justify-end gap-2">
                             <button
-                                className="bg-gray-400 text-white px-3 py-1 rounded"
+                                className="bg-gray-400 text-white px-3 py-1 rounded hover:cursor-pointer"
                                 onClick={() => setShowCatatanModal(false)}
                             >
                                 Batal
                             </button>
                             <button
-                                className="bg-red-500 text-white px-3 py-1 rounded"
+                                className="bg-red-500 text-white px-3 py-1 rounded hover:cursor-pointer"
                                 onClick={kirimPenolakan}
                             >
                                 Tolak
                             </button>
                         </div>
-                    </div>
-                </Modal>
+                    </DialogContent>
+                </Dialog>
             )}
         </AuthenticatedLayout>
     );

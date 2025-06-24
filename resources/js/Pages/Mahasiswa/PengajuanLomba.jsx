@@ -181,7 +181,7 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
                                     onClick={() =>
                                         router.get("/pengajuan-lomba/create")
                                     }
-                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto"
+                                    className="bg-blue-600 py-2 px-4 text-white rounded-md ms-auto hover:cursor-pointer"
                                 >
                                     Tambah
                                 </button>

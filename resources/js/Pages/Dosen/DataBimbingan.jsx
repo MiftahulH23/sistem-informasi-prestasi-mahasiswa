@@ -24,7 +24,7 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
                     setReviewed((prev) => ({ ...prev, [id]: true })); // Tandai sebagai sudah direview
                     Swal.fire(
                         "Berhasil!",
-                        "Status bimbingan berhasil diubah.",
+                        `Status bimbingan berhasil diubah menjadi ${status}.`,
                         "success"
                     );
                 },
@@ -38,6 +38,23 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
             }
         );
     };
+    const handleConfirm = (id, status) => {
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: `Status bimbingan akan diubah menjadi ${status}.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, lanjutkan",
+            cancelButtonText: "Batal",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updateStatus(id, status);
+            }
+        });
+    };
+
     const columns = [
         {
             id: "Nomor",
@@ -91,8 +108,8 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
                 ) : (
                     <div className="flex gap-2 items-center justify-center">
                         <button
-                            onClick={() => updateStatus(id, "Diterima")}
-                            className="bg-blue-500 text-white px-1 rounded size-5"
+                            onClick={() => handleConfirm(id, "Diterima")}
+                            className="bg-blue-500 text-white px-1 rounded size-5 hover:cursor-pointer"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -109,9 +126,10 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
                                 <path d="M20 6 9 17l-5-5" />
                             </svg>
                         </button>
+
                         <button
-                            onClick={() => updateStatus(id, "Ditolak")}
-                            className="bg-red-500 text-white px-1 rounded size-5"
+                            onClick={() => handleConfirm(id, "Ditolak")}
+                            className="bg-red-500 text-white px-1 rounded size-5 hover:cursor-pointer"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -143,8 +161,8 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
         {
             title: "Detail",
             href: `/bimbingan-dosen/${id}`,
-        }
-    ]
+        },
+    ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Bimbingan" />
@@ -163,7 +181,6 @@ const DataBimbingan = ({ bimbingan, judul_lomba }) => {
                                     },
                                 ]}
                             />
-                           
                         </DataTableControls>
                     );
                 }}

@@ -142,8 +142,11 @@ class PelaporanPrestasiController extends Controller
     {
         $request->validate([
             'status' => 'required|in:Diterima,Ditolak',
-            'catatan' => 'nullable|string',
-        ]);
+            'catatan' => 'required|string',
+        ],[
+            'catatan.required' => 'Catatan wajib diisi.',
+           
+        ] );
 
         $pelaporanPrestasi = Prestasi::findOrFail($id);
         $pelaporanPrestasi->update(['status' => $request->status]);

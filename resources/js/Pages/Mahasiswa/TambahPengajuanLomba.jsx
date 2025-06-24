@@ -5,6 +5,12 @@ import { Head, useForm, usePage } from "@inertiajs/react";
 import { use, useEffect, useState } from "react";
 import CreatableSelect from "@/Components/Createable";
 import Swal from "sweetalert2";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/Components/ui/tooltip";
+import { CircleHelp } from "lucide-react";
 
 const PengajuanLomba = ({ auth, dosenList }) => {
     const currentUserId = auth.user.id;
@@ -31,7 +37,6 @@ const PengajuanLomba = ({ auth, dosenList }) => {
     const [filteredJudul, setFilteredJudul] = useState([]);
     const [jenisKepesertaan, setJenisKepesertaan] = useState("");
     const [anggotaKelompok, setAnggotaKelompok] = useState([]);
-
 
     useEffect(() => {
         const kategoriTerpilih = kategoriLomba.find(
@@ -134,7 +139,6 @@ const PengajuanLomba = ({ auth, dosenList }) => {
         setData("anggota_kelompok", anggotaKelompok);
         console.log("Anggota Kelompok:", anggotaKelompok);
     }, [anggotaKelompok]);
-    
 
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
@@ -146,9 +150,25 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                     <div className="flex flex-col md:grid md:grid-cols-2 gap-x-8 gap-y-4">
                         {/* Kategori Lomba */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="kategori_lomba" data-required>
-                                Kategori Lomba
-                            </Label>
+                            <div className="flex items-center gap-1">
+                                <Label htmlFor="kategori_lomba" data-required>
+                                    Kategori Lomba
+                                </Label>
+                                <Tooltip>
+                                    <TooltipTrigger type="button">
+                                        <CircleHelp
+                                            size={14}
+                                            aria-hidden="true"
+                                            className="text-muted-foreground"
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
+                                        Pilih 'Umum' jika lomba yang akan
+                                        diikuti tidak termasuk dalam daftar
+                                        kategori yang telah ditetapkan.
+                                    </TooltipContent>
+                                </Tooltip>
+                            </div>
                             <select
                                 id="kategorilomba_id"
                                 name="kategorilomba_id"
@@ -218,9 +238,23 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Jenis Lomba */}
                         <div className="flex flex-col gap-2">
-                            <Label htmlFor="jenis_lomba" data-required>
-                                Jenis Lomba
-                            </Label>
+                            <div className="flex items-center gap-2">
+                                <Label htmlFor="jenis_lomba" data-required>
+                                    Jenis Lomba
+                                </Label>
+                                <Tooltip>
+                                    <TooltipTrigger type="button">
+                                        <CircleHelp
+                                            size={14}
+                                            aria-hidden="true"
+                                            className="text-muted-foreground"
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
+                                      Pilih 'Non Akademik' untuk lomba yang tidak berhubungan langsung dengan bidang program studi.
+                                    </TooltipContent>
+                                </Tooltip>
+                            </div>
                             <select
                                 id="jenis_lomba"
                                 name="jenis_lomba"
@@ -474,12 +508,35 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                         )} */}
                         {jenisKepesertaan === "kelompok" && (
                             <div className="col-span-2 flex flex-col gap-2">
-                                <Label data-required>Anggota Kelompok</Label>
+                                <div className="flex items-center gap-2">
+                                    <Label data-required>
+                                        Anggota Kelompok
+                                    </Label>
+                                    <Tooltip>
+                                        <TooltipTrigger type="button">
+                                            <CircleHelp
+                                                size={14}
+                                                aria-hidden="true"
+                                                className="text-muted-foreground"
+                                            />
+                                        </TooltipTrigger>
+                                        <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
+                                            Silakan pilih atau input email
+                                            anggota kelompok, tidak perlu
+                                            mengisi email pribadi Anda
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </div>
                                 <CreatableSelect
                                     setValue={setAnggotaKelompok}
                                     defaulOptions={dataMahasiswa}
                                     value={anggotaKelompok}
                                 />
+                                <span className="text-xs text-muted-foreground">
+                                    *Jika email belum terdaftar, Anda dapat
+                                    menambahkannya dengan memasukkan email
+                                    tersebut secara manual.
+                                </span>
                             </div>
                         )}
 
@@ -502,9 +559,24 @@ const PengajuanLomba = ({ auth, dosenList }) => {
 
                         {/* Surat Tugas */}
                         <div className="flex flex-col gap-2 col-span-2">
-                            <Label htmlFor="surat_tugas" data-required>
-                                Surat Tugas
-                            </Label>
+                            <div className="flex items-center gap-2">
+                                <Label htmlFor="surat_tugas" data-required>
+                                    Surat Tugas
+                                </Label>
+                                <Tooltip>
+                                    <TooltipTrigger type="button">
+                                        <CircleHelp
+                                            size={14}
+                                            aria-hidden="true"
+                                            className="text-muted-foreground"
+                                        />
+                                    </TooltipTrigger>
+                                    <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
+                                        File surat tugas harus dalam format PDF,
+                                        ,maksimal ukuran 5MB.
+                                    </TooltipContent>
+                                </Tooltip>
+                            </div>
                             <Input
                                 id="surat_tugas"
                                 name="surat_tugas"
@@ -523,7 +595,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="bg-blue-600 py-2 px-4 text-white rounded-md"
+                            className="bg-blue-600 py-2 px-4 text-white rounded-md hover:cursor-pointer"
                         >
                             {processing ? "Menyimpan..." : "Tambah"}
                         </button>

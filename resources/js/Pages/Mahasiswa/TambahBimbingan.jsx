@@ -161,7 +161,7 @@ const TambahBimbingan = ({ pengajuanlomba_id }) => {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="bg-blue-600 py-2 px-4 text-white rounded-md"
+                        className="bg-blue-600 py-2 px-4 text-white rounded-md hover:cursor-pointer"
                     >
                         {processing ? "Menyimpan..." : "Tambah"}
                     </button>

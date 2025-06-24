@@ -48,7 +48,10 @@ class PengajuanLombaController extends Controller
     {
         $request->validate([
             'status' => 'required|in:Diterima,Ditolak',
-            'catatan' => 'nullable|string',
+            'catatan' => 'required|string',
+        ], [
+            'catatan.required' => 'Catatan wajib diisi.',
+            'catatan.string' => 'Catatan harus berupa teks.',
         ]);
 
         $pengajuan = PengajuanLomba::findOrFail($id);
@@ -66,7 +69,9 @@ class PengajuanLombaController extends Controller
         return Inertia::render('Mahasiswa/TambahPengajuanLomba', [
             'kategoriLomba' => KategoriLomba::all(),
             'judulLomba' => JudulLomba::with('kategori')->get(),
-            'mahasiswaList' => User::where('role', 'Mahasiswa')->get(),
+            'mahasiswaList' => User::where('role', 'Mahasiswa')
+                ->where('id', '!=', auth()->id())
+                ->get(),
             'dosenList' => User::where('role', 'Dosen')->get(),
         ]);
     }

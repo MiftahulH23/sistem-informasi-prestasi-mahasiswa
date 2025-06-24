@@ -38,9 +38,9 @@ const Bimbingan = ({ pengajuanLomba }) => {
                     <div className="flex gap-2 items-center">
                         <button
                             onClick={() => router.get(`/bimbingan/${id}`)}
-                            className="bg-green-500 text-white px-2 py-1 rounded-md hover:bg-green-600 transition"
+                            className="bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition hover:cursor-pointer"
                         >
-                            Lihat Bimbingan
+                            Detail
                         </button>
                     </div>
                 );
