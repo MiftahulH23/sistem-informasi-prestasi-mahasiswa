@@ -52,11 +52,11 @@ const Prestasi = ({ prestasi }) => {
             id: "program_studi",
             accessorKey: "pengajuan_lomba.program_studi",
             header: "Program Studi",
-            filterFn: "checkbox",
+            filterFn: "array-includes",
         },
         {
             id: "kategori_lomba",
-            accessorKey: "pengajuan_lomba.kategori.kategori_lomba", // Akses nama kategori
+            accessorKey: "pengajuan_lomba.kategori.kategori_lomba",
             header: "Kategori",
             filterFn: "checkbox",
         },
@@ -132,6 +132,7 @@ const Prestasi = ({ prestasi }) => {
             href: "/prestasi",
         },
     ];
+    const program_studi = ["SI", "TI", "MI", "KA", "DKV", "Sistem Informasi Akuntansi"];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Prestasi" />
@@ -160,6 +161,12 @@ const Prestasi = ({ prestasi }) => {
                                         id: "tingkat_lomba",
                                         label: "Tingkat Lomba",
                                         data: tingkatLomba,
+                                    },
+                                    {
+                                        id: "program_studi",
+                                        label: "Program Studi",
+                                        data: program_studi,
+
                                     },
                                     {
                                         id: "jenis_lomba",

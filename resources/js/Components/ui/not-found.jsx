@@ -17,8 +17,8 @@ export function Illustration(props) {
 }
 
 export function NotFound({
-    title = "Page not found",
-    description = "Lost, this page is. In another system, it may be.",
+    title,
+    description,
 }) {
     return (
         <div className="relative text-center z-[1] pt-52">

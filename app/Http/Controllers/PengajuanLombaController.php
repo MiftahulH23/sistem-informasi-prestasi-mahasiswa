@@ -83,7 +83,6 @@ class PengajuanLombaController extends Controller
             'judul_lomba' => 'required|string',
             'jenis_lomba' => 'required|string',
             'tingkat_lomba' => 'required|string',
-            'program_studi' => 'required|string',
             'model_pelaksanaan' => 'required|string',
             'dosen_pembimbing' => 'required|string',
             'tanggal_mulai' => 'required|date',
@@ -145,6 +144,7 @@ class PengajuanLombaController extends Controller
 
             $check = SocialiteController::checkEmail($email);
 
+
             if (is_string($check)) {
                 throw ValidationException::withMessages([
                     'anggota_kelompok' => ["Email {$email} tidak ditemukan di database. Pastikan email yang dimasukkan benar."]
@@ -164,7 +164,8 @@ class PengajuanLombaController extends Controller
         }
 
 
-        $anggota_kelompok = array_merge($userUdahAda, $userBaru);
+        $anggota_kelompok = array_map('intval', array_merge($userUdahAda, $userBaru));
+
 
         // Tambahkan user login ke dalam kelompok jika belum ada
         if ($request->jenis_kepesertaan === 'Kelompok') {
@@ -176,7 +177,8 @@ class PengajuanLombaController extends Controller
         }
 
         $jumlah_peserta = ($request->jenis_kepesertaan === 'Individu') ? 1 : count($anggota_kelompok);
-
+        // Ambil semua prodi unik dari anggota kelompok
+        $prodis = User::whereIn('id', $anggota_kelompok)->pluck('prodi')->unique()->values()->all();
 
         $surat_tugas_path = $request->file('surat_tugas')->store('surat_tugas', 'public');
         // Simpan data ke database
@@ -184,6 +186,7 @@ class PengajuanLombaController extends Controller
         $validated['anggota_kelompok'] = $anggota_kelompok; // Simpan anggota kelompok sebagai JSON
         $validated['jumlah_peserta'] = $jumlah_peserta; // Simpan jumlah peserta
         $validated['surat_tugas'] = $surat_tugas_path; // Simpan path surat tugas
+        $validated['program_studi'] = $prodis; // langsung array
         if (Auth::user()->role === 'Kemaghasiswaan') {
             $validated['status'] = 'Diterima';
         } else {

@@ -32,6 +32,7 @@ export const customFilterFns = {
   radio,
   "date-range": dateRange,
   "date-year": dateYear,
+  "array-includes": arrayIncludesFilter,
 };
 
 /**
@@ -89,4 +90,14 @@ function dateYear(
   const rowYear = new Date(row.getValue(columnId));
   const selectedYear = new Date(Number(filterValue), 1, 1);
   return isSameYear(rowYear, selectedYear);
+}
+
+function arrayIncludesFilter(row, columnId, filterValue) {
+  if (!filterValue?.length) return true;
+  const columnArray = row.getValue(columnId) || [];
+  
+  if (!Array.isArray(columnArray)) return false;
+
+  // Baris tetap tampil kalau minimal 1 value cocok
+  return columnArray.some((val) => filterValue.includes(val));
 }

@@ -113,9 +113,24 @@ class SocialiteController extends Controller
 
     public static function checkEmail(string $email)
     {
-        $domain = substr(explode('@', $email)[0], -4);
-        $angkatan = substr($domain, 0, 2);
-        $prodi = substr($domain, 2, 2);
+        // $domain = substr(explode('@', $email)[0], -4);
+        // $angkatan = substr($domain, 0, 2);
+        // $prodi = substr($domain, 2, 2);
+
+        // Ambil bagian sebelum @
+        $username = explode('@', $email)[0];
+
+        // Pakai regex ambil angkatan dan prodi
+        preg_match('/(\d{2,3})([a-zA-Z]{2,4})$/', $username, $matches);
+
+        // Cek hasil
+        if (count($matches) === 3) {
+            $angkatan = $matches[1]; // angka 2-3 digit
+            $prodi = strtolower($matches[2]); // huruf 2-4 karakter, diubah ke lowercase
+        } else {
+            $angkatan = null;
+            $prodi = null;
+        }
 
         $url = "https://v2.api.pcr.ac.id/api/akademik-mahasiswa?angkatan=20{$angkatan}&prodi={$prodi}&collection=angkatan-prodi";
 

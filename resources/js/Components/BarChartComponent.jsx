@@ -6,7 +6,11 @@ import {
     CardDescription,
     CardHeader,
 } from "@/Components/ui/card";
-import { ChartContainer, ChartTooltip } from "@/Components/ui/chart";
+import {
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+} from "@/Components/ui/chart";
 
 export function BarChartComponent({ chartData }) {
     // Konfigurasi warna untuk shadcn chart
@@ -15,6 +19,20 @@ export function BarChartComponent({ chartData }) {
             label: "Total Prestasi",
             color: "hsl(var(--chart-1))",
         },
+    };
+    const prodiMapping = {
+        SI: "Sistem Informasi",
+        TI: "Teknik Informatika",
+        TRK: "Teknologi Rekayasa Komputer",
+        TET: "Teknik Elektronika Telekomunikasi",
+        TL: "Teknik Listrik",
+        TMS: "Teknik Mesin",
+        TRJT: "Teknologi Rekayasa Jaringan Telekomunikasi",
+        TRSE: "Teknologi Rekayasa Sistem Elektronika",
+        TRM: "Teknologi Rekayasa Mekatronika",
+        AktP: "Akuntansi Perpajakan",
+        HMKD: "Hubungan Masyarakat dan Komunikasi Digital",
+        BD: "Bisnis Digital",
     };
 
     return (
@@ -43,26 +61,16 @@ export function BarChartComponent({ chartData }) {
                             tickMargin={10}
                             axisLine={false}
                             width={70}
-                            
                         />
                         <ChartTooltip
                             cursor={false}
-                            content={({ active, payload }) => {
-                                if (active && payload && payload.length) {
-                                    const { payload: data } = payload[0];
-                                    return (
-                                        <div className="rounded-md border bg-background p-2 shadow-sm">
-                                            <p className="text-sm font-semibold text-foreground">
-                                                {data.nama_lengkap}
-                                            </p>
-                                            <p className="text-xs text-muted-foreground">
-                                                Jumlah Prestasi: {data.total}
-                                            </p>
-                                        </div>
-                                    );
-                                }
-                                return null;
-                            }}
+                            content={
+                                <ChartTooltipContent
+                                    labelFormatter={(label) =>
+                                        prodiMapping[label] || label
+                                    }
+                                />
+                            }
                         />
 
                         <Bar
@@ -78,7 +86,7 @@ export function BarChartComponent({ chartData }) {
                                     fill: "var(--foreground)",
                                     fontSize: 12,
                                 }}
-                                formatter={(value) => value > 0 ? value : ""} // Menyembunyikan label jika nilai 0
+                                formatter={(value) => (value > 0 ? value : "")} // Menyembunyikan label jika nilai 0
                             />
                         </Bar>
                     </BarChart>
@@ -87,4 +95,3 @@ export function BarChartComponent({ chartData }) {
         </Card>
     );
 }
-

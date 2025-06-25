@@ -70,25 +70,47 @@ class DashboardController extends Controller
             'Bisnis Digital' => 'BD',
         ];
 
-        // Ambil data prestasi sesuai filter
+        // Siapkan counter array biasa
+        $counter = [];
+        foreach ($programSingkatan as $namaProdi => $singkatan) {
+            $counter[$namaProdi] = 0;
+        }
+
         $dataPrestasi = Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
             ->with('pengajuanlomba')
-            ->get()
-            ->groupBy(fn($item) => $item->pengajuanlomba->program_studi);
+            ->get();
 
-        // Loop semua program studi, isi total kalau ada, kalau nggak set 0
-        $chartData = collect($programSingkatan)->map(function ($singkatan, $namaProdi) use ($dataPrestasi) {
+        foreach ($dataPrestasi as $item) {
+            $pengajuan = $item->pengajuanlomba;
+
+            if (!$pengajuan)
+                continue;
+
+            $prodiList = $pengajuan->program_studi;
+            $prodiList = is_array($prodiList) ? $prodiList : [$prodiList];
+
+            foreach ($prodiList as $prodiSingkatan) {
+                $namaLengkap = array_search(strtoupper($prodiSingkatan), $programSingkatan);
+
+                if ($namaLengkap) {
+                    $counter[$namaLengkap]++;
+                }
+            }
+        }
+
+        $chartData = collect($programSingkatan)->map(function ($singkatan, $namaProdi) use ($counter) {
             return [
                 'program_studi' => $singkatan,
-                'nama_lengkap' => $namaProdi, // Tambahkan ini
-                'total' => isset($dataPrestasi[$namaProdi]) ? $dataPrestasi[$namaProdi]->count() : 0,
+                'nama_lengkap' => $namaProdi,
+                'total' => $counter[$namaProdi] ?? 0,
             ];
         })->sortByDesc('total')->values();
 
-
         return $chartData;
     }
+
+
 
 
     private function getLineChartData()

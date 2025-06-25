@@ -47,6 +47,7 @@ class PengajuanLomba extends Model
 
     protected $casts = [
         'anggota_kelompok' => 'array',
+        'program_studi' => 'array',
     ];
 
     public function user()

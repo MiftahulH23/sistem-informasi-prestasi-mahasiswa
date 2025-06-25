@@ -328,7 +328,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                         </div>
 
                         {/* Program Studi */}
-                        <div className="flex flex-col gap-2">
+                        {/* <div className="flex flex-col gap-2">
                             <Label htmlFor="program_studi" data-required>
                                 Program Studi
                             </Label>
@@ -381,9 +381,8 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 <option value="Bisnis Digital">
                                     Bisnis Digital
                                 </option>
-                                {/* Tambahkan pilihan lainnya */}
                             </select>
-                        </div>
+                        </div> */}
 
                         {/* Dosen Pembimbing */}
                         <div className="flex flex-col gap-2">
