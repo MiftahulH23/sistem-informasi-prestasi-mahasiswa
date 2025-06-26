@@ -164,7 +164,7 @@ class PengajuanLombaController extends Controller
             if ($dosen)
                 continue;
 
-            if ($email === 'hibatilla21si@mahasiswa.pcr.ac.id') {
+            if ($email === 'hibatillah21si@mahasiswa.pcr.ac.id') {
                 User::create([
                     'name' => 'M. Hibatillah Hasanin',
                     'email' => $email,
@@ -204,73 +204,64 @@ class PengajuanLombaController extends Controller
 
 
         $anggota_kelompok = $request->anggota_kelompok ?? [];
-        // dd($anggota_kelompok);
+        $jenisKepesertaan = $request->jenis_kepesertaan;
+        $user = auth()->user();
+
         $userUdahAda = array_map(
-            function ($item) {
-                return $item['value'] ?? null;
-            },
-            array_filter($anggota_kelompok, function ($item) {
-                return isset($item['value']);
-            })
+            fn($item) => intval($item['value'] ?? 0),
+            array_filter($anggota_kelompok, fn($item) => isset($item['value']))
         );
 
-        $userBelumAda = array_filter($anggota_kelompok, function ($item) {
-            return !isset($item['value']);
-        });
+        $userBelumAda = array_filter($anggota_kelompok, fn($item) => !isset($item['value']));
 
-
-        // dd($userBelumAda, $userUdahAda);
         $userBaru = [];
 
-        if (!$userBelumAda === []) {
-            foreach ($userBelumAda as $item) {
-                $email = trim($item['label'] ?? '');
+        // Proses user baru (jika ada input manual)
+        foreach ($userBelumAda as $item) {
+            $email = trim($item['label'] ?? '');
 
-                $check = SocialiteController::checkEmail($email);
+            $check = SocialiteController::checkEmail($email);
 
-
-                if (is_string($check)) {
-                    throw ValidationException::withMessages([
-                        'anggota_kelompok' => ["Email {$email} tidak ditemukan di database. Pastikan email yang dimasukkan benar."]
-                    ]);
-                }
-
-                $addUser = User::create([
-                    'name' => $check->name,
-                    'email' => $check->email,
-                    'role' => 'Mahasiswa',
-                    'nim' => $check->nim ?? null,
-                    'prodi' => $check->prodi ?? null,
-                    'password' => Hash::make('123'),
+            if (is_string($check)) {
+                throw ValidationException::withMessages([
+                    'anggota_kelompok' => ["Email {$email} tidak ditemukan di database. Pastikan email yang dimasukkan benar."]
                 ]);
-
-                $userBaru[] = $addUser->id;
             }
+
+            $newUser = User::create([
+                'name' => ucwords(strtolower($check->name)),
+                'email' => $check->email,
+                'role' => 'Mahasiswa',
+                'nim' => $check->nim ?? null,
+                'prodi' => $check->prodi ?? null,
+                'password' => Hash::make('123'),
+            ]);
+
+            $userBaru[] = $newUser->id;
         }
 
+        $anggota_kelompok = array_merge($userUdahAda, $userBaru);
 
-
-        $anggota_kelompok = array_map('intval', array_merge($userUdahAda, $userBaru));
-
-
-        // Tambahkan user login ke dalam kelompok jika belum ada
-        if ($request->jenis_kepesertaan === 'Kelompok') {
+        // Tambahkan user login ke kelompok jika belum ada
+        if ($jenisKepesertaan === 'Kelompok') {
             if (!in_array($user->id, $anggota_kelompok)) {
                 array_unshift($anggota_kelompok, $user->id);
             }
         } else {
-            $anggota_kelompok = [$user->id]; // jika individu
+            $anggota_kelompok = [$user->id]; // Individu, hanya user itu sendiri
         }
 
-        $jumlah_peserta = ($request->jenis_kepesertaan === 'Individu') ? 1 : count($anggota_kelompok);
+        $jumlah_peserta = count($anggota_kelompok);
         // Ambil semua prodi unik dari anggota kelompok
         $prodis = User::whereIn('id', $anggota_kelompok)->pluck('prodi')->unique()->values()->all();
 
 
         $surat_tugas_path = $request->file('surat_tugas')->store('surat_tugas', 'public');
         // Simpan data ke database
+        // ambil Judul Lomba
         $validated['user_id'] = $user->id; // ID user yang login
         $validated['anggota_kelompok'] = $anggota_kelompok;
+        $validated['judul_lomba'] = ucwords(strtolower($request->judul_lomba));
         $validated['dosen_pembimbing'] = $dosen_pembimbing;
         $validated['jumlah_peserta'] = $jumlah_peserta; // Simpan jumlah peserta
         $validated['surat_tugas'] = $surat_tugas_path; // Simpan path surat tugas

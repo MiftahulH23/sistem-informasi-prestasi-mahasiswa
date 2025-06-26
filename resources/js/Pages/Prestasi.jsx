@@ -93,7 +93,7 @@ const Prestasi = ({ prestasi }) => {
                 return (
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <div className="m-auto bg-card flex size-9 cursor-default flex-col items-center justify-center rounded-md border text-center">
+                            <div className=" bg-card flex size-9 cursor-default flex-col items-center justify-center rounded-md border text-center">
                                 <span className="text-xs font-semibold leading-snug">
                                     {date}
                                 </span>
@@ -132,7 +132,14 @@ const Prestasi = ({ prestasi }) => {
             href: "/prestasi",
         },
     ];
-    const program_studi = ["SI", "TI", "MI", "KA", "DKV", "Sistem Informasi Akuntansi"];
+    const program_studi = [
+        "SI",
+        "TI",
+        "MI",
+        "KA",
+        "DKV",
+        "Sistem Informasi Akuntansi",
+    ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Data Prestasi" />
@@ -166,7 +173,6 @@ const Prestasi = ({ prestasi }) => {
                                         id: "program_studi",
                                         label: "Program Studi",
                                         data: program_studi,
-
                                     },
                                     {
                                         id: "jenis_lomba",

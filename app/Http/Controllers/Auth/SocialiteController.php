@@ -67,7 +67,7 @@ class SocialiteController extends Controller
             }
 
             $user = User::create([
-                'name' => $check?->name ?? $socialUser->name,
+                'name' =>ucwords(strtolower($check?->name ?? $socialUser->name,)),
                 'email' => $email,
                 'password' => Hash::make('123'),
                 'avatar' => $socialUser->avatar,

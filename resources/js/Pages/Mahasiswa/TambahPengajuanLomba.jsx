@@ -541,13 +541,16 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                 <Label htmlFor="anggota_kelompok" data-required>
                                     Nama Peserta
                                 </Label>
-                                <Input
-                                    id="anggota_kelompok"
-                                    name="anggota_kelompok"
-                                    type="text"
-                                    className="h-10"
-                                    value={auth.user.email}
-                                    readOnly
+                                <CreatableSelect
+                                    setValue={setAnggotaKelompok}
+                                    defaulOptions={dataMahasiswa}
+                                    value={[
+                                        {
+                                            value: auth.user.id, // ID user
+                                            label: auth.user.email, // Email user
+                                        },
+                                    ]}
+                                    isDisabled
                                 />
                             </div>
                         )}
