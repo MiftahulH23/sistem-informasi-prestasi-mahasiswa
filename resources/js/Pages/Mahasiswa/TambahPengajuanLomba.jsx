@@ -11,12 +11,14 @@ import {
     TooltipTrigger,
 } from "@/Components/ui/tooltip";
 import { CircleHelp } from "lucide-react";
+import MultiSelect from "@/Components/MultiSelect";
 
 const PengajuanLomba = ({ auth, dosenList }) => {
     const currentUserId = auth.user.id;
     const { kategoriLomba, judulLomba, mahasiswaList } = usePage().props;
     const { flash } = usePage().props;
-
+    console.log("dosenList:", dosenList);
+    console.log("mahasiswaList:", mahasiswaList);
     const { data, setData, post, processing, reset, errors } = useForm({
         kategorilomba_id: "",
         judul_lomba: "",
@@ -37,6 +39,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
     const [filteredJudul, setFilteredJudul] = useState([]);
     const [jenisKepesertaan, setJenisKepesertaan] = useState("");
     const [anggotaKelompok, setAnggotaKelompok] = useState([]);
+    const [dosenPembimbing, setDosenPembimbing] = useState([]);
 
     useEffect(() => {
         const kategoriTerpilih = kategoriLomba.find(
@@ -72,7 +75,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
         setData("jenis_kepesertaan", formattedValue);
 
         if (value === "individu") {
-            const peserta = [auth.user.name];
+            const peserta = [auth.user.email];
             setAnggotaKelompok(peserta);
             setData("anggota_kelompok", peserta);
             setData("jumlah_peserta", 1);
@@ -126,15 +129,12 @@ const PengajuanLomba = ({ auth, dosenList }) => {
         { title: "Tambah", href: "/pengajuan-lomba/create" },
     ];
 
-    const dataDosen = dosenList.map((dosen) => ({
-        value: dosen.id,
-        label: dosen.name,
-    }));
-
     const dataMahasiswa = mahasiswaList.map((mahasiswa) => ({
         value: mahasiswa.id,
         label: mahasiswa.email,
     }));
+    const dataDosen = Array.isArray(dosenList) ? dosenList : [];
+
     useEffect(() => {
         setData("anggota_kelompok", anggotaKelompok);
         console.log("Anggota Kelompok:", anggotaKelompok);
@@ -251,7 +251,9 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                         />
                                     </TooltipTrigger>
                                     <TooltipContent className="px-2 py-1 text-xs text-foreground shadow-md max-w-xs">
-                                      Pilih 'Non Akademik' untuk lomba yang tidak berhubungan langsung dengan bidang program studi.
+                                        Pilih 'Non Akademik' untuk lomba yang
+                                        tidak berhubungan langsung dengan bidang
+                                        program studi.
                                     </TooltipContent>
                                 </Tooltip>
                             </div>
@@ -389,25 +391,19 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                             <Label htmlFor="dosen_pembimbing" data-required>
                                 Dosen Pembimbing
                             </Label>
-                            <select
-                                id="dosen_pembimbing"
-                                name="dosen_pembimbing"
-                                className="h-10 px-3 border rounded-md"
-                                value={data.dosen_pembimbing}
-                                onChange={(e) =>
-                                    setData("dosen_pembimbing", e.target.value)
-                                }
-                                required
-                            >
-                                <option value="" disabled>
-                                    Pilih Dosen
-                                </option>
-                                {dosenList.map((dosen) => (
-                                    <option key={dosen.id} value={dosen.id}>
-                                        {dosen.name}
-                                    </option>
-                                ))}
-                            </select>
+                            <MultiSelect
+                                placeholder="Pilih Dosen Pembimbing"
+                                notFoundText="Nama dosen tidak ditemukan"
+                                data={dataDosen}
+                                value={dosenPembimbing}
+                                onChange={(e) => {
+                                    setDosenPembimbing(e);
+                                    setData(
+                                        "dosen_pembimbing",
+                                        e.map((item) => item.value)
+                                    );
+                                }}
+                            />
                         </div>
 
                         {/* Tanggal Mulai */}
@@ -550,7 +546,7 @@ const PengajuanLomba = ({ auth, dosenList }) => {
                                     name="anggota_kelompok"
                                     type="text"
                                     className="h-10"
-                                    value={auth.user.name}
+                                    value={auth.user.email}
                                     readOnly
                                 />
                             </div>

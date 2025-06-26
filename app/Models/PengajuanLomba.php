@@ -48,6 +48,7 @@ class PengajuanLomba extends Model
     protected $casts = [
         'anggota_kelompok' => 'array',
         'program_studi' => 'array',
+        'dosen_pembimbing' => 'array', 
     ];
 
     public function user()
@@ -65,10 +66,6 @@ class PengajuanLomba extends Model
     public function bimbingan()
     {
         return $this->hasMany(Bimbingan::class, 'pengajuanlomba_id');
-    }
-    public function dosen()
-    {
-        return $this->belongsTo(User::class, 'dosen_pembimbing');
     }
 
 

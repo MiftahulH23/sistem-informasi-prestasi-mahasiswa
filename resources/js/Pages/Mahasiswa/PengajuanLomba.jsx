@@ -43,9 +43,10 @@ const DataPengajuanLomba = ({ pengajuanLomba, kategoriLomba }) => {
         },
         {
             id: "dosen_pembimbing",
-            accessorFn: (row) => row.dosen?.name ?? "-",
+            accessorKey: "dosen_pembimbing",
             header: "Pembimbing",
         },
+        // accessorFn: (row) => row.dosen?.name ?? "-",
         {
             id: "jenis_lomba",
             accessorKey: "jenis_lomba",

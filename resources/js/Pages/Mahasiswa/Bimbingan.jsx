@@ -26,8 +26,9 @@ const Bimbingan = ({ pengajuanLomba }) => {
         },
         {
             id: "dosen_pembimbing",
-            accessorKey: "dosen.name",
             header: "Pembimbing",
+            cell: ({ row }) =>
+                row.original.dosen?.map((d) => d.inisial).join(", "),
         },
         {
             id: "bimbingan",
@@ -47,10 +48,12 @@ const Bimbingan = ({ pengajuanLomba }) => {
             },
         },
     ];
-    const breadcrumb = [{
-        title: "Bimbingan",
-        href: "/bimbingan",
-    }]
+    const breadcrumb = [
+        {
+            title: "Bimbingan",
+            href: "/bimbingan",
+        },
+    ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Bimbingan" />

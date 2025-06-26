@@ -178,7 +178,7 @@ export function DataTable(props) {
                                     return (
                                         <TableHead
                                             key={header.id}
-                                            className="not-has-[*]:w-14 text-foreground has-[*]:min-w-24 text-white font-semibold **:text-nowrap"
+                                            className=" text-foreground has-[*]:min-w-24 text-white font-semibold **:text-nowrap"
                                         >
                                             {header.isPlaceholder ? null : header.column.getCanSort() &&
                                               controls.sorting ? (

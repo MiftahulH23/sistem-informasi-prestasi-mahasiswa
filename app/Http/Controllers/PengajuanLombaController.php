@@ -8,6 +8,7 @@ use App\Models\Prestasi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -23,14 +24,27 @@ class PengajuanLombaController extends Controller
 {
     public function index()
     {
-        $pengajuanLomba = PengajuanLomba::whereJsonContains('anggota_kelompok', auth()->id())->with(['kategori', 'dosen'])
-            ->get();
-        // dd($pengajuanLomba->toArray());
+        $pengajuanLomba = PengajuanLomba::whereJsonContains('anggota_kelompok', auth()->id())
+            ->with(['kategori'])
+            ->get()
+            ->map(function ($item) {
+
+                $dosen_ids = $item->dosen_pembimbing ?? [];
+                if (!is_array($dosen_ids)) {
+                    $dosen_ids = json_decode($dosen_ids, true); // antisipasi kalau belum proper array
+                }
+
+                $dosen_nama = User::whereIn('id', $dosen_ids)->pluck('inisial')->toArray();
+
+                $item->dosen_pembimbing = implode(', ', $dosen_nama);
+
+                return $item;
+            });
         return Inertia::render('Mahasiswa/PengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
         ]);
-
     }
+
     public function editStatus()
     {
         $pengajuanLomba = PengajuanLomba::with(['kategori', 'user'])
@@ -66,13 +80,38 @@ class PengajuanLombaController extends Controller
 
     public function create()
     {
+        $url = "https://v2.api.pcr.ac.id/api/pegawai?collection=pegawai-aktif";
+        $response = Http::withHeaders([
+            'apikey' => env('API_KEY_PCR'),
+        ])->post($url);
+
+        $responseData = $response->json();
+
+        $pegawai = $responseData['items'] ?? []; // Ambil bagian 'items'
+
+        $data = array_filter($pegawai, function ($item) {
+            return isset($item['posisi']) && $item['posisi'] === 'Dosen';
+        });
+
+        // Konversi ke array dengan format value & label
+        $dosenList = array_map(function ($item) {
+            return [
+                'value' => $item['email'],
+                'label' => $item['inisial'],
+            ];
+        }, $data);
+        // $dosenList[] = [
+        //     'value' => 'HBT',
+        //     'label' => 'HBT',
+        // ];
+
         return Inertia::render('Mahasiswa/TambahPengajuanLomba', [
             'kategoriLomba' => KategoriLomba::all(),
             'judulLomba' => JudulLomba::with('kategori')->get(),
             'mahasiswaList' => User::where('role', 'Mahasiswa')
                 ->where('id', '!=', auth()->id())
                 ->get(),
-            'dosenList' => User::where('role', 'Dosen')->get(),
+            'dosenList' => array_values($dosenList),
         ]);
     }
 
@@ -84,7 +123,7 @@ class PengajuanLombaController extends Controller
             'jenis_lomba' => 'required|string',
             'tingkat_lomba' => 'required|string',
             'model_pelaksanaan' => 'required|string',
-            'dosen_pembimbing' => 'required|string',
+            'dosen_pembimbing' => 'required|array',
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'jenis_kepesertaan' => 'required|in:Individu,Kelompok',
@@ -100,8 +139,7 @@ class PengajuanLombaController extends Controller
             'tingkat_lomba.string' => 'Tingkat lomba harus berupa teks.',
             'model_pelaksanaan.required' => 'Model pelaksanaan wajib diisi.',
             'model_pelaksanaan.string' => 'Model pelaksanaan harus berupa teks.',
-            'dosen_pembimbing.required' => 'Dosen pembimbing wajib diisi.',
-            'dosen_pembimbing.string' => 'Dosen pembimbing harus berupa teks.',
+            'dosen_pembimbing.required' => 'Dosen pembimbing harus diisi.',
             'tanggal_mulai.required' => 'Tanggal mulai wajib diisi.',
             'tanggal_mulai.date' => 'Tanggal mulai harus berupa tanggal yang valid.',
             'tanggal_selesai.required' => 'Tanggal selesai wajib diisi.',
@@ -118,9 +156,43 @@ class PengajuanLombaController extends Controller
 
         // Ambil user yang login
         $user = Auth::user();
+        $dosen_pembimbing_email = $request->dosen_pembimbing;
+
+        foreach ($dosen_pembimbing_email as $email) {
+            $dosen = User::where('email', $email)->first();
+            if ($dosen)
+                continue;
+
+            $url = "https://v2.api.pcr.ac.id/api/pegawai?collection=pegawai-aktif";
+            $response = Http::withHeaders([
+                'apikey' => env('API_KEY_PCR'),
+            ])->post($url);
+
+            $responseData = $response->json();
+            $pegawai = $responseData['items'] ?? [];
+
+            $data = array_filter($pegawai, fn($item) => isset($item['email']) && $item['email'] === $email);
+
+            $dosenData = reset($data);
+
+            User::create([
+                'name' => $dosenData['nama'] ?? 'Dosen Tidak Diketahui',
+                'email' => $dosenData['email'] ?? $email,
+                'inisial' => $dosenData['inisial'] ?? null,
+                'role' => 'Dosen',
+                'password' => Hash::make('123'),
+            ]);
+        }
+
+
+        $dosen_pembimbing = User::whereIn('email', $dosen_pembimbing_email)
+            ->pluck('id')
+            ->toArray();
+
+
+
         $anggota_kelompok = $request->anggota_kelompok ?? [];
         // dd($anggota_kelompok);
-        // Convert isi array jadi integer, hilangkan null/kosong
         $userUdahAda = array_map(
             function ($item) {
                 return $item['value'] ?? null;
@@ -136,32 +208,34 @@ class PengajuanLombaController extends Controller
 
 
         // dd($userBelumAda, $userUdahAda);
-
         $userBaru = [];
 
-        foreach ($userBelumAda as $item) {
-            $email = trim($item['label'] ?? '');
+        if (!$userBelumAda === []) {
+            foreach ($userBelumAda as $item) {
+                $email = trim($item['label'] ?? '');
 
-            $check = SocialiteController::checkEmail($email);
+                $check = SocialiteController::checkEmail($email);
 
 
-            if (is_string($check)) {
-                throw ValidationException::withMessages([
-                    'anggota_kelompok' => ["Email {$email} tidak ditemukan di database. Pastikan email yang dimasukkan benar."]
+                if (is_string($check)) {
+                    throw ValidationException::withMessages([
+                        'anggota_kelompok' => ["Email {$email} tidak ditemukan di database. Pastikan email yang dimasukkan benar."]
+                    ]);
+                }
+
+                $addUser = User::create([
+                    'name' => $check->name,
+                    'email' => $check->email,
+                    'role' => 'Mahasiswa',
+                    'nim' => $check->nim ?? null,
+                    'prodi' => $check->prodi ?? null,
+                    'password' => Hash::make('123'),
                 ]);
+
+                $userBaru[] = $addUser->id;
             }
-
-            $addUser = User::create([
-                'name' => $check->name,
-                'email' => $check->email,
-                'role' => 'Mahasiswa',
-                'nim' => $check->nim ?? null,
-                'prodi' => $check->prodi ?? null,
-                'password' => Hash::make('123'),
-            ]);
-
-            $userBaru[] = $addUser->id;
         }
+
 
 
         $anggota_kelompok = array_map('intval', array_merge($userUdahAda, $userBaru));
@@ -180,10 +254,12 @@ class PengajuanLombaController extends Controller
         // Ambil semua prodi unik dari anggota kelompok
         $prodis = User::whereIn('id', $anggota_kelompok)->pluck('prodi')->unique()->values()->all();
 
+
         $surat_tugas_path = $request->file('surat_tugas')->store('surat_tugas', 'public');
         // Simpan data ke database
         $validated['user_id'] = $user->id; // ID user yang login
-        $validated['anggota_kelompok'] = $anggota_kelompok; // Simpan anggota kelompok sebagai JSON
+        $validated['anggota_kelompok'] = $anggota_kelompok;
+        $validated['dosen_pembimbing'] = $dosen_pembimbing;
         $validated['jumlah_peserta'] = $jumlah_peserta; // Simpan jumlah peserta
         $validated['surat_tugas'] = $surat_tugas_path; // Simpan path surat tugas
         $validated['program_studi'] = $prodis; // langsung array
@@ -192,7 +268,7 @@ class PengajuanLombaController extends Controller
         } else {
             $validated['status'] = 'Diajukan'; // Status awal adalah Diajukan
         }
-
+        // dd($surat_tugas_path);
         PengajuanLomba::create($validated);
         // $user = Auth::user();
         // $email = "miftahul21si@mahasiswa.pcr.ac.id";
@@ -205,8 +281,7 @@ class PengajuanLombaController extends Controller
 
     public function show($id)
     {
-        $pengajuanLomba = PengajuanLomba::with(['kategori', 'dosen'])->findOrFail($id);
-
+        $pengajuanLomba = PengajuanLomba::with(['kategori'])->findOrFail($id);
 
         // Ambil user berdasarkan ID yang disimpan di anggota_kelompok
         $anggotaUser = [];
@@ -215,12 +290,20 @@ class PengajuanLombaController extends Controller
                 ->get(['id', 'name']);
         }
 
+        
+        $dosenPembimbing = [];
+        if (is_array($pengajuanLomba->dosen_pembimbing)) {
+            $dosenPembimbing = User::whereIn('id', $pengajuanLomba->dosen_pembimbing)
+                ->get(['id', 'inisial']);
+        }
+
         return Inertia::render('Mahasiswa/DetailPengajuanLomba', [
             'pengajuanLomba' => $pengajuanLomba,
             'anggotaUser' => $anggotaUser,
-
+            'dosenPembimbing' => $dosenPembimbing,
         ]);
     }
+
 
 
     public function notify()

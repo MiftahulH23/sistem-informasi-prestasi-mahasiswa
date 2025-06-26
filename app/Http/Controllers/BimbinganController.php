@@ -15,13 +15,22 @@ class BimbinganController extends Controller
      */
     public function index()
     {
-        $pengajuanLomba = PengajuanLomba::whereJsonContains('anggota_kelompok', auth()->id())
-            ->with('dosen')
-            ->get();
-        // dd($pengajuanLomba->toArray());
+        $pengajuanLomba = PengajuanLomba::whereJsonContains('anggota_kelompok', auth()->id())->get();
+
+        foreach ($pengajuanLomba as $item) {
+            $dosenList = [];
+            if (is_array($item->dosen_pembimbing)) {
+                $dosenList = User::whereIn('id', $item->dosen_pembimbing)
+                    ->get(['id', 'inisial']); // Ambil inisial
+            }
+            $item->dosen = $dosenList;
+        }
+
         return Inertia::render('Mahasiswa/Bimbingan', [
             'pengajuanLomba' => $pengajuanLomba,
         ]);
+
+
     }
     public function indexDosen()
     {

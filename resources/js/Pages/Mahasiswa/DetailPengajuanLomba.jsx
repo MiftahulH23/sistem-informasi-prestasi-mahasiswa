@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, usePage } from "@inertiajs/react";
 import { FaRegFilePdf } from "react-icons/fa6";
 
-const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
+const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser, dosenPembimbing  }) => {
     const { auth } = usePage().props;
 
     const isKemahasiswaan = auth.user.role === "Kemahasiswaan";
@@ -48,8 +48,11 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                     </div>
                     <div>
                         <strong>Dosen Pembimbing:</strong>{" "}
-                        {pengajuanLomba.dosen?.name}
+                        {dosenPembimbing
+                            .map((dosen) => dosen.inisial)
+                            .join(", ")}
                     </div>
+
                     <div>
                         <strong>Tanggal Mulai:</strong>{" "}
                         {pengajuanLomba.tanggal_mulai}
@@ -112,7 +115,10 @@ const DetailPengajuanLomba = ({ pengajuanLomba, anggotaUser }) => {
                         )}
                     </div>
                     <div>
-                        <strong>Catatan:</strong> {pengajuanLomba.catatan ? pengajuanLomba.catatan : "Pengajuan dalam proses"}
+                        <strong>Catatan:</strong>{" "}
+                        {pengajuanLomba.catatan
+                            ? pengajuanLomba.catatan
+                            : "Pengajuan dalam proses"}
                     </div>
                 </div>
             </div>
