@@ -34,9 +34,9 @@ class BimbinganController extends Controller
     }
     public function indexDosen()
     {
-        $pengajuanLomba = PengajuanLomba::where('dosen_pembimbing', auth()->user()->id)
-            ->with('dosen')
-            ->get();
+        $pengajuanLomba = PengajuanLomba::whereJsonContains('dosen_pembimbing', auth()->id())->get();
+
+        // dd($pengajuanLomba->toArray());
 
         // Ambil semua ID dari anggota_kelompok, flatten dan unik
         $firstUserId = $pengajuanLomba->pluck('anggota_kelompok')

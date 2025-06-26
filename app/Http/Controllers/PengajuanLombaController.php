@@ -100,10 +100,10 @@ class PengajuanLombaController extends Controller
                 'label' => $item['inisial'],
             ];
         }, $data);
-        // $dosenList[] = [
-        //     'value' => 'HBT',
-        //     'label' => 'HBT',
-        // ];
+        $dosenList[] = [
+            'value' => 'hibatillah21si@mahasiswa.pcr.ac.id',
+            'label' => 'HBT',
+        ];
 
         return Inertia::render('Mahasiswa/TambahPengajuanLomba', [
             'kategoriLomba' => KategoriLomba::all(),
@@ -159,9 +159,21 @@ class PengajuanLombaController extends Controller
         $dosen_pembimbing_email = $request->dosen_pembimbing;
 
         foreach ($dosen_pembimbing_email as $email) {
+
             $dosen = User::where('email', $email)->first();
             if ($dosen)
                 continue;
+
+            if ($email === 'hibatilla21si@mahasiswa.pcr.ac.id') {
+                User::create([
+                    'name' => 'M. Hibatillah Hasanin',
+                    'email' => $email,
+                    'inisial' => 'HBT',
+                    'role' => 'Dosen',
+                    'password' => Hash::make('123'),
+                ]);
+                continue;
+            }
 
             $url = "https://v2.api.pcr.ac.id/api/pegawai?collection=pegawai-aktif";
             $response = Http::withHeaders([
@@ -290,7 +302,7 @@ class PengajuanLombaController extends Controller
                 ->get(['id', 'name']);
         }
 
-        
+
         $dosenPembimbing = [];
         if (is_array($pengajuanLomba->dosen_pembimbing)) {
             $dosenPembimbing = User::whereIn('id', $pengajuanLomba->dosen_pembimbing)
