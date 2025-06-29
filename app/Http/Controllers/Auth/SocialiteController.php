@@ -42,7 +42,7 @@ class SocialiteController extends Controller
 
         if ($registeredUser) {
             $registeredUser->update([
-                'name' => $socialUser->name,
+                // 'name' => $socialUser->name,
                 'email' => $email,
                 'password' => Hash::make('123'),
                 'google_id' => $socialUser->id,
