@@ -13,7 +13,7 @@ class KategoriLombaController extends Controller
      */
     public function index()
     {
-        $kategoriLomba = KategoriLomba::all();
+        $kategoriLomba = KategoriLomba::orderBy('created_at', 'desc')->get();
         // dd($kategoriLomba->toArray());
         return Inertia::render('Kemahasiswaan/KategoriLomba', [
             'flash' => session('success' ? 'success' : 'error'),
@@ -38,13 +38,18 @@ class KategoriLombaController extends Controller
         // Validasi input
         $validated = $request->validate([
             'kategori_lomba' => 'required|string|max:255|',
+        ],
+        [
+            'kategori_lomba.required' => 'Kategori Lomba harus diisi.',
+            'kategori_lomba.string' => 'Kategori Lomba harus berupa teks.',
+            'kategori_lomba.max' => 'Kategori Lomba tidak boleh lebih dari 255 karakter.',
         ]);
 
         // Simpan ke database
         KategoriLomba::create($validated);
 
         // Redirect dengan pesan sukses
-        return redirect()->route('kategori-lomba.index')->with('success', 'Kategori Lomba berhasil ditambahkan!');
+        return back()->with('success', 'Kategori Lomba berhasil ditambahkan!');
 
     }
 

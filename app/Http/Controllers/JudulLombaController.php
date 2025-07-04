@@ -14,7 +14,7 @@ class JudulLombaController extends Controller
     public function index()
     {
         return Inertia::render('Kemahasiswaan/JudulLomba', [
-            'kategoriLomba' => KategoriLomba::all(),
+            'kategoriLomba' => KategoriLomba::orderBy('created_at', 'desc')->get(),
             'judulLomba' => JudulLomba::with('kategori')->get()
         ]);
     }
@@ -35,9 +35,14 @@ class JudulLombaController extends Controller
         $validated = $request->validate([
             'judul_lomba' => 'required|string',
             'kategorilomba_id' => 'required|exists:kategori_lomba,kategorilomba_id',
+        ],
+        [
+            'judul_lomba.required' => 'Judul Lomba harus diisi.',
+            'kategorilomba_id.required' => 'Kategori Lomba harus dipilih.',
+            'kategorilomba_id.exists' => 'Kategori Lomba yang dipilih tidak valid.',
         ]);
         JudulLomba::create($validated);
-        return redirect()->route('judul-lomba.index');
+        return back()->with('success', 'Kategori Lomba berhasil ditambahkan!');
     }
 
     /**

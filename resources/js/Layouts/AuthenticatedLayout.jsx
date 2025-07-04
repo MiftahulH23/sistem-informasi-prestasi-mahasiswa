@@ -7,6 +7,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/Components/ui/sidebar";
+import { Toaster } from "@/Components/ui/sonner";
 import { TooltipProvider } from "@/Components/ui/tooltip";
 import { usePage } from "@inertiajs/react";
 import { ChevronsLeft } from "lucide-react";
@@ -31,6 +32,7 @@ export default function AuthenticatedLayout({ children, breadcrumbs }) {
                     <TooltipProvider delayDuration={0}>
                         {children}
                     </TooltipProvider>
+                     <Toaster />
                 </div>
             </SidebarInset>
         </SidebarProvider>

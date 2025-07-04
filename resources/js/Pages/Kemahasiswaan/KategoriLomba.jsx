@@ -36,6 +36,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route("kategori-lomba.store"), {
+            preserveScroll: true,
             onSuccess: () => {
                 reset();
                 setAddModalOpen(false);
@@ -128,9 +129,9 @@ const KategoriLomba = ({ kategoriLomba }) => {
     const breadcrumb = [
         {
             title: "Kategori Lomba",
-            href : "/kategori-lomba",
-        }
-    ]
+            href: "/kategori-lomba",
+        },
+    ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
             <Head title="Kategori Lomba" />
@@ -154,7 +155,9 @@ const KategoriLomba = ({ kategoriLomba }) => {
                         <button
                             onClick={() => setAddModalOpen(true)}
                             className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded flex items-center gap-2 ms-auto hover:cursor-pointer"
-                        >Tambah</button>
+                        >
+                            Tambah
+                        </button>
                     </DataTableControls>
                 )}
             </DataTable>
@@ -168,7 +171,9 @@ const KategoriLomba = ({ kategoriLomba }) => {
                     <form onSubmit={handleSubmit}>
                         <Label required>Kategori Lomba</Label>
                         <Input
+                            id="kategori_lomba"
                             name="kategori_lomba"
+                            type="text"
                             value={data.kategori_lomba}
                             onChange={(e) =>
                                 setData("kategori_lomba", e.target.value)
@@ -202,14 +207,10 @@ const KategoriLomba = ({ kategoriLomba }) => {
             </Dialog>
 
             {/* Modal Edit */}
-            <Dialog
-                open={isEditModalOpen}
-                onOpenChange={setEditModalOpen}
-            >
+            <Dialog open={isEditModalOpen} onOpenChange={setEditModalOpen}>
                 <DialogContent className="bg-white p-6 rounded-lg shadow-lg w-full">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-lg font-bold">Edit Kategori</h2>
-                       
                     </div>
                     <form onSubmit={handleEditSubmit}>
                         <Label>Kategori Lomba</Label>

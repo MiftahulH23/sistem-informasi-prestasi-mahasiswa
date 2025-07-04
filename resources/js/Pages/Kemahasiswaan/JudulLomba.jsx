@@ -40,6 +40,7 @@ const JudulLomba = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route("judul-lomba.store"), {
+            preserveScroll: true,
             onSuccess: () => {
                 reset();
                 setAddModalOpen(false);
@@ -140,9 +141,9 @@ const JudulLomba = () => {
     const breadcrumb = [
         {
             title: "Judul Lomba",
-            href : "/judul-lomba",
-        }
-    ]
+            href: "/judul-lomba",
+        },
+    ];
 
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>
@@ -168,10 +169,7 @@ const JudulLomba = () => {
 
             {/* Modal Tambah */}
             {isAddModalOpen && (
-                <Dialog
-                    open={isAddModalOpen}
-                    onOpenChange={setAddModalOpen}
-                >
+                <Dialog open={isAddModalOpen} onOpenChange={setAddModalOpen}>
                     <DialogContent className="bg-white p-6 rounded-lg shadow-lg w-full">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-bold">
@@ -190,6 +188,11 @@ const JudulLomba = () => {
                                 placeholder="Masukkan judul lomba"
                                 className="mb-4"
                             />
+                            {errors.judul_lomba && (
+                                <p className="text-red-500 mt-1">
+                                    {errors.judul_lomba}
+                                </p>
+                            )}
 
                             <Label>Kategori Lomba</Label>
                             <select
@@ -198,8 +201,9 @@ const JudulLomba = () => {
                                 onChange={(e) =>
                                     setData("kategorilomba_id", e.target.value)
                                 }
-                                required
+                                
                                 className="border rounded p-2 w-full mb-4"
+                                required
                             >
                                 <option value="">Pilih Kategori</option>
                                 {kategoriLomba.map((kategori) => (
@@ -211,6 +215,11 @@ const JudulLomba = () => {
                                     </option>
                                 ))}
                             </select>
+                            {errors.kategorilomba_id && (
+                                <p className="text-red-500 mt-1">
+                                    {errors.kategorilomba_id}
+                                </p>
+                            )}
 
                             <div className="mt-4 flex justify-end gap-2">
                                 <button
@@ -235,10 +244,7 @@ const JudulLomba = () => {
 
             {/* Modal Edit */}
             {isEditModalOpen && (
-                <Dialog
-                    open={isEditModalOpen}
-                    onOpenChange={setEditModalOpen}
-                >
+                <Dialog open={isEditModalOpen} onOpenChange={setEditModalOpen}>
                     <DialogContent className="bg-white p-6 rounded-lg shadow-lg w-full">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-lg font-bold">
