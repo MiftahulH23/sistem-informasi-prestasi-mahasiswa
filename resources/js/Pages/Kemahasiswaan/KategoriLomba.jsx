@@ -1,7 +1,12 @@
 import { DataTable, DataTableControls } from "@/Components/data-table";
 import { DataTableFilter } from "@/Components/data-table/filter";
 import Modal from "@/Components/Modal";
-import { Dialog, DialogContent } from "@/Components/ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -36,7 +41,7 @@ const KategoriLomba = ({ kategoriLomba }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route("kategori-lomba.store"), {
-            preserveScroll: true,
+            preserveState: false,
             onSuccess: () => {
                 reset();
                 setAddModalOpen(false);
@@ -165,9 +170,9 @@ const KategoriLomba = ({ kategoriLomba }) => {
             {/* Modal Tambah */}
             <Dialog open={isAddModalOpen} onOpenChange={setAddModalOpen}>
                 <DialogContent className="bg-white p-6 rounded-lg shadow-lg w-full">
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-lg font-bold">Tambah Kategori</h2>
-                    </div>
+                    <DialogHeader>
+                        <DialogTitle>Tambah Kategori</DialogTitle>
+                    </DialogHeader>
                     <form onSubmit={handleSubmit}>
                         <Label required>Kategori Lomba</Label>
                         <Input
@@ -209,12 +214,13 @@ const KategoriLomba = ({ kategoriLomba }) => {
             {/* Modal Edit */}
             <Dialog open={isEditModalOpen} onOpenChange={setEditModalOpen}>
                 <DialogContent className="bg-white p-6 rounded-lg shadow-lg w-full">
-                    <div className="flex justify-between items-center mb-4">
-                        <h2 className="text-lg font-bold">Edit Kategori</h2>
-                    </div>
+                    <DialogHeader>
+                        <DialogTitle>Edit Kategori</DialogTitle>
+                    </DialogHeader>
                     <form onSubmit={handleEditSubmit}>
                         <Label>Kategori Lomba</Label>
                         <Input
+                            autoComplete="off"
                             name="kategori_lomba"
                             value={editData.kategori_lomba}
                             onChange={(e) =>

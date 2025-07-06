@@ -40,7 +40,7 @@ const JudulLomba = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         post(route("judul-lomba.store"), {
-            preserveScroll: true,
+            preserveState: false,
             onSuccess: () => {
                 reset();
                 setAddModalOpen(false);
