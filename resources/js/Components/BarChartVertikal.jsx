@@ -29,7 +29,7 @@ export function BarChartVertikal({ TingkatLomba }) {
                     <p className="text-primary font-semibold">
                         Tingkat Prestasi
                     </p>
-                    <p className="text-xs">Tahun {new Date().getFullYear()}</p>
+                    <span className="text-xs">Tahun {new Date().getFullYear()}</span>
                 </CardDescription>
             </CardHeader>
             <CardContent>

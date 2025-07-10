@@ -42,7 +42,7 @@ export function BarChartComponent({ chartData }) {
                     <p className="text-primary font-semibold">
                         Jumlah Prestasi Prodi
                     </p>
-                    <p className="text-xs">Tahun {new Date().getFullYear()}</p>
+                    <soan className="text-xs">Tahun {new Date().getFullYear()}</soan>
                 </CardDescription>
             </CardHeader>
             <CardContent>

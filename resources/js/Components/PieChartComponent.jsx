@@ -36,7 +36,7 @@ export function PieChartComponent({ KategoriLomba }) {
             <CardHeader className="pb-0">
                 <CardDescription>
                     <p className="text-primary font-semibold">Kategori Lomba</p>
-                    <p className="text-xs">Tahun {new Date().getFullYear()}</p>
+                    <span className="text-xs">Tahun {new Date().getFullYear()}</span>
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
