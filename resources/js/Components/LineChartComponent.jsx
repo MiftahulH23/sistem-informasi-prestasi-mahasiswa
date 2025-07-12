@@ -31,7 +31,7 @@ export default function LineChartComponent({ lineChartData }) {
                     <p className="text-primary font-semibold">
                         Prestasi Akademik dan Non-Akademik
                     </p>
-                    <p className="text-xs">Tahun {new Date().getFullYear()}</p>
+                    <span className="text-xs">Tahun {new Date().getFullYear()}</span>
                 </CardDescription>
             </CardHeader>
             <CardContent>
