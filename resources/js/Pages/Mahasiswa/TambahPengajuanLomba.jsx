@@ -106,20 +106,19 @@ const PengajuanLomba = ({ auth, dosenList }) => {
         setData("jumlah_peserta", jumlah);
 
         post(route("pengajuan-lomba.store"), {
-            onSuccess: (page) => {
+            onSuccess: () => {
                 reset();
                 setJenisKepesertaan("");
                 setAnggotaKelompok([]);
                 setSelectedKategori("");
                 setFilteredJudul([]);
-                const id = page.props.flash.success;
-                router.get("/kirim-email", { id });
-                router.visit("/pengajuan-lomba");
+                // router.get("/pengajuan-lomba");
                 Swal.fire(
                     "Berhasil!",
                     "Pengajuan berhasil ditambah.",
                     "success"
                 );
+                // router.get("/kirim-email");
             },
             onError: (errors) => {
                 const message = Object.values(errors)[0];

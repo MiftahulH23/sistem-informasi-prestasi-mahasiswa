@@ -40,6 +40,7 @@ class DashboardController extends Controller
         $totalPrestasiNonPeserta = Prestasi::where('status', 'Diterima')
             ->whereHas('pengajuanLomba', function ($query) {
                 $query->where('status', 'Diterima');
+                $query->where('created_at', '>=', Carbon::now()->subYear());
             })
             ->where('capaian_prestasi', '!=', 'Peserta')
             ->count();

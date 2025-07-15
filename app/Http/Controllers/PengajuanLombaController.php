@@ -31,7 +31,7 @@ class PengajuanLombaController extends Controller
 
                 $dosen_ids = $item->dosen_pembimbing ?? [];
                 if (!is_array($dosen_ids)) {
-                    $dosen_ids = json_decode($dosen_ids, true); // antisipasi kalau belum proper array
+                    $dosen_ids = json_decode($dosen_ids, true);
                 }
 
                 $dosen_nama = User::whereIn('id', $dosen_ids)->pluck('inisial')->toArray();
@@ -250,7 +250,7 @@ class PengajuanLombaController extends Controller
                 array_unshift($anggota_kelompok, $user->id);
             }
         } else {
-            $anggota_kelompok = [$user->id]; // Individu, hanya user itu sendiri
+            $anggota_kelompok = [$user->id];
         }
 
         $jumlah_peserta = count($anggota_kelompok);
@@ -260,24 +260,28 @@ class PengajuanLombaController extends Controller
 
         $surat_tugas_path = $request->file('surat_tugas')->store('surat_tugas', 'public');
         // Simpan data ke database
-        // ambil Judul Lomba
-        $validated['user_id'] = $user->id; // ID user yang login
+        $validated['user_id'] = $user->id;
         $validated['anggota_kelompok'] = $anggota_kelompok;
         $validated['judul_lomba'] = ucwords(strtolower($request->judul_lomba));
         $validated['dosen_pembimbing'] = $dosen_pembimbing;
-        $validated['jumlah_peserta'] = $jumlah_peserta; // Simpan jumlah peserta
-        $validated['surat_tugas'] = $surat_tugas_path; // Simpan path surat tugas
-        $validated['program_studi'] = $prodis; // langsung array
-        if (Auth::user()->role === 'Kemaghasiswaan') {
+        $validated['jumlah_peserta'] = $jumlah_peserta;
+        $validated['surat_tugas'] = $surat_tugas_path;
+        $validated['program_studi'] = $prodis;
+        if (Auth::user()->role === 'Kemahasiswaan') {
             $validated['status'] = 'Diterima';
         } else {
-            $validated['status'] = 'Diajukan'; // Status awal adalah Diajukan
+            $validated['status'] = 'Diajukan';
         }
-        // dd($surat_tugas_path);
+
         $pengajuan = PengajuanLomba::create($validated);
+
         $user = Auth::user();
         $email = "miftahul21si@mahasiswa.pcr.ac.id";
         $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
+
+        Notification::route('mail', $email)
+            ->notify(new Pengajuan($message)); // Pastikan implements ShouldQueue
+
 
         // $user = Auth::user();
         // $email = "miftahul21si@mahasiswa.pcr.ac.id";
@@ -285,18 +289,30 @@ class PengajuanLombaController extends Controller
 
         // Notification::route('mail', $email)
         //     ->notify(new Pengajuan($message));
-        return back()->with('success', $pengajuan->id);
+        return redirect('/pengajuan-lomba')->with('success', "Pengajuan berhasil ditambahkan");
     }
 
-    public function kirimEmail(Request $request)
+    public function kirimEmail()
     {
-       $user = Auth::user();
+        $user = Auth::user();
+        $email = "miftahul21si@mahasiswa.pcr.ac.id";
+        $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
+        Notification::route('mail', $email)
+            ->notify(new Pengajuan($message));
+
+        return;
+
+    }
+    public function notify()
+    {
+        $user = Auth::user();
         $email = "miftahul21si@mahasiswa.pcr.ac.id";
         $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
 
         Notification::route('mail', $email)
             ->notify(new Pengajuan($message));
 
+        return "Notifikasi berhasil dikirim!";
     }
 
     public function show($id)
@@ -326,17 +342,7 @@ class PengajuanLombaController extends Controller
 
 
 
-    public function notify()
-    {
-        $user = Auth::user();
-        $email = "miftahul21si@mahasiswa.pcr.ac.id";
-        $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
 
-        Notification::route('mail', $email)
-            ->notify(new Pengajuan($message));
-
-        return "Notifikasi berhasil dikirim!";
-    }
 
     public function portofolio($id)
     {

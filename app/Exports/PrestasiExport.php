@@ -17,7 +17,10 @@ class PrestasiExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        $query = Prestasi::with(['pengajuanLomba.kategori']);
+        $query = Prestasi::with(['pengajuanLomba.kategori'])->where(
+            'status', 'Diterima'
+        )->where('capaian_prestasi', '!=', 'Peserta'
+        );
 
         if ($this->request->filled('capaian_prestasi')) {
             $query->whereIn('capaian_prestasi', (array) $this->request->input('capaian_prestasi'));

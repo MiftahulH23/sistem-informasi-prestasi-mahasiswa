@@ -31,7 +31,7 @@ export function NavProjects({
           return (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <Link href={item.url} className={cn(active ? "bg-background font-bold text-primary" : "bg-transparent")}>
+              <Link href={item.url} className={cn("hover:!bg-background",active ? "bg-background font-bold text-primary" : "bg-transparent")}>
                 <item.icon className="text-[#4f94c8]" />
                 <span>{item.name}</span>
               </Link>
