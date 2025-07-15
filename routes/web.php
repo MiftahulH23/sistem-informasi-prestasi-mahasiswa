@@ -60,6 +60,8 @@ Route::middleware('auth')->prefix('profile')->name('profile.')->group(function (
 // Notifikasi
 Route::get('/notify', [PengajuanLombaController::class, 'notify'])->name('pengajuan-notif');
 
+Route::get('/kirim-email', [PengajuanLombaController::class, 'kirimEmail'])->name('kirim-email');
+
 // =======================
 // Kemahasiswaan
 // =======================

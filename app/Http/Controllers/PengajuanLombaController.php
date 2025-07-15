@@ -274,14 +274,29 @@ class PengajuanLombaController extends Controller
             $validated['status'] = 'Diajukan'; // Status awal adalah Diajukan
         }
         // dd($surat_tugas_path);
-        PengajuanLomba::create($validated);
+        $pengajuan = PengajuanLomba::create($validated);
+        $user = Auth::user();
+        $email = "miftahul21si@mahasiswa.pcr.ac.id";
+        $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
+
         // $user = Auth::user();
         // $email = "miftahul21si@mahasiswa.pcr.ac.id";
         // $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
 
         // Notification::route('mail', $email)
         //     ->notify(new Pengajuan($message));
-        return redirect("/pengajuan-lomba")->with('success', 'Pengajuan Lomba berhasil ditambahkan!');
+        return back()->with('success', $pengajuan->id);
+    }
+
+    public function kirimEmail(Request $request)
+    {
+       $user = Auth::user();
+        $email = "miftahul21si@mahasiswa.pcr.ac.id";
+        $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
+
+        Notification::route('mail', $email)
+            ->notify(new Pengajuan($message));
+
     }
 
     public function show($id)

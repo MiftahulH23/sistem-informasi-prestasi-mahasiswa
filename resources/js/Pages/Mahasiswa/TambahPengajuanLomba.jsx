@@ -1,7 +1,7 @@
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { use, useEffect, useState } from "react";
 import CreatableSelect from "@/Components/Createable";
 import Swal from "sweetalert2";
@@ -12,6 +12,7 @@ import {
 } from "@/Components/ui/tooltip";
 import { CircleHelp } from "lucide-react";
 import MultiSelect from "@/Components/MultiSelect";
+import { toast } from "sonner";
 
 const PengajuanLomba = ({ auth, dosenList }) => {
     const currentUserId = auth.user.id;
@@ -105,12 +106,15 @@ const PengajuanLomba = ({ auth, dosenList }) => {
         setData("jumlah_peserta", jumlah);
 
         post(route("pengajuan-lomba.store"), {
-            onSuccess: () => {
+            onSuccess: (page) => {
                 reset();
                 setJenisKepesertaan("");
                 setAnggotaKelompok([]);
                 setSelectedKategori("");
                 setFilteredJudul([]);
+                const id = page.props.flash.success;
+                router.get("/kirim-email", { id });
+                router.visit("/pengajuan-lomba");
                 Swal.fire(
                     "Berhasil!",
                     "Pengajuan berhasil ditambah.",

@@ -4,8 +4,9 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class Pengajuan extends Notification
+class Pengajuan extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -35,7 +36,7 @@ class Pengajuan extends Notification
         return (new MailMessage)
             ->subject('Pengajuan Lomba Baru')
             ->line($this->message) // Tampilkan pesan yang dikirim
-            ->action('Lihat Detail', url('/'))
+            ->action('Lihat Detail', url('/pengajuan-lomba/update'))
             ->line('Terima kasih telah menggunakan layanan kami!');
     }
 }
