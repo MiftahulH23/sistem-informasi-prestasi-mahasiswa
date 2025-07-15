@@ -58,7 +58,7 @@ class DashboardController extends Controller
         $programSingkatan = [
             'Teknik Elektronika Telekomunikasi' => 'TET',
             'Teknik Listrik' => 'TL',
-            'Teknik Mesin' => 'TMS',
+            'Teknik Mesin' => 'TM',
             'Teknologi Rekayasa Jaringan Telekomunikasi' => 'TRJT',
             'Teknologi Rekayasa Sistem Elektronika' => 'TRSE',
             'Teknologi Rekayasa Mekatronika' => 'TRM',
@@ -78,6 +78,7 @@ class DashboardController extends Controller
 
         $dataPrestasi = Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
+            ->where('capaian_prestasi', '!=', 'Peserta')
             ->with('pengajuanlomba')
             ->get();
 
@@ -134,6 +135,7 @@ class DashboardController extends Controller
 
         $prestasi = Prestasi::where('status', 'Diterima')
             ->whereHas('pengajuanlomba', fn($query) => $query->where('tanggal_mulai', '>=', $oneYearAgo))
+            ->where('capaian_prestasi', '!=', 'Peserta')
             ->with('pengajuanlomba')
             ->get()
             ->groupBy(fn($item) => Carbon::parse($item->pengajuanlomba->tanggal_mulai)->format('F'))
@@ -161,6 +163,7 @@ class DashboardController extends Controller
 
         $data = Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
+            ->where('capaian_prestasi', '!=', 'Peserta')
             ->with('pengajuanlomba')
             ->get()
             ->groupBy(fn($item) => optional($item->pengajuanlomba)->tingkat_lomba)
@@ -199,6 +202,7 @@ class DashboardController extends Controller
         return Prestasi::where('status', 'Diterima')
             ->where('created_at', '>=', $oneYearAgo)
             ->with('pengajuanlomba.kategori')
+            ->where('capaian_prestasi', '!=', 'Peserta')    
             ->get()
             ->groupBy(fn($item) => optional($item->pengajuanlomba->kategori)->kategori_lomba)
             ->map(fn($items, $kategori) => [

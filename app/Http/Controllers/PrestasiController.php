@@ -13,7 +13,7 @@ class PrestasiController extends Controller
         $query = Prestasi::with(['pengajuanLomba.kategori'])
             ->where('status', 'Diterima');
 
-        $query = Prestasi::with(['pengajuanLomba.kategori']);
+        $query = Prestasi::with(['pengajuanLomba.kategori'])->where('capaian_prestasi', '!=', 'Peserta');
 
         if (Auth::user()->role === 'Mahasiswa') {
             $query->whereHas('pengajuanLomba', function ($q) {

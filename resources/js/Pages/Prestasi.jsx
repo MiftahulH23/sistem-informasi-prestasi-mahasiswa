@@ -133,12 +133,18 @@ const Prestasi = ({ prestasi }) => {
         },
     ];
     const program_studi = [
-        "SI",
+        "TET",
+        "TL",
+        "TM",
+        "TRJT",
+        "TRSE",
+        "TRM",
         "TI",
-        "MI",
-        "KA",
-        "DKV",
-        "Sistem Informasi Akuntansi",
+        "SI",
+        "TRK",
+        "AktP",
+        "HMKD",
+        "BD"
     ];
     return (
         <AuthenticatedLayout breadcrumbs={breadcrumb}>

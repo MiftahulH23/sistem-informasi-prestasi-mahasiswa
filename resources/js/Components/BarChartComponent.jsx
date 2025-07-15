@@ -26,7 +26,7 @@ export function BarChartComponent({ chartData }) {
         TRK: "Teknologi Rekayasa Komputer",
         TET: "Teknik Elektronika Telekomunikasi",
         TL: "Teknik Listrik",
-        TMS: "Teknik Mesin",
+        TM: "Teknik Mesin",
         TRJT: "Teknologi Rekayasa Jaringan Telekomunikasi",
         TRSE: "Teknologi Rekayasa Sistem Elektronika",
         TRM: "Teknologi Rekayasa Mekatronika",
