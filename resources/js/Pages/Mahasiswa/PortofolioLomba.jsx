@@ -18,7 +18,7 @@ import {
     ChartTooltipContent,
     ChartLegend,
     ChartLegendContent,
-} from "@/components/ui/chart";
+} from "@/Components/ui/chart";
 import DashboardCard from "@/Components/DashboardCard";
 import { Award, FileCheck2, Trophy } from "lucide-react";
 
