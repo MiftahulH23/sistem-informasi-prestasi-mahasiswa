@@ -283,7 +283,7 @@ class PengajuanLombaController extends Controller
             ->notify(new Pengajuan($message)); // Pastikan implements ShouldQueue
 
 
-        // $user = Auth::user();
+    // $user = Auth::user();
         // $email = "miftahul21si@mahasiswa.pcr.ac.id";
         // $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
 
@@ -349,10 +349,17 @@ class PengajuanLombaController extends Controller
         // Cari user untuk ambil namanya
         $user = User::findOrFail($id);
 
-        // Ambil semua pengajuan yang berisi id user dalam anggota_kelompok
-        $pengajuans = PengajuanLomba::whereJsonContains('anggota_kelompok', (string) $id) // Pakai string supaya lebih fleksibel
-            ->orWhereJsonContains('anggota_kelompok', (int) $id) // Untuk menangani format yang berbeda
-            ->with(['kategori', 'prestasi']) // relasi kategori dan prestasi
+        $pengajuans = PengajuanLomba::where(function ($query) use ($id) {
+            // Mencari di kolom anggota_kelompok (baik sebagai string atau integer)
+            $query->whereJsonContains('anggota_kelompok', (string) $id)
+                ->orWhereJsonContains('anggota_kelompok', (int) $id);
+        })
+            // Hanya ambil pengajuan yang memiliki relasi 'prestasi' dimana statusnya 'Diterima'
+            ->whereHas('prestasi', function ($query) {
+                $query->where('status', 'Diterima');
+            })
+            // Lakukan eager loading seperti sebelumnya
+            ->with(['kategori', 'prestasi'])
             ->get();
 
         return Inertia::render('Mahasiswa/PortofolioLomba', [
