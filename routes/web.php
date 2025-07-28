@@ -108,6 +108,7 @@ Route::middleware(['auth', 'verified', 'role:Mahasiswa'])->group(function () {
         Route::post('/store', 'store')->name('pengajuan-lomba.store');
         Route::get('/show/{id}', 'show')->name('pengajuan-lomba.show');
     });
+    Route::get('/portofolio', [PengajuanLombaController::class, 'portofolioMahasiswa'])->name('portofolio.mahasiswa');
 
     // Pelaporan Prestasi
     Route::prefix('pelaporan-prestasi')->controller(PelaporanPrestasiController::class)->group(function () {

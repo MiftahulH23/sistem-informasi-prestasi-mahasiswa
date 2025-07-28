@@ -283,7 +283,7 @@ class PengajuanLombaController extends Controller
             ->notify(new Pengajuan($message)); // Pastikan implements ShouldQueue
 
 
-    // $user = Auth::user();
+        // $user = Auth::user();
         // $email = "miftahul21si@mahasiswa.pcr.ac.id";
         // $message = "Halo, ada pengajuan lomba baru yang perlu ditinjau dari $user->name. Silakan periksa detailnya.";
 
@@ -363,6 +363,35 @@ class PengajuanLombaController extends Controller
             ->get();
 
         return Inertia::render('Mahasiswa/PortofolioLomba', [
+            'nama' => $user->name,
+            'pengajuans' => $pengajuans
+        ]);
+    }
+    // Tidak ada lagi parameter $id di dalam kurung
+    public function portofolioMahasiswa()
+    {
+        // 1. Ambil data user yang sedang login
+        $user = auth()->user();
+
+        // 2. Ambil ID dari user yang login untuk digunakan di query
+        $id = $user->id;
+
+        // Query ke database tetap sama, namun sekarang $id berasal dari user yang login
+        $pengajuans = PengajuanLomba::where(function ($query) use ($id) {
+            // Mencari di kolom anggota_kelompok (baik sebagai string atau integer)
+            $query->whereJsonContains('anggota_kelompok', (string) $id)
+                ->orWhereJsonContains('anggota_kelompok', (int) $id);
+        })
+            // Hanya ambil pengajuan yang memiliki relasi 'prestasi' dimana statusnya 'Diterima'
+            ->whereHas('prestasi', function ($query) {
+                $query->where('status', 'Diterima');
+            })
+            // Lakukan eager loading seperti sebelumnya
+            ->with(['kategori', 'prestasi'])
+            ->get();
+
+        // Kirim data ke view Inertia
+        return Inertia::render('Mahasiswa/Portofolio', [
             'nama' => $user->name,
             'pengajuans' => $pengajuans
         ]);

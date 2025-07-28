@@ -19,6 +19,7 @@ import {
     Medal,
     Notebook,
     BookOpenText,
+    Newspaper,
 } from "lucide-react";
 
 const menuMahasiswa = [
@@ -46,6 +47,11 @@ const menuMahasiswa = [
         name: "Bimbingan",
         url: "/bimbingan",
         icon: BookOpenText,
+    },
+    {
+        name: "Portofolio",
+        url: "/portofolio",
+        icon: Newspaper,
     },
 ];
 
