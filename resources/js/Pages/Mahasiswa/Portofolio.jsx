@@ -161,7 +161,7 @@ const Portofolio = () => {
                 </h1>
 
                 {/* Bagian Kartu Ringkasan */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                     <DashboardCard
                         title="Total Lomba yang diikuti"
                         total={summaryStats.totalLomba}
@@ -181,9 +181,9 @@ const Portofolio = () => {
 
                 {/* Bagian Chart */}
                 {pengajuans.length > 0 ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div className="space-y-8">
                         {/* Chart Capaian Prestasi (Full Width) */}
-                        <div className="p-6 bg-white rounded-lg shadow-md lg:col-span-2">
+                        <div className="p-6 bg-white rounded-lg shadow-md">
                             <h2 className="text-xl font-semibold mb-4">
                                 Capaian Prestasi
                             </h2>
@@ -212,71 +212,68 @@ const Portofolio = () => {
                                 </BarChart>
                             </ChartContainer>
                         </div>
+                        <div className="grid grid-cols-1 lg:grid-cols-2  gap-8">
+                            {/* Chart Jenis Lomba */}
+                            <div className="p-6 bg-white rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">
+                                    Jenis Lomba
+                                </h2>
+                                <ChartContainer
+                                    config={barChartJenisConfig}
+                                    className="min-h-[300px] w-full"
+                                >
+                                    <BarChart data={dataJenisLomba}>
+                                        <CartesianGrid vertical={false} />
+                                        <XAxis
+                                            dataKey="name"
+                                            tickLine={false}
+                                            tickMargin={10}
+                                            axisLine={false}
+                                        />
+                                        <YAxis allowDecimals={false} />
+                                        <ChartTooltip
+                                            cursor={false}
+                                            content={<ChartTooltipContent />}
+                                        />
+                                        <Bar
+                                            dataKey="total"
+                                            fill="var(--color-total)"
+                                            radius={8}
+                                        />
+                                    </BarChart>
+                                </ChartContainer>
+                            </div>
 
-                        {/* Chart Jenis Lomba */}
-                        <div className="p-6 bg-white rounded-lg shadow-md">
-                            <h2 className="text-xl font-semibold mb-4">
-                                Jenis Lomba
-                            </h2>
-                            <ChartContainer
-                                config={barChartJenisConfig}
-                                className="min-h-[300px] w-full"
-                            >
-                                <BarChart data={dataJenisLomba}>
-                                    <CartesianGrid vertical={false} />
-                                    <XAxis
-                                        dataKey="name"
-                                        tickLine={false}
-                                        tickMargin={10}
-                                        axisLine={false}
-                                    />
-                                    <YAxis allowDecimals={false} />
-                                    <ChartTooltip
-                                        cursor={false}
-                                        content={<ChartTooltipContent />}
-                                    />
-                                    <Bar
-                                        dataKey="total"
-                                        fill="var(--color-total)"
-                                        radius={8}
-                                    />
-                                </BarChart>
-                            </ChartContainer>
+                            {/* Chart Distribusi Kategori */}
+                            <div className="p-6 bg-white rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">
+                                    Distribusi Kategori Lomba
+                                </h2>
+                                <ChartContainer
+                                    config={pieChartConfig}
+                                    className="min-h-[300px] w-full flex items-center justify-center"
+                                >
+                                    <PieChart>
+                                        <ChartTooltip
+                                            cursor={false}
+                                            content={<ChartTooltipContent />}
+                                        />
+                                        <Pie
+                                            data={dataLombaPerKategori}
+                                            dataKey="value"
+                                            nameKey="name"
+                                        />
+                                        <ChartLegend
+                                            content={
+                                                <ChartLegendContent className="flex-wrap" nameKey="name" />
+                                            }
+                                        />
+                                    </PieChart>
+                                </ChartContainer>
+                            </div>
                         </div>
-
-                        {/* Chart Distribusi Kategori */}
-                        <div className="p-6 bg-white rounded-lg shadow-md">
-                            <h2 className="text-xl font-semibold mb-4">
-                                Distribusi Kategori Lomba
-                            </h2>
-                            <ChartContainer
-                                config={pieChartConfig}
-                                className="min-h-[300px] w-full flex items-center justify-center"
-                            >
-                                <PieChart>
-                                    <ChartTooltip
-                                        cursor={false}
-                                        content={<ChartTooltipContent />}
-                                    />
-                                    <Pie
-                                        data={dataLombaPerKategori}
-                                        dataKey="value"
-                                        nameKey="name"
-                                        cx="50%"
-                                        cy="50%"
-                                        outerRadius={100}
-                                    />
-                                    <ChartLegend
-                                        content={
-                                            <ChartLegendContent nameKey="name" />
-                                        }
-                                    />
-                                </PieChart>
-                            </ChartContainer>
-                        </div>
-
                         {/* Chart Tingkat Lomba */}
-                        <div className="p-6 bg-white rounded-lg shadow-md col-span-2">
+                        <div className="p-6 bg-white rounded-lg shadow-md">
                             <h2 className="text-xl font-semibold mb-4">
                                 Tingkat Lomba
                             </h2>
